@@ -43,6 +43,10 @@
 - [ ] Définir la politique d'authentification et de réinitialisation de mot de passe admin.
 - [ ] Préparer le plan de recette fonctionnelle, mobile, e-mail, sécurité, RGPD, SEO et accessibilité.
 
+## Après le MVP
+
+- [ ] Refactor UI Tailwind après MVP : définir les tokens Tailwind, mutualiser les styles répétés et migrer les CSS Modules page par page après validation visuelle.
+
 ## Explicitement hors MVP
 
 - [ ] Ne pas développer de confirmation ou blocage automatique des réservations.

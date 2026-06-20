@@ -1,7 +1,7 @@
 # État du projet — La Loge Bar & Food
 
 **Dernière mise à jour :** 20 juin 2026  
-**Phase :** socle technique initialisé ; premières versions statiques de l'Accueil et de la Carte créées  
+**Phase :** socle technique initialisé ; premières versions statiques de l'Accueil, de la Carte et de la Réservation créées
 **Développement fonctionnel :** non démarré  
 **Initialisation du projet :** terminée — Next.js, TypeScript et Tailwind CSS
 
@@ -21,9 +21,11 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 | Périmètre public MVP | Validé | Accueil, Carte, Réservation, Contact/Accès et Mentions légales uniquement. |
 | Administration contenus | Validé | Infos générales, menu, images liées aux contenus MVP, SEO et légal ; interface structurée. |
 | Mise en page | Validé | Sections limitées activables/désactivables et éventuellement réordonnables ; pas de page builder. |
+| Architecture CSS | Validé | Les CSS Modules sont conservés jusqu'à la fin du MVP public. Tailwind reste configuré pour le socle technique ; aucune migration des styles existants n'est engagée avant le refactor UI après MVP. |
 | Sitemap et navigation MVP | Validé | Le squelette des cinq routes publiques, le layout commun, le header temporaire et le footer temporaire sont créés et validés ; le détail fonctionnel reste défini dans `docs/sitemap-mvp.md`. |
 | Accueil MVP | En cours | Les sections statiques Hero, Présentation, extrait de carte, Accès express et CTA final sont créées avec des contenus à valider ; aucune image, formulaire ou donnée métier n'est intégrée. |
 | Carte MVP | En cours | Les sections statiques Introduction, catégories, plats provisoires, allergènes et CTA final sont créées avec des contenus à valider ; aucune image, formulaire ou donnée métier n'est intégrée. |
+| Réservation MVP | En cours | Les sections statiques Introduction, message d'attente de confirmation, formulaire visuel désactivé, besoin urgent, informations utiles et CTA Contact sont créées avec des contenus à valider ; aucun envoi, image ou traitement métier n'est intégré. |
 | P2 | Validé | Événements privés, galerie, avis clients, statut ouvert/fermé dynamique, statistiques, notifications, disponibilité fine, automatisation, Google Calendar et disposition avancée sont reportés. |
 
 ## Livrables documentaires disponibles
