@@ -40,3 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 figma-make/
+Maquettes site restaurant La Loge.zip
+public/images/maquette.png
