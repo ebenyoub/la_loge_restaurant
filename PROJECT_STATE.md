@@ -23,7 +23,7 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 | Mise en page | Validé | Sections limitées activables/désactivables et éventuellement réordonnables ; pas de page builder. |
 | Architecture CSS | Validé | Les CSS Modules sont conservés jusqu'à la fin du MVP public. Tailwind reste configuré pour le socle technique ; aucune migration des styles existants n'est engagée avant le refactor UI après MVP. |
 | Schéma de données MVP | Implémenté (Prisma) | Traduit dans `backend/prisma/schema.prisma` et validé via `prisma generate`, sans base de données réelle ni migration. |
-| Architecture backend MVP | Initialisé | MySQL, Prisma, Express et MVC sont validés dans `decisions.md`. Le dossier `backend/` contient le socle TypeScript, Express, Prisma, le schéma de données compilé et une route technique `/health`, sans route métier réelle. |
+| Architecture backend MVP | Routes publiques créées | MySQL, Prisma, Express et MVC. Les routes publiques `POST /api/v1/reservations` et `POST /api/v1/contact-messages` sont créées et validées côté serveur, sans persistance réelle ni e-mails. |
 | Contrats d'API MVP | Documenté | `docs/api-contracts.md` définit les requêtes, réponses, validations, statuts HTTP et règles RGPD des flux Réservation et Contact ; aucun endpoint métier n'est créé. |
 | Prérequis backend MVP | Documenté | `docs/backend-prerequisites.md` liste les décisions critiques de secrets, hébergement, MySQL, authentification, e-mail, RGPD, risques et validation avant installation. Aucun secret ou fichier `.env` réel n'est créé. |
 | Sécurité dépendances backend | À surveiller | `npm audit --omit=dev` signale trois vulnérabilités modérées transitives liées à la CLI Prisma 7. Aucun correctif automatique ni downgrade majeur n'est appliqué ; revue requise avant déploiement. |
@@ -61,4 +61,4 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 
 ## Prochaine étape proposée — validation humaine requise
 
-Créer les contrôleurs, validateurs et routes Express pour les endpoints publics `POST /api/v1/reservations` et `POST /api/v1/contact-messages` avec validation stricte selon les contrats d'API, sans persistance réelle ni envoi d'e-mails.
+Initialiser la base de données locale MySQL, exécuter la première migration Prisma et connecter les endpoints `POST /api/v1/reservations` et `POST /api/v1/contact-messages` pour persister réellement les demandes en base (sans envoi d'e-mails réels).

@@ -121,7 +121,8 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 * [x] Préparer la checklist de validation backend dans `docs/backend-prerequisites.md`, sans installer Prisma, créer Express, base de données ou API.
 * [x] Initialiser le socle backend Express, TypeScript et Prisma/MySQL avec `/health`, sans base de données, migration, logique métier, authentification, e-mail ni formulaire.
 * [x] Traduire docs/database-schema.md en modèles Prisma, générer le client et valider le schéma sans créer de migration ni de base de données.
+* [x] Créer les contrôleurs, validateurs et routes Express pour les endpoints publics `POST /api/v1/reservations` et `POST /api/v1/contact-messages` avec validation stricte selon les contrats d'API, sans persistance réelle ni envoi d'e-mails.
 
 ## Prochaine tâche proposée
 
-Créer les contrôleurs, validateurs et routes Express pour les endpoints publics `POST /api/v1/reservations` et `POST /api/v1/contact-messages` avec validation stricte selon les contrats d'API, sans persistance réelle ni envoi d'e-mails.
+Initialiser la base de données locale MySQL, exécuter la première migration Prisma et connecter les endpoints `POST /api/v1/reservations` et `POST /api/v1/contact-messages` pour persister réellement les demandes en base (sans envoi d'e-mails réels).
