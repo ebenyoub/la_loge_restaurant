@@ -1,7 +1,7 @@
 # État du projet — La Loge Bar & Food
 
 **Dernière mise à jour :** 20 juin 2026  
-**Phase :** Socle technique, base de données, APIs publiques et intégration formulaires MVP opérationnels. Administration non démarrée.
+**Phase :** Socle technique, base de données, APIs publiques, intégration des formulaires publics et toutes les routes d'administration backend (réservations, contacts, carte, réglages) opérationnels. Front-end d'administration non démarré.
 
 ## 1. État réel actuel du projet
 
@@ -34,7 +34,7 @@
 | Mise en page | Validé | Sections limitées activables/désactivables et éventuellement réordonnables ; pas de page builder. |
 | Architecture CSS | Validé | Les CSS Modules sont conservés jusqu'à la fin du MVP public. Tailwind reste configuré pour le socle technique ; aucune migration des styles existants n'est engagée avant le refactor UI après MVP. |
 | Schéma de données MVP | Migré | Traduit dans `backend/prisma/schema.prisma` et migré sur MySQL local via `prisma migrate dev`. |
-| Architecture backend MVP | Routes admin réservations et contacts créées | MySQL, Prisma, Express, bcrypt et JWT. Les routes d'administration des réservations, de la carte, des réglages et des messages de contact sont opérationnelles et protégées par rôle. |
+| Architecture backend MVP | Routes d'administration backend complètes | MySQL, Prisma, Express, bcrypt et JWT. Les routes d'administration des réservations, de la carte, des réglages généraux et des messages de contact sont opérationnelles et protégées par rôle. |
 | Stratégie de tests backend | Opérationnelle | Vitest configuré avec Supertest, mock automatique de Prisma pour isoler les tests de base de données. Tests d'API passants sur health, validations, authentification et protection de routes. |
 | Contrats d'API MVP | Documenté | `docs/api-contracts.md` définit les requêtes, réponses, validations, statuts HTTP et règles RGPD des flux Réservation et Contact. |
 | Prérequis backend MVP | Documenté | `docs/backend-prerequisites.md` liste les décisions critiques de secrets, hébergement, MySQL, authentification, e-mail, RGPD, risques et validation avant installation. |
@@ -65,4 +65,4 @@
 
 ## 6. Prochaine étape proposée — validation humaine requise
 
-Implémenter la page de connexion de l'administration frontend `/admin/login` et stocker de manière sécurisée le jeton JWT.
+Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).

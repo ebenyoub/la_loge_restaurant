@@ -2,7 +2,7 @@
 
 ## Tâche en cours
 
-Aucune — les formulaires publics de réservation et de contact sont connectés au backend Express.
+Aucune — la documentation est mise à jour selon l'état réel du dépôt.
 
 ---
 
@@ -91,9 +91,10 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 * [x] Implémenter les routes d'administration des messages de contact (`GET /api/v1/admin/contact-messages`, `GET /api/v1/admin/contact-messages/:id` et `PATCH /api/v1/admin/contact-messages/:id/status`) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
 * [x] Mettre en place une stratégie de tests backend en configurant Vitest et Supertest et en créant les premiers tests unitaires/d'intégration.
 * [x] Connecter les formulaires publics de réservation (`/reservation`) et de contact (`/contact`) au backend Express.
+* [x] Aligner la documentation de suivi avec l'état réel du dépôt backend (routes admin réservations, contacts, carte et réglages).
 
 ---
 
 ## Prochaine tâche proposée
 
-Implémenter la page de connexion de l'administration frontend `/admin/login` et stocker de manière sécurisée le jeton JWT.
+Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).

@@ -36,7 +36,7 @@
 
 ## Prochaine tâche proposée — à valider
 
-- [ ] Implémenter la page de connexion de l'administration frontend `/admin/login` et stocker de manière sécurisée le jeton JWT.
+- [ ] Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).
 
 ## Après le MVP
 
