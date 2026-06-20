@@ -14,6 +14,8 @@ export const env = {
   nodeEnv: process.env.NODE_ENV ?? "development",
   port: parsePort(process.env.PORT),
   databaseUrl: process.env.DATABASE_URL,
+  jwtSecret: process.env.JWT_SECRET ?? "default-secret-change-me",
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? "8h",
 };
 
 export function requireDatabaseConfiguration() {

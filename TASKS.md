@@ -125,6 +125,8 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 
 * [x] Initialiser la base de données locale MySQL, exécuter la première migration Prisma et connecter les endpoints `POST /api/v1/reservations` et `POST /api/v1/contact-messages` pour persister réellement les demandes en base (sans envoi d'e-mails réels).
 
+* [x] Implémenter l'authentification administrateur (endpoints `POST /api/v1/admin/login`, middleware de session/protection des routes) sans développer les interfaces d'administration ni connecter le frontend.
+
 ## Prochaine tâche proposée
 
-Implémenter l'authentification administrateur (endpoints `POST /api/v1/admin/login`, middleware de session/protection des routes) sans développer les interfaces d'administration ni connecter le frontend.
+Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id` et création de notes internes) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.

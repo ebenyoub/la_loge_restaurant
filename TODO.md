@@ -56,12 +56,12 @@
 - [ ] Examiner l'alerte `npm audit --omit=dev` liée à la CLI Prisma 7 avant un déploiement ; ne pas appliquer de downgrade majeur sans décision technique.
 
 - [x] Créer les contrôleurs, validateurs et routes Express pour les endpoints publics `POST /api/v1/reservations` et `POST /api/v1/contact-messages` avec validation stricte selon les contrats d'API, sans persistance réelle ni envoi d'e-mails.
-
 - [x] Initialiser la base de données locale MySQL, exécuter la première migration Prisma et connecter les endpoints `POST /api/v1/reservations` et `POST /api/v1/contact-messages` pour persister réellement les demandes en base (sans envoi d'e-mails réels).
+- [x] Implémenter l'authentification administrateur (endpoints `POST /api/v1/admin/login`, middleware de session/protection des routes) sans développer les interfaces d'administration ni connecter le frontend.
 
 ## Prochaine tâche proposée — à valider
 
-- [ ] Implémenter l'authentification administrateur (endpoints `POST /api/v1/admin/login`, middleware de session/protection des routes) sans développer les interfaces d'administration ni connecter le frontend.
+- [ ] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id` et création de notes internes) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
 
 ## Après le MVP
 
