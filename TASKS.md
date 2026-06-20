@@ -10,7 +10,7 @@
 
 ## Tâche en cours
 
-Développer la page Contact MVP statique.
+Aucune — la page Contact MVP statique est terminée et validée.
 
 ## Règles Codex
 
@@ -48,4 +48,4 @@ Avant toute intervention, Codex doit :
 
 ## Prochaine tâche
 
-Développer la page Contact MVP statique.
+À définir après validation de cette livraison.

@@ -23,7 +23,7 @@
 ## Pilotage du projet
 
 - [ ] Utiliser `TASKS.md` pour piloter les prochaines tâches avec Codex.
-- [ ] Prochaine tâche : développer la page Contact MVP statique.
+- [x] Développer la page Contact MVP statique.
 
 ## À valider avec le client avant conception/développement
 
