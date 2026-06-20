@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #1d1d1b;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.mobile-navigation,
+.mobile-action-bar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .desktop-navigation {
+    display: none;
+  }
+
+  .mobile-navigation {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .mobile-action-bar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  body {
+    padding-bottom: 3rem;
+  }
+}
