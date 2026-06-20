@@ -29,9 +29,11 @@
 - [ ] Préparer le plan de recette fonctionnelle, mobile, e-mail, sécurité, RGPD, SEO et accessibilité.
 - [ ] Examiner l'alerte `npm audit --omit=dev` liée à la CLI Prisma 7 avant un déploiement ; ne pas appliquer de downgrade majeur sans décision technique.
 
+- [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
+
 ## Prochaine tâche proposée — à valider
 
-- [ ] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id` et création de notes internes) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
+- [ ] Implémenter les routes d'administration des contenus et de la carte (`GET/PATCH /api/v1/admin/settings` pour les réglages, et gestion CRUD des tables `MenuCategory` et `MenuItem`) protégées par session admin/rôle, sans développer le frontend.
 
 ## Après le MVP
 

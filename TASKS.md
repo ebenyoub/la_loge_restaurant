@@ -90,6 +90,8 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 
 ---
 
+* [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
+
 ## Prochaine tâche proposée
 
-Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations` pour lister, `GET /api/v1/admin/reservations/:id` pour consulter, `PATCH /api/v1/admin/reservations/:id` pour modifier le statut, et création de notes internes) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
+Implémenter les routes d'administration des contenus et de la carte (`GET/PATCH /api/v1/admin/settings` pour les réglages, et gestion CRUD des tables `MenuCategory` et `MenuItem`) protégées par session admin/rôle, sans développer le frontend.
