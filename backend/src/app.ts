@@ -4,6 +4,9 @@ import { reservationsRouter } from "./routes/reservations.routes.js";
 import { contactMessagesRouter } from "./routes/contact-messages.routes.js";
 import { authRouter } from "./routes/auth.routes.js";
 import { adminReservationsRouter } from "./routes/admin-reservations.routes.js";
+import { adminSettingsRouter } from "./routes/admin-settings.routes.js";
+import { adminCategoriesRouter } from "./routes/admin-categories.routes.js";
+import { adminItemsRouter } from "./routes/admin-items.routes.js";
 import { requestIdMiddleware } from "./middlewares/request-id.middleware.js";
 import { errorHandlerMiddleware } from "./middlewares/error.middleware.js";
 
@@ -19,5 +22,8 @@ app.use(reservationsRouter);
 app.use(contactMessagesRouter);
 app.use(authRouter);
 app.use(adminReservationsRouter);
+app.use(adminSettingsRouter);
+app.use(adminCategoriesRouter);
+app.use(adminItemsRouter);
 
 app.use(errorHandlerMiddleware);

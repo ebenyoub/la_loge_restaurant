@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 
-export function requireRole(role: string) {
+export function requireRole(roles: string | string[]) {
+  const rolesArray = Array.isArray(roles) ? roles : [roles];
   return (req: Request, _res: Response, next: NextFunction) => {
     const admin = (req as any).admin;
 
@@ -12,7 +13,7 @@ export function requireRole(role: string) {
       });
     }
 
-    if (admin.role !== role) {
+    if (!rolesArray.includes(admin.role)) {
       return next({
         status: 403,
         code: "FORBIDDEN",
