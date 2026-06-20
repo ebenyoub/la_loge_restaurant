@@ -32,10 +32,11 @@
 - [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
 - [x] Implémenter les routes d'administration des messages de contact (`GET /api/v1/admin/contact-messages`, `GET /api/v1/admin/contact-messages/:id` et `PATCH /api/v1/admin/contact-messages/:id/status`) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
 - [x] Mettre en place une stratégie de tests backend (Vitest + Supertest) avec couverture de base sur les endpoints publics, auth et routes protégées.
+- [x] Liaison des formulaires publics frontend et backend (connecter les formulaires de `/reservation` et `/contact` aux routes d'API correspondantes).
 
 ## Prochaine tâche proposée — à valider
 
-- [ ] Liaison des formulaires publics frontend et backend (connecter les formulaires de `/reservation` et `/contact` aux routes d'API correspondantes).
+- [ ] Implémenter la page de connexion de l'administration frontend `/admin/login` et stocker de manière sécurisée le jeton JWT.
 
 ## Après le MVP
 

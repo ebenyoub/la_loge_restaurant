@@ -1,13 +1,13 @@
 # État du projet — La Loge Bar & Food
 
 **Dernière mise à jour :** 20 juin 2026  
-**Phase :** Socle technique, base de données et APIs publiques du MVP opérationnels. Administration et intégration front non démarrés.
+**Phase :** Socle technique, base de données, APIs publiques et intégration formulaires MVP opérationnels. Administration non démarrée.
 
 ## 1. État réel actuel du projet
 
 ### Front-end public (Next.js & CSS Modules)
 - **Terminé (MVP public statique)** : Les 5 pages publiques sont prêtes, performantes et structurées (Accueil, Carte, Réservation, Contact/Accès, Mentions légales).
-- **Non connecté** : Le frontend n'est pas encore relié aux APIs du backend pour la soumission des formulaires.
+- **Connecté** : Les formulaires publics de réservation (`/reservation`) et de contact (`/contact`) sont reliés aux APIs du backend et fonctionnels.
 
 ### Backend Express (TypeScript & Express 5)
 - **Opérationnel** : Serveur Express configuré avec injection de `requestId`, logs épurés et gestionnaire d'erreurs global sans fuite technique vers le client.
@@ -53,7 +53,7 @@
 
 - Codex lit `TASKS.md` avant chaque tâche et traite une seule tâche à la fois.
 - `npm run lint` et `npm run build` sont obligatoires avant toute livraison.
-- Le commit est créé avec `scripts/checkpoint.sh "<message>"`, après vérification des changements avec `scripts/review-state.sh`.
+- The commit est créé avec `scripts/checkpoint.sh "<message>"`, après vérification des changements avec `scripts/review-state.sh`.
 
 ## 5. Bloqueurs avant le développement
 1. Informations publiques et légales exactes : adresse, horaires, coordonnées, identité juridique.
@@ -65,4 +65,4 @@
 
 ## 6. Prochaine étape proposée — validation humaine requise
 
-Liaison des formulaires publics frontend et backend (connecter les formulaires de `/reservation` et `/contact` aux routes d'API correspondantes).
+Implémenter la page de connexion de l'administration frontend `/admin/login` et stocker de manière sécurisée le jeton JWT.

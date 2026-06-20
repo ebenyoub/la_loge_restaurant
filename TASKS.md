@@ -2,7 +2,7 @@
 
 ## Tâche en cours
 
-Aucune — la stratégie de tests backend (Vitest + Supertest) est en place avec les premiers tests automatisés passants.
+Aucune — les formulaires publics de réservation et de contact sont connectés au backend Express.
 
 ---
 
@@ -68,8 +68,8 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 * [x] Périmètre respecté
 * [x] Lint OK
 * [x] Build OK
-* [x] Responsive vérifié (N/A pas de frontend)
-* [x] Accessibilité vérifiée (N/A pas de frontend)
+* [x] Responsive vérifié
+* [x] Accessibilité vérifiée
 * [x] review-state.sh exécuté
 * [x] Documentation mise à jour
 
@@ -90,9 +90,10 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 * [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
 * [x] Implémenter les routes d'administration des messages de contact (`GET /api/v1/admin/contact-messages`, `GET /api/v1/admin/contact-messages/:id` et `PATCH /api/v1/admin/contact-messages/:id/status`) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
 * [x] Mettre en place une stratégie de tests backend en configurant Vitest et Supertest et en créant les premiers tests unitaires/d'intégration.
+* [x] Connecter les formulaires publics de réservation (`/reservation`) et de contact (`/contact`) au backend Express.
 
 ---
 
 ## Prochaine tâche proposée
 
-Liaison des formulaires publics frontend et backend (connecter les formulaires de `/reservation` et `/contact` aux routes d'API correspondantes).
+Implémenter la page de connexion de l'administration frontend `/admin/login` et stocker de manière sécurisée le jeton JWT.
