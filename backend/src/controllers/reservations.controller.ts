@@ -1,16 +1,49 @@
 import type { Request, Response, NextFunction } from "express";
-import { randomUUID } from "crypto";
+import { prisma } from "../lib/prisma.js";
 
-export function createReservation(req: Request, res: Response, next: NextFunction) {
+export async function createReservation(req: Request, res: Response, next: NextFunction) {
   try {
-    const { requestedDate, requestedTime, guestCount } = req.body;
-    const opaqueId = randomUUID();
+    const {
+      firstName,
+      lastName,
+      phone,
+      email,
+      requestedDate,
+      requestedTime,
+      guestCount,
+      occasion,
+      message
+    } = req.body;
+
     const requestId = (req as any).requestId;
+
+    // Create the reservation and its initial status history entry
+    const reservation = await prisma.reservation.create({
+      data: {
+        firstName,
+        lastName,
+        phone,
+        email,
+        requestedDate: new Date(requestedDate),
+        requestedTime,
+        guestCount,
+        occasion,
+        message,
+        consentAcceptedAt: new Date(),
+        consentVersion: "v1",
+        retentionExpiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000 * 2), // 2 years retention
+        statusHistories: {
+          create: {
+            nextStatus: "nouvelle"
+          }
+        }
+      }
+    });
 
     res.status(201).json({
       data: {
-        id: opaqueId,
-        status: "nouvelle",
+        id: reservation.id,
+        status: reservation.status,
         requestedDate,
         requestedTime,
         guestCount,
