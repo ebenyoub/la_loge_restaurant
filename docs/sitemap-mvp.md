@@ -91,11 +91,11 @@ Les pages Événements privés, Galerie, Avis clients et le statut dynamique ouv
 [Logo → /]                                      [Menu]
 
 Menu : Carte · Contact
-Barre basse fixe : [Demander une réservation → /reservation] [Appeler → tel:]
+Barre basse fixe : [Demander une réservation → /reservation]
 ```
 
 - La barre basse est présente sur les pages commerciales (`/`, `/carte`, `/reservation`, `/contact`) ; elle n'est pas nécessaire sur `/mentions-legales`.
-- Le bouton d'appel est une action directe, pas une route supplémentaire.
+- L'action d'appel est ajoutée seulement après validation du numéro par le client.
 - Le CTA réservation ouvre toujours `/reservation` : il ne promet pas de disponibilité immédiate.
 
 ### Footer

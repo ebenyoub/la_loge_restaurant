@@ -36,7 +36,7 @@ body {
     justify-content: space-around;
   }
 
-  body {
+  body:has(.mobile-action-bar) {
     padding-bottom: 3rem;
   }
 }

@@ -15,7 +15,7 @@
 
 - Header visible sur toutes les pages publiques.
 - Le CTA principal ouvre la page **Réservation** et emploie partout le libellé « Demander une réservation », avec la précision visible que la demande est à confirmer.
-- Sur mobile : menu compact et barre basse fixe avec `Demander une réservation` et, selon l'espace, `Appeler` ou `Itinéraire`.
+- Sur mobile : menu compact et barre basse fixe avec `Demander une réservation`. Les actions d'appel ou d'itinéraire sont ajoutées après validation des coordonnées client.
 
 ### Footer global
 

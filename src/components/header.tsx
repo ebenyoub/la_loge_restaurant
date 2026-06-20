@@ -1,6 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Header() {
+  const pathname = usePathname();
+  const showMobileActionBar = ["/", "/carte", "/reservation", "/contact"].includes(
+    pathname,
+  );
+
   return (
     <header>
       <nav className="desktop-navigation" aria-label="Navigation principale">
@@ -31,15 +39,11 @@ export function Header() {
         </details>
       </nav>
 
-      <nav className="mobile-action-bar" aria-label="Actions mobiles">
-        <Link href="/reservation">Demander une réservation</Link>
-        <a
-          href="tel:+33685402637"
-          aria-label="Appeler le restaurant — numéro provisoire à confirmer"
-        >
-          Appeler
-        </a>
-      </nav>
+      {showMobileActionBar ? (
+        <nav className="mobile-action-bar" aria-label="Actions mobiles">
+          <Link href="/reservation">Demander une réservation</Link>
+        </nav>
+      ) : null}
     </header>
   );
 }
