@@ -24,6 +24,7 @@
 
 - [ ] Utiliser `TASKS.md` pour piloter les prochaines tâches avec Codex.
 - [x] Développer la page Contact MVP statique.
+- [x] Développer la page Mentions légales MVP statique.
 
 ## À valider avec le client avant conception/développement
 

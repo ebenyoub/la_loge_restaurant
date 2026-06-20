@@ -4,13 +4,14 @@
 
 - Socle Next.js, TypeScript et Tailwind CSS initialisé.
 - Les pages Accueil, Carte et Réservation disposent d'une première version statique.
-- Les pages Contact et Mentions légales restent à développer dans le périmètre public MVP.
+- Les cinq pages publiques MVP disposent d'une première version statique.
 - Les CSS Modules sont conservés jusqu'à la fin du MVP ; aucun refactor Tailwind n'est en cours.
 - Aucun backend, base de données, administration ou envoi de formulaire n'est développé.
 
+
 ## Tâche en cours
 
-Aucune — la page Contact MVP statique est terminée et validée.
+Aucune — la page Mentions légales MVP statique est terminée et validée.
 
 ## Règles Codex
 
@@ -48,4 +49,7 @@ Avant toute intervention, Codex doit :
 
 ## Prochaine tâche
 
-À définir après validation de cette livraison.
+Après validation de la page Mentions légales :
+- définir le schéma de données MVP dans `docs/database-schema.md`
+- ne pas encore installer Prisma
+- ne pas encore créer de base de données
