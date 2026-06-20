@@ -5,12 +5,12 @@
 
 .section {
   padding: clamp(2.5rem, 6vw, 5rem) 0;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .introduction {
   padding-inline: clamp(1.25rem, 4vw, 3rem);
-  background: #f5f1ea;
+  background: var(--color-surface);
 }
 
 .notice,
@@ -21,10 +21,12 @@
 }
 
 .notice {
+  color: var(--color-gold);
   font-weight: 700;
 }
 
 .eyebrow {
+  color: var(--color-gold);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -32,6 +34,8 @@
 .introduction h1,
 .section h2,
 .itemList h3 {
+  color: var(--color-foreground);
+  font-family: var(--font-display);
   margin-top: 0;
 }
 
@@ -43,6 +47,7 @@
 
 .lead {
   max-width: 60ch;
+  color: var(--color-foreground);
   font-size: 1.125rem;
   line-height: 1.6;
 }
@@ -52,7 +57,7 @@
   flex-wrap: wrap;
   gap: 0.75rem;
   padding: 1.25rem 0;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .categoryNavigation a,
@@ -60,8 +65,19 @@
 .secondaryAction {
   display: inline-block;
   padding: 0.75rem 1rem;
-  border: 1px solid currentcolor;
+  border: 1px solid var(--color-gold);
   text-decoration: none;
+}
+
+.categoryNavigation a,
+.secondaryAction {
+  color: var(--color-gold);
+}
+
+.categoryNavigation a:hover,
+.secondaryAction:hover {
+  background: var(--color-gold);
+  color: var(--color-background);
 }
 
 .itemList {
@@ -74,7 +90,8 @@
 
 .itemList li {
   padding: 1rem;
-  border: 1px solid #d9d9d9;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .itemList h3 {
@@ -84,6 +101,7 @@
 .itemList p,
 .allergenSection p,
 .finalCta p {
+  color: var(--color-muted);
   margin-bottom: 0;
 }
 
@@ -94,18 +112,25 @@
 }
 
 .primaryAction {
-  background: #1d1d1b;
-  color: #ffffff;
+  background: var(--color-gold);
+  color: var(--color-background);
+}
+
+.primaryAction:hover {
+  background: var(--color-gold-light);
+  color: var(--color-background);
 }
 
 .finalCta {
   border-bottom: 0;
+  background: var(--color-surface-raised);
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
 }
 
 .categoryNavigation a:focus-visible,
 .primaryAction:focus-visible,
 .secondaryAction:focus-visible {
-  outline: 3px solid #005fcc;
+  outline: 3px solid var(--color-gold-light);
   outline-offset: 3px;
 }
 

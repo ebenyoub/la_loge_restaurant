@@ -10,10 +10,13 @@ export function Header() {
   );
 
   return (
-    <header>
-      <nav className="desktop-navigation" aria-label="Navigation principale">
-        <Link href="/">La Loge Bar &amp; Food</Link>
-        <ul>
+    <header className="site-header">
+      <nav className="site-navigation desktop-navigation" aria-label="Navigation principale">
+        <Link className="site-brand" href="/">
+          <span>La Loge</span>
+          <span>Bar &amp; Food</span>
+        </Link>
+        <ul className="site-navigation-links">
           <li>
             <Link href="/carte">Carte</Link>
           </li>
@@ -21,11 +24,16 @@ export function Header() {
             <Link href="/contact">Contact</Link>
           </li>
         </ul>
-        <Link href="/reservation">Demander une réservation</Link>
+        <Link className="site-reservation-action" href="/reservation">
+          Demander une réservation
+        </Link>
       </nav>
 
-      <nav className="mobile-navigation" aria-label="Navigation principale mobile">
-        <Link href="/">La Loge Bar &amp; Food</Link>
+      <nav className="site-navigation mobile-navigation" aria-label="Navigation principale mobile">
+        <Link className="site-brand" href="/">
+          <span>La Loge</span>
+          <span>Bar &amp; Food</span>
+        </Link>
         <details>
           <summary>Menu</summary>
           <ul>
@@ -41,7 +49,9 @@ export function Header() {
 
       {showMobileActionBar ? (
         <nav className="mobile-action-bar" aria-label="Actions mobiles">
-          <Link href="/reservation">Demander une réservation</Link>
+          <Link className="site-reservation-action" href="/reservation">
+            Demander une réservation
+          </Link>
         </nav>
       ) : null}
     </header>

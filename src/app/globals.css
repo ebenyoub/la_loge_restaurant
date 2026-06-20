@@ -1,20 +1,159 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #1d1d1b;
+  --color-background: #0b0b09;
+  --color-surface: #141412;
+  --color-surface-raised: #1e1e1b;
+  --color-foreground: #f0e8d8;
+  --color-muted: #8a8070;
+  --color-gold: #c9a96e;
+  --color-gold-light: #dbbe86;
+  --color-border: rgb(201 169 110 / 18%);
+  --font-display: "Bodoni Moda", Georgia, serif;
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
-  background: var(--background);
-  color: var(--foreground);
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+}
+
+main {
+  flex: 1;
+}
+
+a {
+  color: var(--color-gold);
+}
+
+a:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--color-gold-light);
+  outline-offset: 4px;
 }
 
 .mobile-navigation,
 .mobile-action-bar {
   display: none;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--color-border);
+  background: rgb(11 11 9 / 96%);
+  backdrop-filter: blur(12px);
+}
+
+.site-navigation {
+  width: min(100% - 2rem, 72rem);
+  min-height: 4.5rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-brand {
+  display: inline-flex;
+  flex-direction: column;
+  color: var(--color-foreground);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-style: italic;
+  line-height: 0.9;
+  text-decoration: none;
+}
+
+.site-brand span:last-child {
+  margin-top: 0.25rem;
+  color: var(--color-gold);
+  font-family: var(--font-body);
+  font-size: 0.55rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.site-navigation-links,
+.site-footer-links {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.site-navigation-links a,
+.site-footer-links a {
+  color: var(--color-foreground);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.site-navigation-links a:hover,
+.site-footer-links a:hover,
+.site-brand:hover,
+.site-footer-brand:hover {
+  color: var(--color-gold);
+}
+
+.site-reservation-action {
+  display: inline-block;
+  padding: 0.75rem 1rem;
+  background: var(--color-gold);
+  color: var(--color-background);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.site-reservation-action:hover {
+  background: var(--color-gold-light);
+  color: var(--color-background);
+}
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  background: #080807;
+}
+
+.site-footer-inner {
+  width: min(100% - 2rem, 72rem);
+  padding: 2rem 0;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.site-footer-brand {
+  color: var(--color-foreground);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-style: italic;
+  text-decoration: none;
 }
 
 @media (max-width: 767px) {
@@ -24,7 +163,41 @@ body {
 
   .mobile-navigation {
     display: flex;
-    justify-content: space-between;
+  }
+
+  .mobile-navigation details {
+    position: relative;
+  }
+
+  .mobile-navigation summary {
+    color: var(--color-foreground);
+    cursor: pointer;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .mobile-navigation details ul {
+    position: absolute;
+    right: 0;
+    width: max-content;
+    padding: 0.75rem;
+    margin: 0.75rem 0 0;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    list-style: none;
+  }
+
+  .mobile-navigation details li + li {
+    margin-top: 0.75rem;
+  }
+
+  .mobile-navigation details a {
+    color: var(--color-foreground);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
   }
 
   .mobile-action-bar {
@@ -33,10 +206,23 @@ body {
     bottom: 0;
     left: 0;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
   }
 
   body:has(.mobile-action-bar) {
     padding-bottom: 3rem;
+  }
+
+  .site-footer-inner,
+  .site-footer-links {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .site-footer-links {
+    gap: 0.75rem;
   }
 }
