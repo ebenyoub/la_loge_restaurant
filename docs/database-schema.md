@@ -364,4 +364,4 @@ Une contrainte applicative doit interdire toute association publique d'un média
 
 ## 12. Étape suivante proposée
 
-Après validation humaine de l'architecture backend : formaliser les contrats d'API Réservation et Contact (requêtes, réponses, erreurs et validations), sans installer Prisma, créer de serveur Express ni de base de données.
+Les contrats d'API Réservation et Contact sont documentés dans `docs/api-contracts.md`, les prérequis dans `docs/backend-prerequisites.md` et le socle backend est créé dans `backend/`. La prochaine tâche traduit ce document en modèles Prisma et génère le client, sans migration, base de données ni branchement des formulaires publics.

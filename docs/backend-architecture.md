@@ -318,4 +318,4 @@ Le flux d'accusé de réception au client est une décision à prendre : il est 
 
 ## 11. Prochaine étape proposée
 
-Après validation de cette architecture : formaliser les contrats d'API (schémas de requêtes et réponses) et les règles exactes de validation pour Réservation et Contact, sans créer encore le serveur Express ni installer Prisma.
+Les contrats d'API Réservation et Contact sont documentés dans `docs/api-contracts.md` et les prérequis d'initialisation dans `docs/backend-prerequisites.md`. Le socle Express, TypeScript et Prisma/MySQL avec la route technique `/health` est créé dans `backend/`. La prochaine tâche traduit le schéma de données en modèles Prisma, sans migration, base de données ni branchement des formulaires publics.

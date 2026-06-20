@@ -27,6 +27,9 @@
 - [x] Développer la page Mentions légales MVP statique.
 - [x] Documenter le schéma de données MVP dans `docs/database-schema.md`, sans implémentation backend.
 - [x] Documenter l'architecture backend MVC Express et les flux métier dans `docs/backend-architecture.md`, sans implémentation backend.
+- [x] Formaliser les contrats d'API Réservation et Contact dans `docs/api-contracts.md`, sans implémentation backend.
+- [x] Préparer les prérequis de validation backend dans `docs/backend-prerequisites.md`, sans implémentation backend.
+- [x] Initialiser le socle backend Express, TypeScript et Prisma/MySQL avec `/health`, sans logique métier ni base de données.
 
 ## À valider avec le client avant conception/développement
 
@@ -50,10 +53,11 @@
 - [ ] Définir les règles d'alerte de charge, y compris les données prises en compte selon chaque statut.
 - [ ] Définir la politique d'authentification et de réinitialisation de mot de passe admin.
 - [ ] Préparer le plan de recette fonctionnelle, mobile, e-mail, sécurité, RGPD, SEO et accessibilité.
+- [ ] Examiner l'alerte `npm audit --omit=dev` liée à la CLI Prisma 7 avant un déploiement ; ne pas appliquer de downgrade majeur sans décision technique.
 
 ## Prochaine tâche proposée — à valider
 
-- [ ] Formaliser les contrats d'API Réservation et Contact : requêtes, réponses, erreurs et validations ; ne pas créer le serveur Express ni installer Prisma avant validation.
+- [ ] Traduire `docs/database-schema.md` en modèles Prisma, générer le client et valider le schéma sans créer de migration ni de base de données.
 
 ## Après le MVP
 

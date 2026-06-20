@@ -19,21 +19,24 @@
 * Lint OK
 * Build OK
 * Schéma de données et architecture backend MVP documentés
+* Contrats d'API Réservation et Contact documentés
+* Prérequis de validation backend documentés
+* Socle backend Express, TypeScript et Prisma/MySQL initialisé
 
 ### Non développé
 
-* Backend
 * Base de données
-* Prisma
 * Administration
 * Envoi d'e-mails
 * Réservation fonctionnelle
+* Routes métier Réservation et Contact
+* Modèles Prisma et migrations
 
 ---
 
 ## Tâche en cours
 
-Aucune — l'architecture backend MVP et les flux métier sont documentés et en attente de validation humaine.
+Aucune — le socle backend démarre et répond sur `/health`. Les modèles, migrations, routes métier, authentification, e-mails et formulaires restent à implémenter.
 
 ---
 
@@ -114,7 +117,10 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 
 * [x] Créer le schéma de données MVP dans `docs/database-schema.md`, sans ORM, base de données, API ni modification des pages.
 * [x] Documenter l'architecture backend MVC Express et les flux Réservation / Contact dans `docs/backend-architecture.md`, sans installer Prisma, créer de base, API, serveur ni modifier les pages.
+* [x] Formaliser les contrats d'API Réservation et Contact dans `docs/api-contracts.md`, sans créer le serveur Express, installer Prisma ni modifier les pages.
+* [x] Préparer la checklist de validation backend dans `docs/backend-prerequisites.md`, sans installer Prisma, créer Express, base de données ou API.
+* [x] Initialiser le socle backend Express, TypeScript et Prisma/MySQL avec `/health`, sans base de données, migration, logique métier, authentification, e-mail ni formulaire.
 
 ## Prochaine tâche proposée
 
-Après validation humaine de l'architecture backend : formaliser les contrats d'API des flux Réservation et Contact (schémas de requêtes, réponses, erreurs et validations), sans créer le serveur Express ni installer Prisma.
+Traduire `docs/database-schema.md` en modèles Prisma, générer le client et valider le schéma sans créer de migration ni de base de données.

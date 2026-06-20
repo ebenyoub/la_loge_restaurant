@@ -1,8 +1,8 @@
 # État du projet — La Loge Bar & Food
 
 **Dernière mise à jour :** 20 juin 2026  
-**Phase :** vitrine statique MVP créée ; schéma de données et architecture backend documentés ; développement backend non démarré
-**Développement fonctionnel :** non démarré  
+**Phase :** vitrine statique MVP créée ; socle backend initialisé ; modèles et logique métier non démarrés
+**Développement fonctionnel :** non démarré
 **Initialisation du projet :** terminée — Next.js, TypeScript et Tailwind CSS
 
 ## Objectif MVP verrouillé
@@ -22,8 +22,11 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 | Administration contenus | Validé | Infos générales, menu, images liées aux contenus MVP, SEO et légal ; interface structurée. |
 | Mise en page | Validé | Sections limitées activables/désactivables et éventuellement réordonnables ; pas de page builder. |
 | Architecture CSS | Validé | Les CSS Modules sont conservés jusqu'à la fin du MVP public. Tailwind reste configuré pour le socle technique ; aucune migration des styles existants n'est engagée avant le refactor UI après MVP. |
-| Schéma de données MVP | Documenté | `docs/database-schema.md` définit les données de réservation, contact, contenus, carte, médias, capacités et administration. Aucun SGBD, ORM, schéma exécutable, API ou base de données n'est créé. |
-| Architecture backend MVP | Documenté | MySQL, Prisma, Express et MVC sont validés dans `decisions.md`. `docs/backend-architecture.md` définit les couches, routes cibles, validations, erreurs et flux Réservation / Contact ; aucune dépendance, API, serveur ou migration n'est créée. |
+| Schéma de données MVP | Documenté | `docs/database-schema.md` définit les données de réservation, contact, contenus, carte, médias, capacités et administration. Aucun modèle métier Prisma, migration ou base de données n'est créé. |
+| Architecture backend MVP | Initialisé | MySQL, Prisma, Express et MVC sont validés dans `decisions.md`. Le dossier `backend/` contient le socle TypeScript, Express, Prisma et une route technique `/health`, sans route métier ni connexion à une base. |
+| Contrats d'API MVP | Documenté | `docs/api-contracts.md` définit les requêtes, réponses, validations, statuts HTTP et règles RGPD des flux Réservation et Contact ; aucun endpoint métier n'est créé. |
+| Prérequis backend MVP | Documenté | `docs/backend-prerequisites.md` liste les décisions critiques de secrets, hébergement, MySQL, authentification, e-mail, RGPD, risques et validation avant installation. Aucun secret ou fichier `.env` réel n'est créé. |
+| Sécurité dépendances backend | À surveiller | `npm audit --omit=dev` signale trois vulnérabilités modérées transitives liées à la CLI Prisma 7. Aucun correctif automatique ni downgrade majeur n'est appliqué ; revue requise avant déploiement. |
 | Sitemap et navigation MVP | Validé | Le squelette des cinq routes publiques, le layout commun, le header temporaire et le footer temporaire sont créés et validés ; le détail fonctionnel reste défini dans `docs/sitemap-mvp.md`. |
 | Accueil MVP | En cours | Les sections statiques Hero, Présentation, extrait de carte, Accès express et CTA final sont créées avec des contenus à valider ; aucune image, formulaire ou donnée métier n'est intégrée. |
 | Carte MVP | En cours | Les sections statiques Introduction, catégories, plats provisoires, allergènes et CTA final sont créées avec des contenus à valider ; aucune image, formulaire ou donnée métier n'est intégrée. |
@@ -58,4 +61,4 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 
 ## Prochaine étape proposée — validation humaine requise
 
-Formaliser les contrats d'API des flux Réservation et Contact : schémas de requêtes, réponses, erreurs et validations. Ne pas créer de serveur Express, installer Prisma, créer de base de données, API ou fonctionnalité métier avant validation explicite.
+Traduire `docs/database-schema.md` en modèles Prisma, générer le client et valider le schéma sans créer de migration ni de base de données. Les formulaires publics restent non connectés.

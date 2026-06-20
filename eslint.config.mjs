@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Extracted Figma Make bundle: separate Vite project, not application source.
     "figma-make/**",
+    // Express backend: separate TypeScript project with its own configuration.
+    "backend/**",
   ]),
 ]);
 
