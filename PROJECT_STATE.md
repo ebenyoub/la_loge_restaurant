@@ -13,12 +13,13 @@
 ### Backend Express (TypeScript & Express 5)
 - **Opérationnel** : Serveur Express configuré avec injection de `requestId`, logs épurés et gestionnaire d'erreurs global sans fuite technique vers le client.
 - **Prisma & MySQL** : Modèles Prisma complets traduits du schéma logique, base locale MySQL (`la_loge_db`) connectée, et migration initiale appliquée avec succès.
-- **Endpoints publics** : Les routes `POST /api/v1/reservations` (avec écriture dans `Reservation` et historique `ReservationStatusHistory` en transaction) et `POST /api/v1/contact-messages` sont actives avec une validation stricte des corps de requêtes (formats, type, timezone et blocage des champs inconnus).
+- **Endpoints publics** : Les routes `POST /api/v1/reservations` et `POST /api/v1/contact-messages` sont actives avec validation stricte et routage asynchrone des e-mails.
 - **Authentification Admin** : Système d'authentification robuste implémenté (`POST /api/v1/admin/login` et middleware de protection de route `authMiddleware` via JWT et hashage `bcrypt`).
 - **Sécurité JWT** : `JWT_SECRET` obligatoire au démarrage, devant faire au moins 32 caractères de long (échec automatique du serveur en cas d'absence ou clé trop faible).
+- **E-mails transactionnels** : Intégration complète de Nodemailer (SMTP Brevo) configurée de manière asynchrone et sécurisée (notification manager et accusé réception client).
 
 ### Éléments non développés / Restants du MVP
-- **E-mails transactionnels** : Envoi d'e-mails réels (restaurant/client) non configuré.
+- Aucun (toutes les fonctionnalités P1 requises pour le MVP sont terminées et prêtes).
 
 ## 2. Décisions de portée
 
@@ -66,4 +67,4 @@
 
 ## 6. Prochaine étape proposée — validation humaine requise
 
-Implémenter l'envoi d'e-mails transactionnels côté backend (notifications de nouvelle demande pour le gérant et accusé de réception pour le client).
+Préparer le déploiement en production et la validation du MVP (secrets de production, base MySQL managée, domaine mail).

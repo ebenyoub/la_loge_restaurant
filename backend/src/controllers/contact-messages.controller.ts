@@ -1,5 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prisma.js";
+import {
+  sendContactNotificationToManager,
+  sendContactConfirmationToClient
+} from "../services/mail.service.js";
 
 export async function createContactMessage(req: Request, res: Response, next: NextFunction) {
   try {
@@ -24,6 +28,20 @@ export async function createContactMessage(req: Request, res: Response, next: Ne
         consentVersion: "v1",
         retentionExpiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000 * 2) // 2 years retention
       }
+    });
+
+    // Trigger emails asynchronously (non-blocking, silent errors)
+    sendContactNotificationToManager({
+      name,
+      email,
+      phone,
+      subject,
+      message
+    });
+    sendContactConfirmationToClient({
+      name,
+      email,
+      subject
     });
 
     res.status(201).json({

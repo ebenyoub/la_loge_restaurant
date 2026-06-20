@@ -41,9 +41,11 @@
 
 - [x] Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend with E2E tests.
 
+- [x] Implémenter l'envoi d'e-mails transactionnels côté backend (notifications de nouvelle demande pour le gérant et accusé de réception pour le client) avec Nodemailer/SMTP.
+
 ## Prochaine tâche proposée — à valider
 
-- [ ] Implémenter l'envoi d'e-mails transactionnels côté backend (notifications de nouvelle demande pour le gérant et accusé de réception pour le client).
+- [ ] Préparer le déploiement en production et la validation du MVP (secrets de production, base MySQL managée, domaine mail).
 
 ## Après le MVP
 

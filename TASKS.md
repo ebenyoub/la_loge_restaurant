@@ -98,9 +98,10 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 
 * [x] Créer l'interface d'administration Menu (gestion des catégories et des plats) côté frontend avec tests Playwright correspondants.
 * [x] Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend avec tests Playwright correspondants.
+* [x] Implémenter l'envoi d'e-mails transactionnels (Nodemailer/SMTP Brevo) côté backend pour les réservations et messages de contact (notifications gérant, confirmations client).
 
 ---
 
 ## Prochaine tâche proposée
 
-Implémenter l'envoi d'e-mails transactionnels côté backend (notifications de nouvelle demande de réservation pour le gérant et accusé de réception pour le client) et configurer le service d'envoi.
+Préparer le déploiement en production et la validation finale du MVP (configuration des secrets de production, migration vers une base MySQL managée, et validation réelle du relais SMTP avec le nom de domaine).

@@ -1,5 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prisma.js";
+import {
+  sendReservationNotificationToManager,
+  sendReservationConfirmationToClient
+} from "../services/mail.service.js";
 
 export async function createReservation(req: Request, res: Response, next: NextFunction) {
   try {
@@ -38,6 +42,27 @@ export async function createReservation(req: Request, res: Response, next: NextF
           }
         }
       }
+    });
+
+    // Trigger emails asynchronously (non-blocking, silent errors)
+    sendReservationNotificationToManager({
+      firstName,
+      lastName,
+      phone,
+      email,
+      requestedDate,
+      requestedTime,
+      guestCount,
+      occasion,
+      message
+    });
+    sendReservationConfirmationToClient({
+      firstName,
+      lastName,
+      email,
+      requestedDate,
+      requestedTime,
+      guestCount
     });
 
     res.status(201).json({

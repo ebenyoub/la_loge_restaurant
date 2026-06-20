@@ -1,0 +1,172 @@
+import nodemailer from "nodemailer";
+import { env } from "../config/env.js";
+
+// Lazy-loaded transporter
+let transporter: nodemailer.Transporter | null = null;
+
+function getTransporter(): nodemailer.Transporter {
+  if (!transporter) {
+    transporter = nodemailer.createTransport({
+      host: env.smtpHost,
+      port: env.smtpPort,
+      secure: env.smtpPort === 465, // true for 465, false for other ports
+      auth: {
+        user: env.smtpUser,
+        pass: env.smtpPass,
+      },
+    });
+  }
+  return transporter;
+}
+
+/**
+ * Generic email sending helper that catches and logs errors silently
+ */
+async function sendMailSafe(options: nodemailer.SendMailOptions): Promise<boolean> {
+  // If credentials are not set, log warning and skip
+  if (!env.smtpUser || !env.smtpPass) {
+    console.warn(
+      `[Mail Service] E-mail non envoyé (SMTP_USER ou SMTP_PASS manquant). Sujet: "${options.subject}"`
+    );
+    return false;
+  }
+
+  try {
+    const info = await getTransporter().sendMail({
+      from: env.emailFrom,
+      ...options,
+    });
+    console.log(`[Mail Service] E-mail envoyé avec succès. MessageId: ${info.messageId}`);
+    return true;
+  } catch (error) {
+    console.error(`[Mail Service Error] Échec de l'envoi d'e-mail:`, error);
+    return false;
+  }
+}
+
+// ----------------------------------------------------
+// Reservations
+// ----------------------------------------------------
+
+export function sendReservationNotificationToManager(res: {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  requestedDate: string | Date;
+  requestedTime: string;
+  guestCount: number;
+  occasion?: string | null;
+  message?: string | null;
+}) {
+  const formattedDate = res.requestedDate instanceof Date 
+    ? res.requestedDate.toLocaleDateString("fr-FR")
+    : String(res.requestedDate);
+
+  const html = `
+    <h2>Nouvelle Demande de Réservation</h2>
+    <p>Une nouvelle demande de réservation a été déposée sur le site internet :</p>
+    <ul>
+      <li><strong>Client :</strong> ${res.firstName} ${res.lastName}</li>
+      <li><strong>Téléphone :</strong> ${res.phone}</li>
+      <li><strong>E-mail :</strong> ${res.email}</li>
+      <li><strong>Date &amp; Heure :</strong> Le ${formattedDate} à ${res.requestedTime}</li>
+      <li><strong>Nombre de couverts :</strong> ${res.guestCount} personnes</li>
+      ${res.occasion ? `<li><strong>Occasion :</strong> ${res.occasion}</li>` : ""}
+      ${res.message ? `<li><strong>Message client :</strong> ${res.message}</li>` : ""}
+    </ul>
+    <p>Rendez-vous dans votre espace d'administration pour traiter cette demande.</p>
+  `;
+
+  // Asynchronous call (does not await)
+  sendMailSafe({
+    to: env.restaurantNotificationEmail,
+    subject: `[Nouvelle Réservation] ${res.firstName} ${res.lastName} - ${res.guestCount} pers.`,
+    html,
+    text: `Nouvelle demande de réservation pour ${res.firstName} ${res.lastName} le ${formattedDate} à ${res.requestedTime} (${res.guestCount} personnes).`,
+  });
+}
+
+export function sendReservationConfirmationToClient(res: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  requestedDate: string | Date;
+  requestedTime: string;
+  guestCount: number;
+}) {
+  const formattedDate = res.requestedDate instanceof Date 
+    ? res.requestedDate.toLocaleDateString("fr-FR")
+    : String(res.requestedDate);
+
+  const html = `
+    <h2>Bonjour ${res.firstName},</h2>
+    <p>Nous avons bien reçu votre demande de réservation pour <strong>${res.guestCount} personnes</strong> le <strong>${formattedDate} à ${res.requestedTime}</strong>.</p>
+    <p style="color: #d4af37; font-weight: bold; font-size: 1.1rem;">
+      Important : Cette demande est en cours de traitement et ne constitue pas une réservation confirmée.
+    </p>
+    <p>Notre équipe va vérifier nos disponibilités et vous enverra un e-mail de confirmation très rapidement.</p>
+    <p>À bientôt,<br/>L'équipe de La Loge Bar &amp; Food</p>
+  `;
+
+  sendMailSafe({
+    to: res.email,
+    subject: `Votre demande de réservation - La Loge Bar & Food`,
+    html,
+    text: `Bonjour ${res.firstName}, nous avons bien reçu votre demande de réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime}. Attention, celle-ci est en attente de confirmation. L'équipe de La Loge.`,
+  });
+}
+
+// ----------------------------------------------------
+// Contact Messages
+// ----------------------------------------------------
+
+export function sendContactNotificationToManager(msg: {
+  name: string;
+  email: string;
+  phone?: string | null;
+  subject: string;
+  message: string;
+}) {
+  const html = `
+    <h2>Nouveau Message de Contact</h2>
+    <p>Un message a été envoyé via le formulaire de contact du site internet :</p>
+    <ul>
+      <li><strong>Expéditeur :</strong> ${msg.name}</li>
+      <li><strong>E-mail :</strong> ${msg.email}</li>
+      ${msg.phone ? `<li><strong>Téléphone :</strong> ${msg.phone}</li>` : ""}
+      <li><strong>Sujet :</strong> ${msg.subject}</li>
+    </ul>
+    <p><strong>Contenu du message :</strong></p>
+    <p style="background-color: #f6f8fa; padding: 1rem; border-left: 4px solid #d4af37; font-style: italic;">
+      ${msg.message.replace(/\n/g, "<br/>")}
+    </p>
+  `;
+
+  sendMailSafe({
+    to: env.restaurantNotificationEmail,
+    subject: `[Nouveau Contact] ${msg.subject} - par ${msg.name}`,
+    html,
+    text: `Nouveau message de contact de ${msg.name} (${msg.email}) : ${msg.subject}\n\n${msg.message}`,
+  });
+}
+
+export function sendContactConfirmationToClient(msg: {
+  name: string;
+  email: string;
+  subject: string;
+}) {
+  const html = `
+    <h2>Bonjour ${msg.name},</h2>
+    <p>Merci de nous avoir contactés. Nous avons bien reçu votre message concernant le sujet : <strong>"${msg.subject}"</strong>.</p>
+    <p>Notre équipe va en prendre connaissance et vous répondra dans les meilleurs délais.</p>
+    <p>Cordialement,<br/>L'équipe de La Loge Bar &amp; Food</p>
+  `;
+
+  sendMailSafe({
+    to: msg.email,
+    subject: `Accusé de réception de votre message - La Loge Bar & Food`,
+    html,
+    text: `Bonjour ${msg.name}, nous avons bien reçu votre message concernant "${msg.subject}". Notre équipe vous répondra rapidement. L'équipe de La Loge.`,
+  });
+}
