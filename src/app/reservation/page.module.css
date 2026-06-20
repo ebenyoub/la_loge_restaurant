@@ -1,0 +1,260 @@
+.page {
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+}
+
+.section {
+  padding: clamp(2.5rem, 6vw, 5rem) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.introduction,
+.finalCta {
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+  background: var(--color-surface);
+}
+
+.notice,
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+}
+
+.notice {
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+.eyebrow {
+  color: var(--color-gold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.introduction h1,
+.section h2,
+.fieldGroup legend {
+  margin-top: 0;
+  color: var(--color-foreground);
+  font-family: var(--font-display);
+}
+
+.introduction h1 {
+  margin-bottom: 1rem;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 1;
+}
+
+.lead {
+  max-width: 60ch;
+  color: var(--color-foreground);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.confirmationNotice {
+  max-width: 60ch;
+  margin: 1.5rem 0 0;
+  padding: 1rem;
+  border-left: 3px solid var(--color-gold);
+  background: var(--color-surface-raised);
+  color: var(--color-foreground);
+  line-height: 1.6;
+}
+
+.sectionHeading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 24rem);
+  align-items: end;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.staticMessage,
+.urgentSection > p:not(.notice),
+.finalCta p {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+.staticMessage {
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.formFields {
+  display: grid;
+  gap: 2rem;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  margin: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-raised);
+}
+
+.fieldGroup {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.fieldGroup legend {
+  padding: 0;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.field label,
+.consent label {
+  color: var(--color-foreground);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.field label span,
+.consent span {
+  color: var(--color-muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background: var(--color-background);
+  color: var(--color-muted);
+  font: inherit;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.formFields:disabled {
+  opacity: 1;
+}
+
+.field input:disabled,
+.field select:disabled,
+.field textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.consent input {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.2rem;
+  accent-color: var(--color-gold);
+}
+
+.submitAction,
+.secondaryAction {
+  display: inline-block;
+  width: fit-content;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-gold);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.submitAction {
+  background: var(--color-gold);
+  color: var(--color-background);
+}
+
+.submitAction:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.secondaryAction {
+  color: var(--color-gold);
+}
+
+.secondaryAction:hover {
+  background: var(--color-gold);
+  color: var(--color-background);
+}
+
+.urgentSection {
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+  background: var(--color-surface);
+}
+
+.urgentSection > p:not(.notice),
+.finalCta p {
+  max-width: 60ch;
+  margin-bottom: 1.5rem;
+}
+
+.informationList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+}
+
+.informationList div {
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.informationList dt {
+  margin-bottom: 0.5rem;
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+.informationList dd {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.finalCta {
+  border-bottom: 0;
+  background: var(--color-surface-raised);
+}
+
+.secondaryAction:focus-visible {
+  outline: 3px solid var(--color-gold-light);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .sectionHeading,
+  .fieldGrid,
+  .informationList {
+    grid-template-columns: 1fr;
+  }
+}
