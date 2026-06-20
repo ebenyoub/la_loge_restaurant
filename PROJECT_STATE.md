@@ -22,8 +22,8 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 | Administration contenus | Validé | Infos générales, menu, images liées aux contenus MVP, SEO et légal ; interface structurée. |
 | Mise en page | Validé | Sections limitées activables/désactivables et éventuellement réordonnables ; pas de page builder. |
 | Architecture CSS | Validé | Les CSS Modules sont conservés jusqu'à la fin du MVP public. Tailwind reste configuré pour le socle technique ; aucune migration des styles existants n'est engagée avant le refactor UI après MVP. |
-| Schéma de données MVP | Documenté | `docs/database-schema.md` définit les données de réservation, contact, contenus, carte, médias, capacités et administration. Aucun modèle métier Prisma, migration ou base de données n'est créé. |
-| Architecture backend MVP | Initialisé | MySQL, Prisma, Express et MVC sont validés dans `decisions.md`. Le dossier `backend/` contient le socle TypeScript, Express, Prisma et une route technique `/health`, sans route métier ni connexion à une base. |
+| Schéma de données MVP | Implémenté (Prisma) | Traduit dans `backend/prisma/schema.prisma` et validé via `prisma generate`, sans base de données réelle ni migration. |
+| Architecture backend MVP | Initialisé | MySQL, Prisma, Express et MVC sont validés dans `decisions.md`. Le dossier `backend/` contient le socle TypeScript, Express, Prisma, le schéma de données compilé et une route technique `/health`, sans route métier réelle. |
 | Contrats d'API MVP | Documenté | `docs/api-contracts.md` définit les requêtes, réponses, validations, statuts HTTP et règles RGPD des flux Réservation et Contact ; aucun endpoint métier n'est créé. |
 | Prérequis backend MVP | Documenté | `docs/backend-prerequisites.md` liste les décisions critiques de secrets, hébergement, MySQL, authentification, e-mail, RGPD, risques et validation avant installation. Aucun secret ou fichier `.env` réel n'est créé. |
 | Sécurité dépendances backend | À surveiller | `npm audit --omit=dev` signale trois vulnérabilités modérées transitives liées à la CLI Prisma 7. Aucun correctif automatique ni downgrade majeur n'est appliqué ; revue requise avant déploiement. |
@@ -61,4 +61,4 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 
 ## Prochaine étape proposée — validation humaine requise
 
-Traduire `docs/database-schema.md` en modèles Prisma, générer le client et valider le schéma sans créer de migration ni de base de données. Les formulaires publics restent non connectés.
+Créer les contrôleurs, validateurs et routes Express pour les endpoints publics `POST /api/v1/reservations` et `POST /api/v1/contact-messages` avec validation stricte selon les contrats d'API, sans persistance réelle ni envoi d'e-mails.

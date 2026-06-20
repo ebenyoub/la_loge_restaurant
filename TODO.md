@@ -48,7 +48,7 @@
 ## À préparer à l'ouverture du développement
 
 - [ ] Valider les maquettes de la vitrine et de l'administration mobile/desktop.
-- [x] Formaliser le modèle de données : demande, statut, note interne, capacité, service, contenu, plat, catégorie, image et SEO. Voir `docs/database-schema.md`.
+- [x] Traduire `docs/database-schema.md` en modèles Prisma, générer le client et valider le schéma sans créer de migration ni de base de données.
 - [ ] Écrire les textes d'e-mails et le message affiché après envoi.
 - [ ] Définir les règles d'alerte de charge, y compris les données prises en compte selon chaque statut.
 - [ ] Définir la politique d'authentification et de réinitialisation de mot de passe admin.
@@ -57,7 +57,7 @@
 
 ## Prochaine tâche proposée — à valider
 
-- [ ] Traduire `docs/database-schema.md` en modèles Prisma, générer le client et valider le schéma sans créer de migration ni de base de données.
+- [ ] Créer les contrôleurs, validateurs et routes Express pour les endpoints publics `POST /api/v1/reservations` et `POST /api/v1/contact-messages` avec validation stricte selon les contrats d'API, sans persistance réelle ni envoi d'e-mails.
 
 ## Après le MVP
 

@@ -9,4 +9,324 @@ datasource db {
   provider = "mysql"
 }
 
-// Les modèles métiers seront ajoutés après validation du schéma de données.
+enum ReservationStatus {
+  nouvelle
+  en_attente
+  confirmee
+  refusee
+  annulee
+}
+
+enum ReservationOccasion {
+  anniversaire
+  repas_pro
+  groupe
+  autre
+}
+
+enum ContactStatus {
+  nouveau
+  lu
+  traite
+  archive
+}
+
+enum MenuAvailability {
+  disponible
+  indisponible
+}
+
+enum MediaRightsStatus {
+  a_verifier
+  valide
+  refuse
+  expire
+}
+
+enum AdminRole {
+  gerant
+  editeur
+}
+
+enum NotificationStatus {
+  a_envoyer
+  envoye
+  echec
+}
+
+model Administrator {
+  id               String                    @id @default(uuid())
+  email            String                    @unique
+  displayName      String
+  role             AdminRole
+  authProvider     String
+  externalAuthId   String?                   @unique
+  passwordHash     String?                   @db.Text
+  isActive         Boolean                   @default(true)
+  lastLoginAt      DateTime?
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+  
+  statusHistories  ReservationStatusHistory[]
+  notes            ReservationNote[]
+  contentSections  ContentSection[]
+  seoMetadata      SeoMetadata[]
+  legalDocuments   LegalDocument[]
+  handledMessages  ContactMessage[]
+}
+
+model Reservation {
+  id                 String                    @id @default(uuid())
+  status             ReservationStatus         @default(nouvelle)
+  firstName          String
+  lastName           String
+  phone              String
+  email              String
+  requestedDate      DateTime                  @db.Date
+  requestedTime      String
+  timezone           String                    @default("Europe/Paris")
+  guestCount         Int
+  occasion           ReservationOccasion?
+  message            String?                   @db.Text
+  serviceId          String?
+  service            ReservationService?       @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  consentAcceptedAt  DateTime
+  consentVersion     String
+  retentionExpiresAt DateTime
+  statusChangedAt    DateTime                  @default(now())
+  createdAt          DateTime                  @default(now())
+  updatedAt          DateTime                  @updatedAt
+  deletedAt          DateTime?
+
+  statusHistories    ReservationStatusHistory[]
+  notes              ReservationNote[]
+  notificationLogs   NotificationLog[]
+
+  @@index([requestedDate, requestedTime])
+  @@index([status])
+  @@index([createdAt])
+  @@index([lastName])
+  @@index([email])
+}
+
+model ReservationStatusHistory {
+  id               String             @id @default(uuid())
+  reservationId    String
+  reservation      Reservation        @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  previousStatus   ReservationStatus?
+  nextStatus       ReservationStatus
+  changedByAdminId String?
+  changedByAdmin   Administrator?     @relation(fields: [changedByAdminId], references: [id], onDelete: SetNull)
+  createdAt        DateTime           @default(now())
+}
+
+model ReservationNote {
+  id            String         @id @default(uuid())
+  reservationId String
+  reservation   Reservation    @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  body          String         @db.Text
+  authorAdminId String
+  authorAdmin   Administrator  @relation(fields: [authorAdminId], references: [id])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model ReservationService {
+  id            String         @id @default(uuid())
+  code          String         @unique
+  label         String
+  startTime     String
+  endTime       String
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  reservations  Reservation[]
+  capacityRules CapacityRule[]
+}
+
+model CapacityRule {
+  id                     String             @id @default(uuid())
+  serviceId              String
+  service                ReservationService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  maxGuestCount          Int
+  maxRequestCountPerSlot Int?
+  effectiveFrom          DateTime           @db.Date
+  effectiveTo            DateTime?          @db.Date
+  isActive               Boolean            @default(true)
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+}
+
+model NotificationLog {
+  id                String             @id @default(uuid())
+  reservationId     String?
+  reservation       Reservation?       @relation(fields: [reservationId], references: [id], onDelete: SetNull)
+  contactMessageId  String?
+  contactMessage    ContactMessage?    @relation(fields: [contactMessageId], references: [id], onDelete: SetNull)
+  kind              String
+  recipient         String
+  status            NotificationStatus
+  providerMessageId String?
+  lastErrorCode     String?
+  sentAt            DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model ContactMessage {
+  id                 String             @id @default(uuid())
+  status             ContactStatus      @default(nouveau)
+  name               String
+  email              String
+  phone              String?
+  subject            String
+  message            String             @db.Text
+  consentAcceptedAt  DateTime
+  consentVersion     String
+  retentionExpiresAt DateTime
+  handledByAdminId   String?
+  handledByAdmin     Administrator?     @relation(fields: [handledByAdminId], references: [id], onDelete: SetNull)
+  handledAt          DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  deletedAt          DateTime?
+
+  notificationLogs   NotificationLog[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+}
+
+model RestaurantSettings {
+  id                String        @id @default(uuid())
+  restaurantName    String
+  shortPresentation String?       @db.Text
+  addressLine1      String?
+  addressLine2      String?
+  postalCode        String?
+  city              String?
+  countryCode       String?
+  phone             String?
+  email             String?
+  googleMapsUrl     String?       @db.Text
+  defaultLocale     String        @default("fr")
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  openingHours      OpeningHour[]
+  socialLinks       SocialLink[]
+}
+
+model OpeningHour {
+  id           String             @id @default(uuid())
+  settingsId   String
+  settings     RestaurantSettings @relation(fields: [settingsId], references: [id], onDelete: Cascade)
+  dayOfWeek    Int
+  opensAt      String?
+  closesAt     String?
+  isClosed     Boolean            @default(false)
+  displayOrder Int
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+}
+
+model SocialLink {
+  id           String             @id @default(uuid())
+  settingsId   String
+  settings     RestaurantSettings @relation(fields: [settingsId], references: [id], onDelete: Cascade)
+  platform     String
+  url          String             @db.Text
+  isActive     Boolean            @default(true)
+  displayOrder Int
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+}
+
+model ContentSection {
+  id               String         @id @default(uuid())
+  sectionKey       String         @unique
+  title            String?
+  body             String?        @db.Text
+  isEnabled        Boolean        @default(true)
+  displayOrder     Int?
+  mediaAssetId     String?
+  mediaAsset       MediaAsset?    @relation(fields: [mediaAssetId], references: [id], onDelete: SetNull)
+  updatedByAdminId String?
+  updatedByAdmin   Administrator? @relation(fields: [updatedByAdminId], references: [id], onDelete: SetNull)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model SeoMetadata {
+  id               String         @id @default(uuid())
+  route            String         @unique
+  title            String
+  metaDescription  String         @db.Text
+  localKeywords    String?        @db.Text
+  updatedByAdminId String?
+  updatedByAdmin   Administrator? @relation(fields: [updatedByAdminId], references: [id], onDelete: SetNull)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model LegalDocument {
+  id               String         @id @default(uuid())
+  documentKey      String         @unique
+  title            String
+  body             String         @db.Text
+  version          String
+  publishedAt      DateTime?
+  updatedByAdminId String?
+  updatedByAdmin   Administrator? @relation(fields: [updatedByAdminId], references: [id], onDelete: SetNull)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model MediaAsset {
+  id              String            @id @default(uuid())
+  storageKey      String            @unique
+  altText         String
+  sourceUrl       String?           @db.Text
+  rightsStatus    MediaRightsStatus @default(a_verifier)
+  mimeType        String
+  width           Int
+  height          Int
+  fileSizeBytes   Int
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  contentSections ContentSection[]
+  menuItems       MenuItem[]
+}
+
+model MenuCategory {
+  id           String     @id @default(uuid())
+  name         String
+  slug         String     @unique
+  description  String?    @db.Text
+  displayOrder Int
+  isActive     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  menuItems    MenuItem[]
+}
+
+model MenuItem {
+  id           String           @id @default(uuid())
+  categoryId   String
+  category     MenuCategory     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name         String
+  description  String?          @db.Text
+  priceCents   Int
+  allergenInfo String?          @db.Text
+  dietaryInfo  String?          @db.Text
+  availability MenuAvailability @default(disponible)
+  imageAssetId String?
+  imageAsset   MediaAsset?      @relation(fields: [imageAssetId], references: [id], onDelete: SetNull)
+  displayOrder Int
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
