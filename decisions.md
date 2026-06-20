@@ -4,7 +4,7 @@ Ce document est la source de vérité des décisions de portée. Les proposition
 
 ## D-001 — Réservation MVP par demande manuelle
 
-**Statut :** validée  
+**Statut :** validée
 **Date :** 20 juin 2026
 
 Le site ne propose pas de moteur de réservation automatique complexe. Le client soumet une demande complète. Le gérant accepte, refuse ou contacte le client si nécessaire.
@@ -84,3 +84,12 @@ Les statistiques simples, notifications SMS/WhatsApp/push, disponibilité automa
 Next.js, TypeScript, Tailwind CSS, PostgreSQL managé, ORM typé, prestataire d'e-mail transactionnel, authentification admin et déploiement Vercel constituent la base proposée.
 
 **Conséquence :** le choix précis de l'hébergeur de base, de l'ORM, du prestataire e-mail et de l'authentification reste à valider avec les exigences de propriété, coût et RGPD.
+
+## D-010 — Architecture backend MVP
+
+**Statut :** validée
+**Date :** 20 juin 2026
+
+Le backend MVP utilise MySQL comme base de données, Prisma comme ORM, Express comme serveur backend et une architecture MVC. Cette décision remplace la préférence PostgreSQL/ORM non précisé de D-009 pour les éléments concernés.
+
+**Conséquence :** le schéma de données est traduit ultérieurement en modèles Prisma MySQL et les règles métier sont exposées par une API Express séparée du frontend Next.js. L'installation de Prisma, la création du serveur Express, de la base MySQL, des API et des migrations restent soumises à une instruction d'implémentation distincte.

@@ -22,9 +22,11 @@
 
 ## Pilotage du projet
 
-- [ ] Utiliser `TASKS.md` pour piloter les prochaines tâches avec Codex.
+- [x] Utiliser `TASKS.md` pour piloter les prochaines tâches avec Codex.
 - [x] Développer la page Contact MVP statique.
 - [x] Développer la page Mentions légales MVP statique.
+- [x] Documenter le schéma de données MVP dans `docs/database-schema.md`, sans implémentation backend.
+- [x] Documenter l'architecture backend MVC Express et les flux métier dans `docs/backend-architecture.md`, sans implémentation backend.
 
 ## À valider avec le client avant conception/développement
 
@@ -43,11 +45,15 @@
 ## À préparer à l'ouverture du développement
 
 - [ ] Valider les maquettes de la vitrine et de l'administration mobile/desktop.
-- [ ] Formaliser le modèle de données : demande, statut, note interne, capacité, service, contenu, plat, catégorie, image et SEO.
+- [x] Formaliser le modèle de données : demande, statut, note interne, capacité, service, contenu, plat, catégorie, image et SEO. Voir `docs/database-schema.md`.
 - [ ] Écrire les textes d'e-mails et le message affiché après envoi.
 - [ ] Définir les règles d'alerte de charge, y compris les données prises en compte selon chaque statut.
 - [ ] Définir la politique d'authentification et de réinitialisation de mot de passe admin.
 - [ ] Préparer le plan de recette fonctionnelle, mobile, e-mail, sécurité, RGPD, SEO et accessibilité.
+
+## Prochaine tâche proposée — à valider
+
+- [ ] Formaliser les contrats d'API Réservation et Contact : requêtes, réponses, erreurs et validations ; ne pas créer le serveur Express ni installer Prisma avant validation.
 
 ## Après le MVP
 

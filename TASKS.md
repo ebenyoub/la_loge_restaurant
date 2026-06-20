@@ -1,55 +1,120 @@
 # Pilotage des tâches — La Loge Bar & Food
 
-## État actuel du projet
+## État actuel
 
-- Socle Next.js, TypeScript et Tailwind CSS initialisé.
-- Les pages Accueil, Carte et Réservation disposent d'une première version statique.
-- Les cinq pages publiques MVP disposent d'une première version statique.
-- Les CSS Modules sont conservés jusqu'à la fin du MVP ; aucun refactor Tailwind n'est en cours.
-- Aucun backend, base de données, administration ou envoi de formulaire n'est développé.
+### MVP public terminé
 
+* Accueil
+* Carte
+* Réservation (statique)
+* Contact (statique)
+* Mentions légales (statique)
+
+### Technique
+
+* Next.js
+* TypeScript
+* Tailwind installé
+* CSS Modules conservés jusqu'à la fin du MVP
+* Lint OK
+* Build OK
+* Schéma de données et architecture backend MVP documentés
+
+### Non développé
+
+* Backend
+* Base de données
+* Prisma
+* Administration
+* Envoi d'e-mails
+* Réservation fonctionnelle
+
+---
 
 ## Tâche en cours
 
-Aucune — la page Mentions légales MVP statique est terminée et validée.
+Aucune — l'architecture backend MVP et les flux métier sont documentés et en attente de validation humaine.
+
+---
 
 ## Règles Codex
 
-Une tâche correspond à un commit ou à une branche dédiée.
+Avant chaque tâche :
 
-Avant toute intervention, Codex doit :
+1. Lire :
 
-1. Lire `AGENTS.md`, `TASKS.md`, `PROJECT_STATE.md` et `TODO.md`.
-2. Traiter une seule tâche à la fois et respecter son périmètre explicite.
-3. Ne pas ajouter de fonctionnalités non demandées ni modifier de pages hors périmètre.
-4. Exécuter `npm run lint` et `npm run build` avant livraison.
-5. Présenter un résumé des fichiers modifiés, des validations et des données restant à valider.
-6. Exécuter `scripts/review-state.sh` avant un checkpoint afin de vérifier les fichiers qui seront inclus.
-7. Utiliser `scripts/checkpoint.sh "<message>"` pour créer le commit après validation de la tâche.
+   * AGENTS.md
+   * TASKS.md
+   * PROJECT_STATE.md
+   * TODO.md
 
-## Contraintes MVP
+2. Respecter strictement le périmètre.
 
-- Routes publiques limitées à `/`, `/carte`, `/reservation`, `/contact` et `/mentions-legales`.
-- Pas de backend, base de données, administration, e-mail transactionnel ou logique métier avant instruction explicite.
-- La réservation reste une demande en attente de confirmation ; aucune disponibilité automatique.
-- Ne pas exposer de téléphone, adresse, horaire ou e-mail non validé.
-- Ne pas intégrer les images importées avant validation écrite des droits par le client.
-- Ne pas ajouter les éléments P2 : événements privés, galerie, avis clients ou statut ouvert/fermé dynamique.
-- Conserver CSS Modules et `globals.css` jusqu'au refactor UI Tailwind post-MVP.
+3. Exécuter :
+
+   * npm run lint
+   * npm run build
+
+4. Fournir :
+
+   * fichiers modifiés
+   * résumé du travail
+   * validations effectuées
+   * données restant à valider
+
+5. Exécuter :
+
+   * scripts/review-state.sh
+
+6. Ne jamais créer automatiquement un commit.
+
+---
+
+## Gestion des commits
+
+Lorsque la tâche est terminée :
+
+1. Exécuter scripts/review-state.sh
+2. Présenter le résumé des changements
+3. Proposer un message de commit
+4. Attendre validation humaine
+5. Exécuter scripts/checkpoint.sh "<message>"
+
+---
+
+## Gestion automatique de la roadmap
+
+Quand une tâche est terminée :
+
+1. Mettre à jour TASKS.md.
+2. Mettre à jour TODO.md.
+3. Mettre à jour PROJECT_STATE.md.
+4. Déplacer la tâche terminée dans l'historique.
+5. Proposer automatiquement la prochaine tâche logique du MVP.
+6. Remplir la section "Prochaine tâche".
+7. Attendre validation humaine avant exécution.
+
+Ne jamais laisser la roadmap sans prochaine tâche proposée.
+
+---
 
 ## Checklist avant validation
 
-- [ ] Le périmètre de la tâche est respecté.
-- [ ] Aucun contenu, contact ou asset non validé n'est publié comme définitif.
-- [ ] L'accessibilité HTML et le responsive sont vérifiés dans le code.
-- [ ] `npm run lint` passe.
-- [ ] `npm run build` passe.
-- [ ] `scripts/review-state.sh` a été exécuté.
-- [ ] Les changements attendus sont prêts à être committés avec `scripts/checkpoint.sh`.
+* [ ] Périmètre respecté
+* [ ] Lint OK
+* [ ] Build OK
+* [ ] Responsive vérifié
+* [ ] Accessibilité vérifiée
+* [ ] review-state.sh exécuté
+* [ ] Documentation mise à jour
 
-## Prochaine tâche
+---
 
-Après validation de la page Mentions légales :
-- définir le schéma de données MVP dans `docs/database-schema.md`
-- ne pas encore installer Prisma
-- ne pas encore créer de base de données
+## Historique des tâches
+
+* [x] Créer le schéma de données MVP dans `docs/database-schema.md`, sans ORM, base de données, API ni modification des pages.
+* [x] Documenter l'architecture backend MVC Express et les flux Réservation / Contact dans `docs/backend-architecture.md`, sans installer Prisma, créer de base, API, serveur ni modifier les pages.
+
+## Prochaine tâche proposée
+
+Après validation humaine de l'architecture backend : formaliser les contrats d'API des flux Réservation et Contact (schémas de requêtes, réponses, erreurs et validations), sans créer le serveur Express ni installer Prisma.

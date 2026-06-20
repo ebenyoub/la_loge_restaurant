@@ -1,7 +1,7 @@
 # État du projet — La Loge Bar & Food
 
 **Dernière mise à jour :** 20 juin 2026  
-**Phase :** socle technique initialisé ; premières versions statiques des cinq pages publiques MVP créées
+**Phase :** vitrine statique MVP créée ; schéma de données et architecture backend documentés ; développement backend non démarré
 **Développement fonctionnel :** non démarré  
 **Initialisation du projet :** terminée — Next.js, TypeScript et Tailwind CSS
 
@@ -22,6 +22,8 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 | Administration contenus | Validé | Infos générales, menu, images liées aux contenus MVP, SEO et légal ; interface structurée. |
 | Mise en page | Validé | Sections limitées activables/désactivables et éventuellement réordonnables ; pas de page builder. |
 | Architecture CSS | Validé | Les CSS Modules sont conservés jusqu'à la fin du MVP public. Tailwind reste configuré pour le socle technique ; aucune migration des styles existants n'est engagée avant le refactor UI après MVP. |
+| Schéma de données MVP | Documenté | `docs/database-schema.md` définit les données de réservation, contact, contenus, carte, médias, capacités et administration. Aucun SGBD, ORM, schéma exécutable, API ou base de données n'est créé. |
+| Architecture backend MVP | Documenté | MySQL, Prisma, Express et MVC sont validés dans `decisions.md`. `docs/backend-architecture.md` définit les couches, routes cibles, validations, erreurs et flux Réservation / Contact ; aucune dépendance, API, serveur ou migration n'est créée. |
 | Sitemap et navigation MVP | Validé | Le squelette des cinq routes publiques, le layout commun, le header temporaire et le footer temporaire sont créés et validés ; le détail fonctionnel reste défini dans `docs/sitemap-mvp.md`. |
 | Accueil MVP | En cours | Les sections statiques Hero, Présentation, extrait de carte, Accès express et CTA final sont créées avec des contenus à valider ; aucune image, formulaire ou donnée métier n'est intégrée. |
 | Carte MVP | En cours | Les sections statiques Introduction, catégories, plats provisoires, allergènes et CTA final sont créées avec des contenus à valider ; aucune image, formulaire ou donnée métier n'est intégrée. |
@@ -54,6 +56,6 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 5. Assets et contenu : logo, photos exploitables, carte/menu, textes et réseaux.
 6. Arbitrages techniques restants : domaine, fournisseur de base de données, e-mail transactionnel et authentification.
 
-## Prochaine étape autorisée
+## Prochaine étape proposée — validation humaine requise
 
-Collecter les validations client puis produire les maquettes et spécifications de données détaillées. Le socle est prêt ; aucun développement métier ne doit démarrer tant que ces éléments ne sont pas validés.
+Formaliser les contrats d'API des flux Réservation et Contact : schémas de requêtes, réponses, erreurs et validations. Ne pas créer de serveur Express, installer Prisma, créer de base de données, API ou fonctionnalité métier avant validation explicite.
