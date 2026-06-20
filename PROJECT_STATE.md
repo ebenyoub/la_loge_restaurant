@@ -1,13 +1,13 @@
 # État du projet — La Loge Bar & Food
 
 **Dernière mise à jour :** 20 juin 2026  
-**Phase :** Socle technique, base de données, APIs publiques, intégration des formulaires publics et toutes les routes d'administration backend (réservations, contacts, carte, réglages) opérationnels. Front-end d'administration non démarré.
+**Phase :** Socle technique, base de données, APIs publiques, intégration des formulaires publics, routes d'administration backend et interface d'administration MVP frontend (login, réservations, contacts) opérationnels.
 
 ## 1. État réel actuel du projet
 
-### Front-end public (Next.js & CSS Modules)
-- **Terminé (MVP public statique)** : Les 5 pages publiques sont prêtes, performantes et structurées (Accueil, Carte, Réservation, Contact/Accès, Mentions légales).
-- **Connecté** : Les formulaires publics de réservation (`/reservation`) et de contact (`/contact`) sont reliés aux APIs du backend et fonctionnels.
+### Front-end (Next.js & CSS Modules)
+- **Public** : Les 5 pages publiques sont prêtes, performantes, structurées et connectées au backend.
+- **Administration** : Interface d'administration MVP opérationnelle (login, protection des routes client, tableau de bord des réservations avec historique et notes internes, tableau de bord des messages de contact).
 
 ### Backend Express (TypeScript & Express 5)
 - **Opérationnel** : Serveur Express configuré avec injection de `requestId`, logs épurés et gestionnaire d'erreurs global sans fuite technique vers le client.
@@ -17,7 +17,7 @@
 - **Sécurité JWT** : `JWT_SECRET` obligatoire au démarrage, devant faire au moins 32 caractères de long (échec automatique du serveur en cas d'absence ou clé trop faible).
 
 ### Éléments non développés / Restants du MVP
-- **Interface d'administration** : Espace d'administration visuel non développé.
+- **Interface d'administration (contenus)** : Espace d'administration visuel pour la carte (menu/plats) et les réglages généraux/SEO non développé.
 - **E-mails transactionnels** : Envoi d'e-mails réels (restaurant/client) non configuré.
 
 ## 2. Décisions de portée
@@ -65,4 +65,4 @@
 
 ## 6. Prochaine étape proposée — validation humaine requise
 
-Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).
+Implémenter l'interface d'administration pour la gestion de la carte (catégories et plats) côté frontend en connectant les APIs existantes.

@@ -34,9 +34,11 @@
 - [x] Mettre en place une stratégie de tests backend (Vitest + Supertest) avec couverture de base sur les endpoints publics, auth et routes protégées.
 - [x] Liaison des formulaires publics frontend et backend (connecter les formulaires de `/reservation` et `/contact` aux routes d'API correspondantes).
 
+- [x] Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).
+
 ## Prochaine tâche proposée — à valider
 
-- [ ] Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).
+- [ ] Implémenter l'interface d'administration pour la gestion de la carte (catégories et plats) côté frontend.
 
 ## Après le MVP
 
