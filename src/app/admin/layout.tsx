@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from "./layout.module.css";
 
@@ -11,10 +11,14 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminUser, setAdminUser] = useState<{ displayName: string; role: string } | null>(null);
 
   useEffect(() => {
+    if (pathname === "/admin/login") {
+      return;
+    }
     const token = localStorage.getItem("admin_token");
     const userStr = localStorage.getItem("admin_user");
 
@@ -30,7 +34,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         }
       });
     }
-  }, [router]);
+  }, [router, pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem("admin_token");
@@ -38,6 +42,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     document.cookie = "admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     router.push("/admin/login");
   };
+
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
 
   if (!isAuthenticated) {
     return (

@@ -35,6 +35,7 @@
 - [x] Liaison des formulaires publics frontend et backend (connecter les formulaires de `/reservation` et `/contact` aux routes d'API correspondantes).
 
 - [x] Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).
+- [x] Mettre en place les tests frontend MVP avec Playwright (login, protection des routes, liste/détails réservations et messages de contact).
 
 ## Prochaine tâche proposée — à valider
 

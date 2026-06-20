@@ -8,6 +8,7 @@
 ### Front-end (Next.js & CSS Modules)
 - **Public** : Les 5 pages publiques sont prêtes, performantes, structurées et connectées au backend.
 - **Administration** : Interface d'administration MVP opérationnelle (login, protection des routes client, tableau de bord des réservations avec historique et notes internes, tableau de bord des messages de contact).
+- **Tests** : Suite de tests E2E avec Playwright opérationnelle (validation en isolation avec mock des API de : authentification, protection des routes, réservations et messages de contact).
 
 ### Backend Express (TypeScript & Express 5)
 - **Opérationnel** : Serveur Express configuré avec injection de `requestId`, logs épurés et gestionnaire d'erreurs global sans fuite technique vers le client.
@@ -36,6 +37,7 @@
 | Schéma de données MVP | Migré | Traduit dans `backend/prisma/schema.prisma` et migré sur MySQL local via `prisma migrate dev`. |
 | Architecture backend MVP | Routes d'administration backend complètes | MySQL, Prisma, Express, bcrypt et JWT. Les routes d'administration des réservations, de la carte, des réglages généraux et des messages de contact sont opérationnelles et protégées par rôle. |
 | Stratégie de tests backend | Opérationnelle | Vitest configuré avec Supertest, mock automatique de Prisma pour isoler les tests de base de données. Tests d'API passants sur health, validations, authentification et protection de routes. |
+| Stratégie de tests frontend | Opérationnelle | Playwright configuré pour des tests E2E locaux. Les appels d'API sont mockés afin de pouvoir exécuter et valider l'authentification et les dashboards en isolation. |
 | Contrats d'API MVP | Documenté | `docs/api-contracts.md` définit les requêtes, réponses, validations, statuts HTTP et règles RGPD des flux Réservation et Contact. |
 | Prérequis backend MVP | Documenté | `docs/backend-prerequisites.md` liste les décisions critiques de secrets, hébergement, MySQL, authentification, e-mail, RGPD, risques et validation avant installation. |
 | Sécurité dépendances backend | À surveiller | `npm audit --omit=dev` signale des vulnérabilités modérées transitives liées à la CLI Prisma 7. Aucun correctif automatique ni downgrade majeur n'est appliqué ; revue requise avant déploiement. |

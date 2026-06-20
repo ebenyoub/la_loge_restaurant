@@ -94,6 +94,7 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 * [x] Aligner la documentation de suivi avec l'état réel du dépôt backend (routes admin réservations, contacts, carte et réglages).
 
 * [x] Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).
+* [x] Mettre en place les tests frontend MVP avec Playwright (login, protection des routes admin, liste/détail des réservations et messages de contact).
 
 ---
 
