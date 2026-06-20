@@ -37,9 +37,11 @@
 - [x] Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).
 - [x] Mettre en place les tests frontend MVP avec Playwright (login, protection des routes, liste/détails réservations et messages de contact).
 
+- [x] Implémenter l'interface d'administration pour la gestion de la carte (catégories et plats) côté frontend with E2E tests.
+
 ## Prochaine tâche proposée — à valider
 
-- [ ] Implémenter l'interface d'administration pour la gestion de la carte (catégories et plats) côté frontend.
+- [ ] Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend.
 
 ## Après le MVP
 

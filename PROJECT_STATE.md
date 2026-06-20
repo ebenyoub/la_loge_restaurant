@@ -7,8 +7,8 @@
 
 ### Front-end (Next.js & CSS Modules)
 - **Public** : Les 5 pages publiques sont prêtes, performantes, structurées et connectées au backend.
-- **Administration** : Interface d'administration MVP opérationnelle (login, protection des routes client, tableau de bord des réservations avec historique et notes internes, tableau de bord des messages de contact).
-- **Tests** : Suite de tests E2E avec Playwright opérationnelle (validation en isolation avec mock des API de : authentification, protection des routes, réservations et messages de contact).
+- **Administration** : Interface d'administration MVP opérationnelle (login, protection des routes client, réservations, messages de contact, gestion complète des catégories et des plats du menu).
+- **Tests** : Suite de tests E2E avec Playwright opérationnelle (7 tests passants en isolation couvrant l'authentification, la protection des routes, les réservations, les contacts, les catégories et les plats).
 
 ### Backend Express (TypeScript & Express 5)
 - **Opérationnel** : Serveur Express configuré avec injection de `requestId`, logs épurés et gestionnaire d'erreurs global sans fuite technique vers le client.
@@ -18,7 +18,7 @@
 - **Sécurité JWT** : `JWT_SECRET` obligatoire au démarrage, devant faire au moins 32 caractères de long (échec automatique du serveur en cas d'absence ou clé trop faible).
 
 ### Éléments non développés / Restants du MVP
-- **Interface d'administration (contenus)** : Espace d'administration visuel pour la carte (menu/plats) et les réglages généraux/SEO non développé.
+- **Interface d'administration (contenus)** : Espace d'administration visuel pour les réglages généraux/SEO non développé.
 - **E-mails transactionnels** : Envoi d'e-mails réels (restaurant/client) non configuré.
 
 ## 2. Décisions de portée
@@ -67,4 +67,4 @@
 
 ## 6. Prochaine étape proposée — validation humaine requise
 
-Implémenter l'interface d'administration pour la gestion de la carte (catégories et plats) côté frontend en connectant les APIs existantes.
+Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend en connectant les APIs existantes.

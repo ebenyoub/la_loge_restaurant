@@ -70,6 +70,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <nav className={styles.navLinks}>
             <Link href="/admin/reservations">Réservations</Link>
             <Link href="/admin/contact-messages">Contacts</Link>
+            <Link href="/admin/categories">Catégories</Link>
+            <Link href="/admin/plats">Plats</Link>
           </nav>
           <button onClick={handleLogout} className={styles.logoutBtn}>
             Déconnexion

@@ -269,4 +269,202 @@ test.describe("Admin MVP Frontend Tests", () => {
     await expect(page.locator("h3:has-text('Demande de privatisation')")).toBeVisible();
     await expect(page.locator("text=Bonjour, j'aimerais privatiser la salle pour 30 personnes le 14 juillet.")).toBeVisible();
   });
+
+  // Test Categories Page
+  test("should list, create, edit and delete menu categories", async ({ page }) => {
+    await page.addInitScript(() => {
+      window.localStorage.setItem("admin_token", "fake-jwt-token");
+      window.localStorage.setItem(
+        "admin_user",
+        JSON.stringify({ displayName: "Admin User", role: "gérant" })
+      );
+    });
+
+    let mockCategories = [
+      { id: "cat-1", name: "Entrées", slug: "entrees", description: "Pour commencer", displayOrder: 1, isActive: true },
+      { id: "cat-2", name: "Plats", slug: "plats", description: "Nos spécialités", displayOrder: 2, isActive: true },
+    ];
+
+    // Mock GET categories list
+    await page.route("**/api/v1/admin/menu-categories", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ data: { items: mockCategories } }),
+        });
+      } else if (route.request().method() === "POST") {
+        const body = route.request().postDataJSON();
+        const newCat = { id: `cat-${Date.now()}`, ...body };
+        mockCategories.push(newCat);
+        await route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: JSON.stringify({ data: newCat }),
+        });
+      }
+    });
+
+    await page.route("**/api/v1/admin/menu-categories/*", async (route) => {
+      const url = route.request().url();
+      const id = url.substring(url.lastIndexOf("/") + 1);
+
+      if (route.request().method() === "PATCH") {
+        const body = route.request().postDataJSON();
+        mockCategories = mockCategories.map(c => c.id === id ? { ...c, ...body } : c);
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ data: { id } }),
+        });
+      } else if (route.request().method() === "DELETE") {
+        mockCategories = mockCategories.filter(c => c.id !== id);
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ data: { success: true } }),
+        });
+      }
+    });
+
+    await page.goto("/admin/categories");
+
+    // Check list
+    await expect(page.locator("td:has-text('Entrées')").first()).toBeVisible();
+    await expect(page.locator("td:has-text('Plats')").first()).toBeVisible();
+
+    // Create Category
+    await page.click("text=+ Ajouter une Catégorie");
+    await page.fill('input[id="cat-name"]', "Desserts");
+    await page.fill('input[id="cat-slug"]', "desserts");
+    await page.fill('textarea[id="cat-desc"]', "Douceurs sucrées");
+    await page.click('button[type="submit"]');
+
+    // Verification of new list items
+    await expect(page.locator("td:has-text('Desserts')").first()).toBeVisible();
+
+    // Edit Category
+    await page.locator('tr:has-text("Desserts") >> button:has-text("Modifier")').click();
+    await page.fill('input[id="cat-name"]', "Desserts Maison");
+    await page.click('button[type="submit"]');
+    await expect(page.locator("td:has-text('Desserts Maison')").first()).toBeVisible();
+
+    // Delete Category
+    page.once("dialog", dialog => dialog.accept());
+    await page.locator('tr:has-text("Desserts Maison") >> button:has-text("Supprimer")').click();
+    await expect(page.locator("td:has-text('Desserts Maison')")).not.toBeVisible();
+  });
+
+  // Test Plats Page
+  test("should list, create, edit and delete menu items (plats)", async ({ page }) => {
+    await page.addInitScript(() => {
+      window.localStorage.setItem("admin_token", "fake-jwt-token");
+      window.localStorage.setItem(
+        "admin_user",
+        JSON.stringify({ displayName: "Admin User", role: "gérant" })
+      );
+    });
+
+    const mockCategories = [
+      { id: "cat-1", name: "Entrées" }
+    ];
+
+    let mockItems = [
+      {
+        id: "item-1",
+        categoryId: "cat-1",
+        category: { name: "Entrées" },
+        name: "Foie Gras",
+        description: "Maison",
+        priceCents: 1500,
+        allergenInfo: "Sulfite",
+        dietaryInfo: null,
+        availability: "disponible",
+        displayOrder: 1
+      }
+    ];
+
+    // Mock GET categories for select dropdown
+    await page.route("**/api/v1/admin/menu-categories", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ data: { items: mockCategories } }),
+      });
+    });
+
+    // Mock GET, POST on items
+    await page.route("**/api/v1/admin/menu-items", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ data: { items: mockItems } }),
+        });
+      } else if (route.request().method() === "POST") {
+        const body = route.request().postDataJSON();
+        const newItem = {
+          id: `item-${Date.now()}`,
+          category: { name: "Entrées" },
+          ...body
+        };
+        mockItems.push(newItem);
+        await route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: JSON.stringify({ data: newItem }),
+        });
+      }
+    });
+
+    await page.route("**/api/v1/admin/menu-items/*", async (route) => {
+      const url = route.request().url();
+      const id = url.substring(url.lastIndexOf("/") + 1);
+
+      if (route.request().method() === "PATCH") {
+        const body = route.request().postDataJSON();
+        mockItems = mockItems.map(item => item.id === id ? { ...item, ...body } : item);
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ data: { id } }),
+        });
+      } else if (route.request().method() === "DELETE") {
+        mockItems = mockItems.filter(item => item.id !== id);
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ data: { success: true } }),
+        });
+      }
+    });
+
+    await page.goto("/admin/plats");
+
+    // Check list
+    await expect(page.locator("td:has-text('Foie Gras')")).toBeVisible();
+
+    // Create Plat
+    await page.click("text=+ Ajouter un Plat");
+    await page.selectOption('select[id="item-cat"]', "cat-1");
+    await page.fill('input[id="item-name"]', "Soupe à l'oignon");
+    await page.fill('textarea[id="item-desc"]', "Gratinée au fromage");
+    await page.fill('input[id="item-price"]', "8.50");
+    await page.click('button[type="submit"]');
+
+    // Verification of new item
+    await expect(page.locator("td:has-text(\"Soupe à l'oignon\")")).toBeVisible();
+
+    // Edit Plat
+    await page.locator('tr:has-text("Soupe à l\'oignon") >> button:has-text("Modifier")').click();
+    await page.fill('input[id="item-price"]', "9.50");
+    await page.click('button[type="submit"]');
+    await expect(page.locator("text=9.50 €")).toBeVisible();
+
+    // Delete Plat
+    page.once("dialog", dialog => dialog.accept());
+    await page.locator('tr:has-text("Soupe à l\'oignon") >> button:has-text("Supprimer")').click();
+    await expect(page.locator("td:has-text(\"Soupe à l'oignon\")")).not.toBeVisible();
+  });
 });
+
