@@ -1,35 +1,10 @@
 # TODO — La Loge Bar & Food
 
-**Règle de travail :** le socle technique est initialisé. Ne pas développer les pages finales, l'administration, les formulaires métier ou le design complet sans instruction explicite.
+**Règle de travail :** Le socle technique est initialisé. Ne pas développer les pages finales, l'administration, les formulaires métier ou le design complet sans instruction explicite.
 
 ## Tâche initiale — audit des actifs existants
 
-- [x] Scraper le site existant.
-- [x] Récupérer toutes les images réutilisables exposées publiquement.
-- [x] Classer les images dans `public/images/imported/`.
-- [x] Documenter chaque image dans `docs/images-inventory.md`.
-- [ ] Obtenir la confirmation écrite du client sur les droits d'utilisation avant toute intégration.
-
-## Décisions déjà enregistrées
-
-- [x] Le MVP utilise une demande de réservation manuelle, pas une réservation automatique.
-- [x] La demande est enregistrée en base et génère deux e-mails : gérant et client.
-- [x] Le gérant traite les statuts dans un espace admin responsive.
-- [x] Les limites de capacité déclenchent une alerte, sans bloquer automatiquement les demandes.
-- [x] L'administration de contenu est structurée et bornée ; aucun page builder n'est prévu au MVP.
-- [x] Priorités P1/P2 synchronisées dans le cahier des charges et le backlog.
-- [x] Sitemap fonctionnel MVP documenté dans `docs/sitemap-mvp.md`.
-
-## Pilotage du projet
-
-- [x] Utiliser `TASKS.md` pour piloter les prochaines tâches avec Codex.
-- [x] Développer la page Contact MVP statique.
-- [x] Développer la page Mentions légales MVP statique.
-- [x] Documenter le schéma de données MVP dans `docs/database-schema.md`, sans implémentation backend.
-- [x] Documenter l'architecture backend MVC Express et les flux métier dans `docs/backend-architecture.md`, sans implémentation backend.
-- [x] Formaliser les contrats d'API Réservation et Contact dans `docs/api-contracts.md`, sans implémentation backend.
-- [x] Préparer les prérequis de validation backend dans `docs/backend-prerequisites.md`, sans implémentation backend.
-- [x] Initialiser le socle backend Express, TypeScript et Prisma/MySQL avec `/health`, sans logique métier ni base de données.
+- [ ] Obtenir la confirmation écrite du client sur les droits d'utilisation avant toute intégration d'image.
 
 ## À valider avec le client avant conception/développement
 
@@ -48,16 +23,11 @@
 ## À préparer à l'ouverture du développement
 
 - [ ] Valider les maquettes de la vitrine et de l'administration mobile/desktop.
-- [x] Traduire `docs/database-schema.md` en modèles Prisma, générer le client et valider le schéma sans créer de migration ni de base de données.
 - [ ] Écrire les textes d'e-mails et le message affiché après envoi.
 - [ ] Définir les règles d'alerte de charge, y compris les données prises en compte selon chaque statut.
 - [ ] Définir la politique d'authentification et de réinitialisation de mot de passe admin.
 - [ ] Préparer le plan de recette fonctionnelle, mobile, e-mail, sécurité, RGPD, SEO et accessibilité.
 - [ ] Examiner l'alerte `npm audit --omit=dev` liée à la CLI Prisma 7 avant un déploiement ; ne pas appliquer de downgrade majeur sans décision technique.
-
-- [x] Créer les contrôleurs, validateurs et routes Express pour les endpoints publics `POST /api/v1/reservations` et `POST /api/v1/contact-messages` avec validation stricte selon les contrats d'API, sans persistance réelle ni envoi d'e-mails.
-- [x] Initialiser la base de données locale MySQL, exécuter la première migration Prisma et connecter les endpoints `POST /api/v1/reservations` et `POST /api/v1/contact-messages` pour persister réellement les demandes en base (sans envoi d'e-mails réels).
-- [x] Implémenter l'authentification administrateur (endpoints `POST /api/v1/admin/login`, middleware de session/protection des routes) sans développer les interfaces d'administration ni connecter le frontend.
 
 ## Prochaine tâche proposée — à valider
 

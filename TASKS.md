@@ -1,42 +1,8 @@
 # Pilotage des tâches — La Loge Bar & Food
 
-## État actuel
-
-### MVP public terminé
-
-* Accueil
-* Carte
-* Réservation (statique)
-* Contact (statique)
-* Mentions légales (statique)
-
-### Technique
-
-* Next.js
-* TypeScript
-* Tailwind installé
-* CSS Modules conservés jusqu'à la fin du MVP
-* Lint OK
-* Build OK
-* Schéma de données et architecture backend MVP documentés
-* Contrats d'API Réservation et Contact documentés
-* Prérequis de validation backend documentés
-* Socle backend Express, TypeScript et Prisma/MySQL initialisé
-
-### Non développé
-
-* Base de données
-* Administration
-* Envoi d'e-mails
-* Réservation fonctionnelle
-* Routes métier Réservation et Contact
-* Modèles Prisma et migrations
-
----
-
 ## Tâche en cours
 
-Aucune — le socle backend démarre et répond sur `/health`. Les modèles, migrations, routes métier, authentification, e-mails et formulaires restent à implémenter.
+Aucune — le socle technique, la persistance MySQL et l'authentification admin sont opérationnels.
 
 ---
 
@@ -45,7 +11,6 @@ Aucune — le socle backend démarre et répond sur `/health`. Les modèles, mig
 Avant chaque tâche :
 
 1. Lire :
-
    * AGENTS.md
    * TASKS.md
    * PROJECT_STATE.md
@@ -54,19 +19,16 @@ Avant chaque tâche :
 2. Respecter strictement le périmètre.
 
 3. Exécuter :
-
    * npm run lint
    * npm run build
 
 4. Fournir :
-
    * fichiers modifiés
    * résumé du travail
    * validations effectuées
    * données restant à valider
 
 5. Exécuter :
-
    * scripts/review-state.sh
 
 6. Ne jamais créer automatiquement un commit.
@@ -122,11 +84,12 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 * [x] Initialiser le socle backend Express, TypeScript et Prisma/MySQL avec `/health`, sans base de données, migration, logique métier, authentification, e-mail ni formulaire.
 * [x] Traduire docs/database-schema.md en modèles Prisma, générer le client et valider le schéma sans créer de migration ni de base de données.
 * [x] Créer les contrôleurs, validateurs et routes Express pour les endpoints publics `POST /api/v1/reservations` et `POST /api/v1/contact-messages` avec validation stricte selon les contrats d'API, sans persistance réelle ni envoi d'e-mails.
-
 * [x] Initialiser la base de données locale MySQL, exécuter la première migration Prisma et connecter les endpoints `POST /api/v1/reservations` et `POST /api/v1/contact-messages` pour persister réellement les demandes en base (sans envoi d'e-mails réels).
-
 * [x] Implémenter l'authentification administrateur (endpoints `POST /api/v1/admin/login`, middleware de session/protection des routes) sans développer les interfaces d'administration ni connecter le frontend.
+* [x] Correction sécurité JWT_SECRET obligatoire (longueur minimale 32 caractères et échec au démarrage).
+
+---
 
 ## Prochaine tâche proposée
 
-Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id` et création de notes internes) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
+Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations` pour lister, `GET /api/v1/admin/reservations/:id` pour consulter, `PATCH /api/v1/admin/reservations/:id` pour modifier le statut, et création de notes internes) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
