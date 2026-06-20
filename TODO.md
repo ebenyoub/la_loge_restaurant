@@ -30,10 +30,11 @@
 - [ ] Examiner l'alerte `npm audit --omit=dev` liée à la CLI Prisma 7 avant un déploiement ; ne pas appliquer de downgrade majeur sans décision technique.
 
 - [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
+- [x] Implémenter les routes d'administration des messages de contact (`GET /api/v1/admin/contact-messages`, `GET /api/v1/admin/contact-messages/:id` et `PATCH /api/v1/admin/contact-messages/:id/status`) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
 
 ## Prochaine tâche proposée — à valider
 
-- [ ] Implémenter les routes d'administration des contenus et de la carte (`GET/PATCH /api/v1/admin/settings` pour les réglages, et gestion CRUD des tables `MenuCategory` et `MenuItem`) protégées par session admin/rôle, sans développer le frontend.
+- [ ] Liaison des formulaires publics frontend et backend (connecter les formulaires de `/reservation` et `/contact` aux routes d'API correspondantes).
 
 ## Après le MVP
 

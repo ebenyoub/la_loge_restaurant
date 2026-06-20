@@ -2,7 +2,7 @@
 
 ## Tâche en cours
 
-Aucune — le socle technique, la persistance MySQL et l'authentification admin sont opérationnels.
+Aucune — le socle technique, la persistance MySQL, l'authentification admin et la gestion des messages de contact sont opérationnels.
 
 ---
 
@@ -65,13 +65,13 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 
 ## Checklist avant validation
 
-* [ ] Périmètre respecté
-* [ ] Lint OK
-* [ ] Build OK
-* [ ] Responsive vérifié
-* [ ] Accessibilité vérifiée
-* [ ] review-state.sh exécuté
-* [ ] Documentation mise à jour
+* [x] Périmètre respecté
+* [x] Lint OK
+* [x] Build OK
+* [x] Responsive vérifié (N/A pas de frontend)
+* [x] Accessibilité vérifiée (N/A pas de frontend)
+* [x] review-state.sh exécuté
+* [x] Documentation mise à jour
 
 ---
 
@@ -87,11 +87,11 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 * [x] Initialiser la base de données locale MySQL, exécuter la première migration Prisma et connecter les endpoints `POST /api/v1/reservations` et `POST /api/v1/contact-messages` pour persister réellement les demandes en base (sans envoi d'e-mails réels).
 * [x] Implémenter l'authentification administrateur (endpoints `POST /api/v1/admin/login`, middleware de session/protection des routes) sans développer les interfaces d'administration ni connecter le frontend.
 * [x] Correction sécurité JWT_SECRET obligatoire (longueur minimale 32 caractères et échec au démarrage).
+* [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
+* [x] Implémenter les routes d'administration des messages de contact (`GET /api/v1/admin/contact-messages`, `GET /api/v1/admin/contact-messages/:id` et `PATCH /api/v1/admin/contact-messages/:id/status`) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
 
 ---
 
-* [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
-
 ## Prochaine tâche proposée
 
-Implémenter les routes d'administration des contenus et de la carte (`GET/PATCH /api/v1/admin/settings` pour les réglages, et gestion CRUD des tables `MenuCategory` et `MenuItem`) protégées par session admin/rôle, sans développer le frontend.
+Liaison des formulaires publics frontend et backend (connecter les formulaires de `/reservation` et `/contact` aux routes d'API correspondantes).
