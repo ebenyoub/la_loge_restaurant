@@ -1,7 +1,7 @@
 # État du projet — La Loge Bar & Food
 
 **Dernière mise à jour :** 20 juin 2026  
-**Phase :** socle technique initialisé ; cadrage produit en cours  
+**Phase :** socle technique initialisé ; première version statique de l'Accueil créée  
 **Développement fonctionnel :** non démarré  
 **Initialisation du projet :** terminée — Next.js, TypeScript et Tailwind CSS
 
@@ -22,6 +22,7 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 | Administration contenus | Validé | Infos générales, menu, images liées aux contenus MVP, SEO et légal ; interface structurée. |
 | Mise en page | Validé | Sections limitées activables/désactivables et éventuellement réordonnables ; pas de page builder. |
 | Sitemap et navigation MVP | Validé | Le squelette des cinq routes publiques, le layout commun, le header temporaire et le footer temporaire sont créés et validés ; le détail fonctionnel reste défini dans `docs/sitemap-mvp.md`. |
+| Accueil MVP | En cours | Les sections statiques Hero, Présentation, extrait de carte, Accès express et CTA final sont créées avec des contenus à valider ; aucune image, formulaire ou donnée métier n'est intégrée. |
 | P2 | Validé | Événements privés, galerie, avis clients, statut ouvert/fermé dynamique, statistiques, notifications, disponibilité fine, automatisation, Google Calendar et disposition avancée sont reportés. |
 
 ## Livrables documentaires disponibles
