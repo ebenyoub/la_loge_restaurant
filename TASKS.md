@@ -97,9 +97,10 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 * [x] Mettre en place les tests frontend MVP avec Playwright (login, protection des routes admin, liste/détail des réservations et messages de contact).
 
 * [x] Créer l'interface d'administration Menu (gestion des catégories et des plats) côté frontend avec tests Playwright correspondants.
+* [x] Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend avec tests Playwright correspondants.
 
 ---
 
 ## Prochaine tâche proposée
 
-Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend en connectant les APIs existantes.
+Implémenter l'envoi d'e-mails transactionnels côté backend (notifications de nouvelle demande de réservation pour le gérant et accusé de réception pour le client) et configurer le service d'envoi.

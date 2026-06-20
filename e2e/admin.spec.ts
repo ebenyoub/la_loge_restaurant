@@ -466,5 +466,76 @@ test.describe("Admin MVP Frontend Tests", () => {
     await page.locator('tr:has-text("Soupe à l\'oignon") >> button:has-text("Supprimer")').click();
     await expect(page.locator("td:has-text(\"Soupe à l'oignon\")")).not.toBeVisible();
   });
+
+  // Test Settings Page
+  test("should load and update restaurant settings, hours, and SEO", async ({ page }) => {
+    await page.addInitScript(() => {
+      window.localStorage.setItem("admin_token", "fake-jwt-token");
+      window.localStorage.setItem(
+        "admin_user",
+        JSON.stringify({ displayName: "Admin User", role: "gérant" })
+      );
+    });
+
+    let mockSettings = {
+      restaurantName: "La Loge Bar & Food",
+      shortPresentation: "Bar sympa",
+      addressLine1: "1 Rue du Temple",
+      addressLine2: null,
+      postalCode: "69002",
+      city: "Lyon",
+      countryCode: "FR",
+      phone: "0478001122",
+      email: "contact@laloge.fr",
+      googleMapsUrl: "https://maps.google.com",
+      defaultLocale: "fr",
+      openingHours: [
+        { dayOfWeek: 1, opensAt: "12:00", closesAt: "23:00", isClosed: false }
+      ],
+      socialLinks: [
+        { platform: "facebook", url: "https://facebook.com/laloge", isActive: true }
+      ],
+      seoMetadata: [
+        { route: "/", title: "La Loge - Accueil", metaDescription: "Bienvenue", localKeywords: "lyon" }
+      ]
+    };
+
+    // Mock GET and PATCH settings
+    await page.route("**/api/v1/admin/settings", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ data: mockSettings }),
+        });
+      } else if (route.request().method() === "PATCH") {
+        const body = route.request().postDataJSON();
+        mockSettings = { ...mockSettings, ...body };
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ data: mockSettings }),
+        });
+      }
+    });
+
+    await page.goto("/admin/settings");
+
+    // Check pre-filled values
+    await expect(page.locator('input[id="restaurantName"]')).toHaveValue("La Loge Bar & Food");
+    await expect(page.locator('input[id="email"]')).toHaveValue("contact@laloge.fr");
+    await expect(page.locator('input[id="fb-url"]')).toHaveValue("https://facebook.com/laloge");
+    await expect(page.locator('input[id="seo-title-0"]')).toHaveValue("La Loge - Accueil");
+
+    // Update fields
+    await page.fill('input[id="restaurantName"]', "La Loge Célestins");
+    await page.fill('input[id="seo-title-0"]', "La Loge - Le Meilleur Bar");
+    await page.click('button:has-text("Enregistrer tous les Réglages")');
+
+    // Success banner check
+    await expect(page.locator("text=Réglages enregistrés avec succès.")).toBeVisible();
+    await expect(page.locator('input[id="restaurantName"]')).toHaveValue("La Loge Célestins");
+    await expect(page.locator('input[id="seo-title-0"]')).toHaveValue("La Loge - Le Meilleur Bar");
+  });
 });
 

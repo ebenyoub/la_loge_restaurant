@@ -72,6 +72,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <Link href="/admin/contact-messages">Contacts</Link>
             <Link href="/admin/categories">Catégories</Link>
             <Link href="/admin/plats">Plats</Link>
+            <Link href="/admin/settings">Réglages</Link>
           </nav>
           <button onClick={handleLogout} className={styles.logoutBtn}>
             Déconnexion

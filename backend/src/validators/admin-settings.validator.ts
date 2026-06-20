@@ -13,7 +13,10 @@ export function validateUpdateSettings(req: Request, _res: Response, next: NextF
     "phone",
     "email",
     "googleMapsUrl",
-    "defaultLocale"
+    "defaultLocale",
+    "openingHours",
+    "socialLinks",
+    "seoMetadata"
   ];
 
   const unknownFields = checkUnknownFields(req.body, allowedKeys);
@@ -105,6 +108,48 @@ export function validateUpdateSettings(req: Request, _res: Response, next: NextF
   if (defaultLocale !== undefined) {
     if (typeof defaultLocale !== "string" || defaultLocale.trim() === "") {
       fields.defaultLocale = "La langue par défaut doit être une chaîne non vide.";
+    }
+  }
+
+  // Add openingHours validation
+  if (req.body.openingHours !== undefined) {
+    if (!Array.isArray(req.body.openingHours)) {
+      fields.openingHours = "Les horaires d'ouverture doivent être un tableau.";
+    } else {
+      for (const oh of req.body.openingHours) {
+        if (typeof oh.dayOfWeek !== "number" || oh.dayOfWeek < 0 || oh.dayOfWeek > 6) {
+          fields.openingHours = "Le jour de la semaine doit être un nombre entre 0 et 6.";
+        }
+      }
+    }
+  }
+
+  // Add socialLinks validation
+  if (req.body.socialLinks !== undefined) {
+    if (!Array.isArray(req.body.socialLinks)) {
+      fields.socialLinks = "Les réseaux sociaux doivent être un tableau.";
+    } else {
+      for (const sl of req.body.socialLinks) {
+        if (typeof sl.platform !== "string" || sl.platform.trim() === "") {
+          fields.socialLinks = "La plateforme doit être spécifiée.";
+        }
+      }
+    }
+  }
+
+  // Add seoMetadata validation
+  if (req.body.seoMetadata !== undefined) {
+    if (!Array.isArray(req.body.seoMetadata)) {
+      fields.seoMetadata = "Le SEO doit être un tableau.";
+    } else {
+      for (const seo of req.body.seoMetadata) {
+        if (typeof seo.route !== "string" || seo.route.trim() === "") {
+          fields.seoMetadata = "La route SEO doit être spécifiée.";
+        }
+        if (typeof seo.title !== "string" || seo.title.trim() === "") {
+          fields.seoMetadata = "Le titre SEO doit être spécifié.";
+        }
+      }
     }
   }
 

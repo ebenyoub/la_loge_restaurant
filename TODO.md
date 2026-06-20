@@ -39,9 +39,11 @@
 
 - [x] Implémenter l'interface d'administration pour la gestion de la carte (catégories et plats) côté frontend with E2E tests.
 
+- [x] Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend with E2E tests.
+
 ## Prochaine tâche proposée — à valider
 
-- [ ] Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend.
+- [ ] Implémenter l'envoi d'e-mails transactionnels côté backend (notifications de nouvelle demande pour le gérant et accusé de réception pour le client).
 
 ## Après le MVP
 
