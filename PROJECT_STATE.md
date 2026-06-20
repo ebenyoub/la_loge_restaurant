@@ -36,6 +36,13 @@ Un site vitrine performant et administrable pour La Loge Bar & Food, avec une de
 - [Liste d'actions](./TODO.md)
 - [Sitemap MVP](./docs/sitemap-mvp.md)
 
+## Workflow de pilotage
+
+- Codex lit `TASKS.md` avant chaque tâche et traite une seule tâche à la fois.
+- `npm run lint` et `npm run build` sont obligatoires avant toute livraison.
+- Le commit est créé avec `scripts/checkpoint.sh "<message>"`, après vérification des changements avec `scripts/review-state.sh`.
+- ChatGPT est utilisé uniquement pour les arbitrages de produit, les décisions de périmètre ou les blocages nécessitant une décision humaine.
+
 ## Bloqueurs avant le développement
 
 1. Informations publiques et légales exactes : adresse, horaires, coordonnées, identité juridique.

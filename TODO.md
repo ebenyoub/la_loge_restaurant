@@ -20,6 +20,11 @@
 - [x] Priorités P1/P2 synchronisées dans le cahier des charges et le backlog.
 - [x] Sitemap fonctionnel MVP documenté dans `docs/sitemap-mvp.md`.
 
+## Pilotage du projet
+
+- [ ] Utiliser `TASKS.md` pour piloter les prochaines tâches avec Codex.
+- [ ] Prochaine tâche : développer la page Contact MVP statique.
+
 ## À valider avec le client avant conception/développement
 
 - [ ] Confirmer l'adresse officielle unique, les horaires, le téléphone et l'e-mail publiés.
