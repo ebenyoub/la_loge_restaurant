@@ -31,6 +31,7 @@
 
 - [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
 - [x] Implémenter les routes d'administration des messages de contact (`GET /api/v1/admin/contact-messages`, `GET /api/v1/admin/contact-messages/:id` et `PATCH /api/v1/admin/contact-messages/:id/status`) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
+- [x] Mettre en place une stratégie de tests backend (Vitest + Supertest) avec couverture de base sur les endpoints publics, auth et routes protégées.
 
 ## Prochaine tâche proposée — à valider
 

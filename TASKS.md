@@ -2,7 +2,7 @@
 
 ## Tâche en cours
 
-Aucune — le socle technique, la persistance MySQL, l'authentification admin et la gestion des messages de contact sont opérationnels.
+Aucune — la stratégie de tests backend (Vitest + Supertest) est en place avec les premiers tests automatisés passants.
 
 ---
 
@@ -89,6 +89,7 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 * [x] Correction sécurité JWT_SECRET obligatoire (longueur minimale 32 caractères et échec au démarrage).
 * [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
 * [x] Implémenter les routes d'administration des messages de contact (`GET /api/v1/admin/contact-messages`, `GET /api/v1/admin/contact-messages/:id` et `PATCH /api/v1/admin/contact-messages/:id/status`) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
+* [x] Mettre en place une stratégie de tests backend en configurant Vitest et Supertest et en créant les premiers tests unitaires/d'intégration.
 
 ---
 
