@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import styles from "./page.module.css";
+import { API_BASE_URL } from "@/lib/api";
 
 interface OpeningHour {
   id?: string;
@@ -77,7 +77,7 @@ export default function AdminSettingsPage() {
     });
     const token = localStorage.getItem("admin_token");
     try {
-      const res = await fetch("/api/v1/admin/settings", {
+      const res = await fetch(`${API_BASE_URL}/admin/settings`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -179,7 +179,7 @@ export default function AdminSettingsPage() {
     };
 
     try {
-      const res = await fetch("/api/v1/admin/settings", {
+      const res = await fetch(`${API_BASE_URL}/admin/settings`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -200,158 +200,183 @@ export default function AdminSettingsPage() {
     }
   };
 
+  const inputClass = "w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-4 py-3 text-sm font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/40 transition-colors";
+  const labelClass = "block text-[10px] tracking-[0.3em] uppercase font-body text-[#c9a96e]/70 mb-2";
+
   return (
-    <div className={styles.container}>
-      <header className={styles.pageHeader}>
-        <h1>Réglages Généraux</h1>
-        <p className={styles.subtitle}>Configurez les informations publiques, horaires de service, réseaux sociaux et SEO.</p>
+    <div className="space-y-8">
+      {/* Page Header */}
+      <header className="pb-6 border-b border-[#c9a96e]/15">
+        <h1 className="font-display italic text-3xl text-[#f0e8d8]">Réglages Généraux</h1>
+        <p className="text-xs text-[#f0e8d8]/55 font-body mt-1">Configurez les informations publiques, horaires de service, réseaux sociaux et SEO.</p>
       </header>
 
-      {error && <div className={styles.errorBanner}>{error}</div>}
-      {success && <div className={styles.successBanner}>{success}</div>}
+      {error && (
+        <div className="p-4 bg-red-500/10 border-l-4 border-red-500 text-red-400 text-sm font-body">
+          {error}
+        </div>
+      )}
+      {success && (
+        <div className="p-4 bg-emerald-500/10 border-l-4 border-emerald-500 text-emerald-400 text-sm font-body">
+          {success}
+        </div>
+      )}
 
       {isLoading ? (
-        <div className={styles.loader}>Chargement des paramètres...</div>
+        <div className="text-[#f0e8d8]/40 animate-pulse text-sm text-center py-20 font-body">Chargement des paramètres...</div>
       ) : (
-        <form onSubmit={handleSubmit} className={styles.form}>
-          {/* Section: Restaurant Info */}
-          <section className={styles.card}>
-            <h2>Informations Générales</h2>
-            <div className={styles.grid}>
-              <div className={styles.field}>
-                <label htmlFor="restaurantName">Nom du restaurant</label>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Card 1: General Info */}
+          <section className="border border-[#c9a96e]/15 bg-[#141412] p-6 space-y-6">
+            <h2 className="font-display italic text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Informations Générales</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="restaurantName" className={labelClass}>Nom du restaurant *</label>
                 <input
                   id="restaurantName"
                   type="text"
                   value={restaurantName}
                   onChange={(e) => setRestaurantName(e.target.value)}
                   required
+                  className={inputClass}
                 />
               </div>
 
-              <div className={styles.field}>
-                <label htmlFor="phone">Téléphone</label>
+              <div>
+                <label htmlFor="phone" className={labelClass}>Téléphone</label>
                 <input
                   id="phone"
                   type="text"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  className={inputClass}
                 />
               </div>
 
-              <div className={styles.field}>
-                <label htmlFor="email">E-mail de contact</label>
+              <div>
+                <label htmlFor="email" className={labelClass}>E-mail de contact</label>
                 <input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className={inputClass}
                 />
               </div>
 
-              <div className={styles.field}>
-                <label htmlFor="defaultLocale">Langue par défaut</label>
+              <div>
+                <label htmlFor="defaultLocale" className={labelClass}>Langue par défaut</label>
                 <select
                   id="defaultLocale"
                   value={defaultLocale}
                   onChange={(e) => setDefaultLocale(e.target.value)}
+                  className={`${inputClass} bg-[#1e1e1b] cursor-pointer`}
                 >
                   <option value="fr">Français (FR)</option>
                   <option value="en">English (EN)</option>
                 </select>
               </div>
 
-              <div className={`${styles.field} ${styles.fullWidth}`}>
-                <label htmlFor="shortPresentation">Présentation courte</label>
+              <div className="md:col-span-2">
+                <label htmlFor="shortPresentation" className={labelClass}>Présentation courte</label>
                 <textarea
                   id="shortPresentation"
                   value={shortPresentation}
                   onChange={(e) => setShortPresentation(e.target.value)}
                   rows={2}
+                  className={`${inputClass} resize-none`}
                 />
               </div>
 
-              <div className={styles.field}>
-                <label htmlFor="addressLine1">Adresse (Ligne 1)</label>
+              <div>
+                <label htmlFor="addressLine1" className={labelClass}>Adresse (Ligne 1)</label>
                 <input
                   id="addressLine1"
                   type="text"
                   value={addressLine1}
                   onChange={(e) => setAddressLine1(e.target.value)}
+                  className={inputClass}
                 />
               </div>
 
-              <div className={styles.field}>
-                <label htmlFor="addressLine2">Complément d&apos;adresse</label>
+              <div>
+                <label htmlFor="addressLine2" className={labelClass}>Complément d&apos;adresse</label>
                 <input
                   id="addressLine2"
                   type="text"
                   value={addressLine2}
                   onChange={(e) => setAddressLine2(e.target.value)}
+                  className={inputClass}
                 />
               </div>
 
-              <div className={styles.field}>
-                <label htmlFor="postalCode">Code postal</label>
+              <div>
+                <label htmlFor="postalCode" className={labelClass}>Code postal</label>
                 <input
                   id="postalCode"
                   type="text"
                   value={postalCode}
                   onChange={(e) => setPostalCode(e.target.value)}
+                  className={inputClass}
                 />
               </div>
 
-              <div className={styles.field}>
-                <label htmlFor="city">Ville</label>
+              <div>
+                <label htmlFor="city" className={labelClass}>Ville</label>
                 <input
                   id="city"
                   type="text"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
+                  className={inputClass}
                 />
               </div>
 
-              <div className={`${styles.field} ${styles.fullWidth}`}>
-                <label htmlFor="googleMapsUrl">URL Google Maps (Itinéraire)</label>
+              <div className="md:col-span-2">
+                <label htmlFor="googleMapsUrl" className={labelClass}>URL Google Maps (Itinéraire)</label>
                 <input
                   id="googleMapsUrl"
                   type="text"
                   value={googleMapsUrl}
                   onChange={(e) => setGoogleMapsUrl(e.target.value)}
                   placeholder="https://maps.google.com/..."
+                  className={inputClass}
                 />
               </div>
             </div>
           </section>
 
-          {/* Section: Opening Hours */}
-          <section className={styles.card}>
-            <h2>Horaires d&apos;Ouverture</h2>
-            <p className={styles.sectionHelp}>Configurez les plages d&apos;ouverture hebdomadaires pour chaque jour.</p>
-            <div className={styles.hoursList}>
+          {/* Card 2: Opening Hours */}
+          <section className="border border-[#c9a96e]/15 bg-[#141412] p-6 space-y-6">
+            <h2 className="font-display italic text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Horaires d&apos;Ouverture</h2>
+            <p className="text-xs text-[#f0e8d8]/55 font-body">Configurez les plages d&apos;ouverture hebdomadaires pour chaque jour.</p>
+            <div className="space-y-4">
               {openingHours.map((oh, idx) => (
-                <div key={oh.dayOfWeek} className={styles.hourRow}>
-                  <span className={styles.dayName}>{DAYS_OF_WEEK[oh.dayOfWeek]}</span>
-                  <div className={styles.hourInputs}>
+                <div key={oh.dayOfWeek} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-3 bg-[#1e1e1b]/30 border border-[#c9a96e]/5">
+                  <span className="font-semibold text-sm w-28 text-[#f0e8d8]">{DAYS_OF_WEEK[oh.dayOfWeek]}</span>
+                  <div className="flex items-center gap-3">
                     <input
                       type="time"
                       value={oh.opensAt || "12:00"}
                       onChange={(e) => handleHourChange(idx, "opensAt", e.target.value)}
                       disabled={oh.isClosed}
+                      className="bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-3 py-1.5 text-xs focus:outline-none focus:border-[#c9a96e]/40 [color-scheme:dark] disabled:opacity-40"
                     />
-                    <span className={styles.hourSep}>à</span>
+                    <span className="text-xs text-[#f0e8d8]/40">à</span>
                     <input
                       type="time"
                       value={oh.closesAt || "23:00"}
                       onChange={(e) => handleHourChange(idx, "closesAt", e.target.value)}
                       disabled={oh.isClosed}
+                      className="bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-3 py-1.5 text-xs focus:outline-none focus:border-[#c9a96e]/40 [color-scheme:dark] disabled:opacity-40"
                     />
                   </div>
-                  <label className={styles.closedCheckbox}>
+                  <label className="flex items-center gap-2 text-xs font-body cursor-pointer text-[#f0e8d8]/75 select-none w-20">
                     <input
                       type="checkbox"
                       checked={oh.isClosed}
                       onChange={(e) => handleHourChange(idx, "isClosed", e.target.checked)}
+                      className="h-4 w-4 bg-[#1e1e1b] border border-[#c9a96e]/20 text-[#c9a96e] focus:ring-[#c9a96e]/50 focus:ring-opacity-25"
                     />
                     Fermé
                   </label>
@@ -360,73 +385,81 @@ export default function AdminSettingsPage() {
             </div>
           </section>
 
-          {/* Section: Social Links */}
-          <section className={styles.card}>
-            <h2>Réseaux Sociaux</h2>
-            <div className={styles.grid}>
-              <div className={styles.field}>
-                <label htmlFor="fb-url">Facebook (URL)</label>
+          {/* Card 3: Social Links */}
+          <section className="border border-[#c9a96e]/15 bg-[#141412] p-6 space-y-6">
+            <h2 className="font-display italic text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Réseaux Sociaux</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="fb-url" className={labelClass}>Facebook (URL)</label>
                 <input
                   id="fb-url"
                   type="text"
                   value={facebookUrl}
                   onChange={(e) => setFacebookUrl(e.target.value)}
                   placeholder="https://facebook.com/..."
+                  className={inputClass}
                 />
               </div>
 
-              <div className={styles.field}>
-                <label htmlFor="ig-url">Instagram (URL)</label>
+              <div>
+                <label htmlFor="ig-url" className={labelClass}>Instagram (URL)</label>
                 <input
                   id="ig-url"
                   type="text"
                   value={instagramUrl}
                   onChange={(e) => setInstagramUrl(e.target.value)}
                   placeholder="https://instagram.com/..."
+                  className={inputClass}
                 />
               </div>
             </div>
           </section>
 
-          {/* Section: SEO Metadata */}
-          <section className={styles.card}>
-            <h2>Référencement &amp; SEO</h2>
-            <p className={styles.sectionHelp}>Modifiez les balises Title, Meta Description et Keywords de chaque page.</p>
-            <div className={styles.seoList}>
+          {/* Card 4: SEO Metadata */}
+          <section className="border border-[#c9a96e]/15 bg-[#141412] p-6 space-y-6">
+            <h2 className="font-display italic text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Référencement &amp; SEO</h2>
+            <p className="text-xs text-[#f0e8d8]/55 font-body">Modifiez les balises Title, Meta Description et Keywords de chaque page.</p>
+            <div className="space-y-6">
               {seoList.map((seo, idx) => (
-                <div key={seo.route} className={styles.seoPageCard}>
-                  <h3>Page : {DEFAULT_SEO_PAGES.find((p) => p.route === seo.route)?.label || seo.route} <code>({seo.route})</code></h3>
-                  <div className={styles.grid}>
-                    <div className={`${styles.field} ${styles.fullWidth}`}>
-                      <label htmlFor={`seo-title-${idx}`}>Titre de la Page (Title tag)</label>
+                <div key={seo.route} className="bg-[#1e1e1b]/30 border border-[#c9a96e]/10 p-5 space-y-4">
+                  <h3 className="font-display italic text-lg text-[#f0e8d8] border-b border-[#c9a96e]/5 pb-2">
+                    Page : {DEFAULT_SEO_PAGES.find((p) => p.route === seo.route)?.label || seo.route}{" "}
+                    <code className="text-xs font-mono text-[#c9a96e] bg-[#141412] px-2 py-0.5 ml-2 border border-[#c9a96e]/10">({seo.route})</code>
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor={`seo-title-${idx}`} className={labelClass}>Titre de la Page (Title tag) *</label>
                       <input
                         id={`seo-title-${idx}`}
                         type="text"
                         value={seo.title}
                         onChange={(e) => handleSeoChange(idx, "title", e.target.value)}
                         required
+                        className={inputClass}
                       />
                     </div>
 
-                    <div className={`${styles.field} ${styles.fullWidth}`}>
-                      <label htmlFor={`seo-desc-${idx}`}>Meta Description</label>
+                    <div>
+                      <label htmlFor={`seo-desc-${idx}`} className={labelClass}>Meta Description *</label>
                       <textarea
                         id={`seo-desc-${idx}`}
                         value={seo.metaDescription}
                         onChange={(e) => handleSeoChange(idx, "metaDescription", e.target.value)}
                         rows={2}
                         required
+                        className={`${inputClass} resize-none`}
                       />
                     </div>
 
-                    <div className={`${styles.field} ${styles.fullWidth}`}>
-                      <label htmlFor={`seo-keywords-${idx}`}>Mots-clés locaux (séparés par des virgules)</label>
+                    <div>
+                      <label htmlFor={`seo-keywords-${idx}`} className={labelClass}>Mots-clés locaux (séparés par des virgules)</label>
                       <input
                         id={`seo-keywords-${idx}`}
                         type="text"
                         value={seo.localKeywords || ""}
                         onChange={(e) => handleSeoChange(idx, "localKeywords", e.target.value)}
                         placeholder="ex: restaurant, lyon, celestins, terrasse"
+                        className={inputClass}
                       />
                     </div>
                   </div>
@@ -435,8 +468,12 @@ export default function AdminSettingsPage() {
             </div>
           </section>
 
-          <div className={styles.formSubmitBar}>
-            <button type="submit" className={styles.btnSave}>
+          {/* Submission Bar */}
+          <div className="pt-4 flex justify-end">
+            <button
+              type="submit"
+              className="px-8 py-4 bg-[#c9a96e] text-[#0b0b09] text-xs font-semibold tracking-widest uppercase hover:bg-[#dbbe86] active:bg-[#b8924a] transition-all cursor-pointer border-0 w-full sm:w-auto"
+            >
               Enregistrer tous les Réglages
             </button>
           </div>

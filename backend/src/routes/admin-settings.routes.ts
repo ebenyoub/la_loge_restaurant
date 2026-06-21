@@ -6,9 +6,9 @@ import { requireRole } from "../middlewares/role.middleware.js";
 
 export const adminSettingsRouter = Router();
 
-// Apply auth and role protection globally
-adminSettingsRouter.use(authMiddleware);
-adminSettingsRouter.use(requireRole(["gerant", "editeur"]));
+// Scope authentication to admin paths so public routes remain accessible.
+adminSettingsRouter.use("/api/v1/admin", authMiddleware);
+adminSettingsRouter.use("/api/v1/admin", requireRole(["gerant", "editeur"]));
 
 adminSettingsRouter.get("/api/v1/admin/settings", getSettings);
 adminSettingsRouter.patch("/api/v1/admin/settings", validateUpdateSettings, updateSettings);

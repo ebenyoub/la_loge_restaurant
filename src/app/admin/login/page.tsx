@@ -2,7 +2,17 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./page.module.css";
+import { API_BASE_URL } from "@/lib/api";
+
+function GoldLine() {
+  return (
+    <div className="flex items-center gap-3 justify-center mb-6">
+      <div className="h-px w-8 bg-[#c9a96e]/30" />
+      <div className="w-1 h-1 rotate-45 bg-[#c9a96e]/50" />
+      <div className="h-px w-8 bg-[#c9a96e]/30" />
+    </div>
+  );
+}
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -17,7 +27,7 @@ export default function AdminLoginPage() {
     setError(null);
 
     try {
-      const response = await fetch("/api/v1/admin/login", {
+      const response = await fetch(`${API_BASE_URL}/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +48,7 @@ export default function AdminLoginPage() {
         // Set a cookie so middleware or server components could potentially read it if needed later
         document.cookie = `admin_token=${token}; path=/; max-age=28800; SameSite=Strict; Secure`;
 
-        // Redirect to admin reservation dashboard (even if route is not implemented yet, redirection target is here)
+        // Redirect to admin reservation dashboard
         router.push("/admin/reservations");
       }
     } catch {
@@ -48,23 +58,27 @@ export default function AdminLoginPage() {
     }
   };
 
+  const inputClass = "w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-4 py-3 text-sm font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/50 transition-colors";
+  const labelClass = "block text-[10px] tracking-[0.3em] uppercase font-body text-[#c9a96e]/70 mb-2";
+
   return (
-    <div className={styles.container}>
-      <section className={styles.loginCard} aria-labelledby="login-title">
-        <div className={styles.header}>
-          <p className={styles.eyebrow}>Espace Administration</p>
-          <h1 id="login-title">La Loge Bar &amp; Food</h1>
+    <div className="min-h-screen bg-[#0b0b09] flex items-center justify-center px-6 py-12 text-[#f0e8d8] font-body">
+      <section className="max-w-md w-full border border-[#c9a96e]/15 bg-[#141412] p-8 md:p-10" aria-labelledby="login-title">
+        <div className="text-center mb-8">
+          <p className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e]/70 font-body mb-2">Espace Administration</p>
+          <h1 id="login-title" className="font-display italic text-3xl text-[#f0e8d8] mb-4">La Loge Bar &amp; Food</h1>
+          <GoldLine />
         </div>
 
         {error && (
-          <div className={styles.errorBlock} role="alert">
+          <div className="p-4 mb-6 bg-red-500/10 border-l-4 border-red-500 text-red-400 text-sm font-body" role="alert">
             <p>{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.field}>
-            <label htmlFor="email">Adresse e-mail</label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="email" className={labelClass}>Adresse e-mail</label>
             <input
               id="email"
               type="email"
@@ -74,11 +88,12 @@ export default function AdminLoginPage() {
               required
               autoComplete="email"
               disabled={isLoading}
+              className={inputClass}
             />
           </div>
 
-          <div className={styles.field}>
-            <label htmlFor="password">Mot de passe</label>
+          <div>
+            <label htmlFor="password" className={labelClass}>Mot de passe</label>
             <input
               id="password"
               type="password"
@@ -88,10 +103,15 @@ export default function AdminLoginPage() {
               required
               autoComplete="current-password"
               disabled={isLoading}
+              className={inputClass}
             />
           </div>
 
-          <button type="submit" className={styles.submitBtn} disabled={isLoading}>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-4 bg-[#c9a96e] text-[#0b0b09] text-[11px] tracking-[0.3em] uppercase font-body font-semibold hover:bg-[#dbbe86] active:bg-[#b8924a] transition-all cursor-pointer border-0"
+          >
             {isLoading ? "Connexion en cours..." : "Se connecter"}
           </button>
         </form>

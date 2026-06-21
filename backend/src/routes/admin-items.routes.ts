@@ -15,9 +15,9 @@ import { requireRole } from "../middlewares/role.middleware.js";
 
 export const adminItemsRouter = Router();
 
-// Apply auth and role protection globally
-adminItemsRouter.use(authMiddleware);
-adminItemsRouter.use(requireRole(["gerant", "editeur"]));
+// Scope authentication to admin paths so public routes remain accessible.
+adminItemsRouter.use("/api/v1/admin", authMiddleware);
+adminItemsRouter.use("/api/v1/admin", requireRole(["gerant", "editeur"]));
 
 adminItemsRouter.get("/api/v1/admin/menu-items", listMenuItems);
 adminItemsRouter.get("/api/v1/admin/menu-items/:id", getMenuItem);

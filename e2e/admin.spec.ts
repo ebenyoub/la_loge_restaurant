@@ -334,7 +334,7 @@ test.describe("Admin MVP Frontend Tests", () => {
     await expect(page.locator("td:has-text('Plats')").first()).toBeVisible();
 
     // Create Category
-    await page.click("text=+ Ajouter une Catégorie");
+    await page.click("text=+ Ajouter une Section");
     await page.fill('input[id="cat-name"]', "Desserts");
     await page.fill('input[id="cat-slug"]', "desserts");
     await page.fill('textarea[id="cat-desc"]', "Douceurs sucrées");

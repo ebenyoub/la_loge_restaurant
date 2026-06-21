@@ -13,9 +13,9 @@ import { requireRole } from "../middlewares/role.middleware.js";
 
 export const adminContactsRouter = Router();
 
-// Apply auth and role protection globally on all admin contacts routes
-adminContactsRouter.use(authMiddleware);
-adminContactsRouter.use(requireRole(["gerant", "editeur"]));
+// Scope authentication to admin paths so public routes remain accessible.
+adminContactsRouter.use("/api/v1/admin", authMiddleware);
+adminContactsRouter.use("/api/v1/admin", requireRole(["gerant", "editeur"]));
 
 adminContactsRouter.get("/api/v1/admin/contact-messages", validateListContactMessages, listContactMessages);
 adminContactsRouter.get("/api/v1/admin/contact-messages/:id", getContactMessage);

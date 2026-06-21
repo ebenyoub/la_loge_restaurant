@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import styles from "./page.module.css";
+import { API_BASE_URL } from "@/lib/api";
+import { useSettings, usePageSeo } from "@/components/settings-context";
 
 interface FormErrors {
   global?: string;
@@ -18,7 +19,29 @@ interface FormErrors {
   consent?: string;
 }
 
+function GoldLine() {
+  return (
+    <div className="flex items-center gap-4 justify-center">
+      <div className="h-px flex-1 max-w-16 bg-[#c9a96e]/40" />
+      <div className="w-1.5 h-1.5 rotate-45 bg-[#c9a96e]/60" />
+      <div className="h-px flex-1 max-w-16 bg-[#c9a96e]/40" />
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col items-center gap-3 mb-10">
+      <GoldLine />
+      <span className="text-[10px] tracking-[0.5em] uppercase text-[#c9a96e] font-body">
+        {children}
+      </span>
+    </div>
+  );
+}
+
 export default function ReservationPage() {
+  const { settings } = useSettings();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -26,7 +49,7 @@ export default function ReservationPage() {
     email: "",
     requestedDate: "",
     requestedTime: "",
-    guestCount: 1,
+    guestCount: 2,
     occasion: "",
     message: "",
     consent: false,
@@ -35,6 +58,13 @@ export default function ReservationPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  // Dynamic SEO from database
+  usePageSeo(
+    "/reservation",
+    settings?.restaurantName ? `${settings.restaurantName} - Réservations` : "La Loge Bar & Food - Réservations",
+    "Demandez une table en ligne pour votre déjeuner, dîner ou événement spécial."
+  );
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -45,7 +75,6 @@ export default function ReservationPage() {
       ...prev,
       [name]: val,
     }));
-    // Clear validation error on field change
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({
         ...prev,
@@ -60,7 +89,6 @@ export default function ReservationPage() {
     setErrors({});
     setSuccessMessage(null);
 
-    // Frontend validation checklist before sending
     const fieldsErrors: FormErrors = {};
     if (!formData.firstName.trim()) fieldsErrors.firstName = "Le prénom est requis.";
     if (!formData.lastName.trim()) fieldsErrors.lastName = "Le nom est requis.";
@@ -77,10 +105,9 @@ export default function ReservationPage() {
     }
 
     try {
-      // Map occasion from dash to underscore format required by backend Prisma enum
       const occasionMapped = formData.occasion === "repas-pro" ? "repas_pro" : formData.occasion || null;
 
-      const response = await fetch("/api/v1/reservations", {
+      const response = await fetch(`${API_BASE_URL}/reservations`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,7 +138,6 @@ export default function ReservationPage() {
         }
       } else {
         setSuccessMessage(result.data.message || "Votre demande de réservation a bien été envoyée !");
-        // Reset form
         setFormData({
           firstName: "",
           lastName: "",
@@ -119,7 +145,7 @@ export default function ReservationPage() {
           email: "",
           requestedDate: "",
           requestedTime: "",
-          guestCount: 1,
+          guestCount: 2,
           occasion: "",
           message: "",
           consent: false,
@@ -134,236 +160,257 @@ export default function ReservationPage() {
     }
   };
 
-  return (
-    <div className={styles.page}>
-      <section className={`${styles.section} ${styles.introduction}`} aria-labelledby="reservation-title">
-        <p className={styles.notice}>Contenu provisoire à valider avec le restaurant</p>
-        <p className={styles.eyebrow}>La Loge Bar &amp; Food · Lyon</p>
-        <h1 id="reservation-title">Demandez votre réservation</h1>
-        <p className={styles.lead}>
-          Indiquez les informations utiles à votre venue. La Loge traite ensuite chaque demande
-          avant de confirmer une table.
-        </p>
-        <p className={styles.confirmationNotice}>
-          <strong>Important :</strong> votre demande de réservation reste en attente de
-          confirmation par le restaurant.
-        </p>
-      </section>
+  const restaurantName = settings?.restaurantName || "La Loge Bar & Food";
+  const phoneText = settings?.phone || "04 78 00 00 00";
+  const emailText = settings?.email || "contact@laloge-lyon.fr";
 
-      <section className={`${styles.section} ${styles.formSection}`} aria-labelledby="form-title">
-        <div className={styles.sectionHeading}>
+  const inputClass = "w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-4 py-3.5 text-sm font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/50 transition-colors duration-200";
+  const labelClass = "block text-[10px] tracking-[0.4em] uppercase font-body text-[#c9a96e]/70 mb-2";
+
+  return (
+    <div className="min-h-screen pt-[72px] bg-[#0b0b09] text-[#f0e8d8] font-body">
+      {/* Introduction Header */}
+      <div className="relative py-20 lg:py-28 px-6 text-center overflow-hidden bg-[#0e0e0c]">
+        <div className="absolute inset-0 opacity-[0.05]"
+          style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #c9a96e 0%, transparent 70%)" }}
+        />
+        <div className="relative z-10 max-w-2xl mx-auto">
+          <SectionLabel>Table disponible</SectionLabel>
+          <h1 className="font-display italic text-[clamp(2.5rem,6vw,4.5rem)] text-[#f0e8d8]">
+            Réserver une table
+          </h1>
+          <p className="mt-4 text-[#f0e8d8]/45 font-body font-light text-sm leading-relaxed max-w-md mx-auto">
+            Indiquez les informations utiles à votre venue. {restaurantName} traite ensuite chaque demande avant de confirmer une table.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-2xl mx-auto px-6 py-16">
+        {/* Pending Notice Banner */}
+        <div className="flex gap-3 bg-[#c9a96e]/8 border border-[#c9a96e]/25 p-5 mb-10">
+          <svg className="w-5 h-5 text-[#c9a96e] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
           <div>
-            <h2 id="form-title">Votre demande</h2>
+            <p className="text-[#c9a96e] text-sm font-body font-medium mb-1">
+              Demande de réservation en attente de confirmation
+            </p>
+            <p className="text-[#f0e8d8]/55 text-xs font-body font-light leading-relaxed">
+              Votre demande sera confirmée par {restaurantName} après vérification des disponibilités. Nous vous contacterons dans les meilleurs délais par téléphone ou email.
+            </p>
           </div>
         </div>
 
         {successMessage && (
-          <div className={styles.successBlock} style={{ padding: "1rem", margin: "1rem 0", backgroundColor: "rgba(16, 185, 129, 0.1)", borderLeft: "4px solid #10b981", color: "#10b981", borderRadius: "4px" }}>
-            <p>{successMessage}</p>
+          <div className="p-6 mb-10 border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 text-center rounded-sm">
+            <svg className="w-10 h-10 text-emerald-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h2 className="font-display italic text-2xl text-[#f0e8d8] mb-3">Demande envoyée</h2>
+            <p className="text-sm font-body font-light leading-relaxed max-w-sm mx-auto">
+              {successMessage}
+            </p>
           </div>
         )}
 
         {errors.global && (
-          <div className={styles.errorBlock} style={{ padding: "1rem", margin: "1rem 0", backgroundColor: "rgba(239, 68, 68, 0.1)", borderLeft: "4px solid #ef4444", color: "#ef4444", borderRadius: "4px" }}>
-            <p>{errors.global}</p>
+          <div className="p-4 mb-6 bg-red-500/10 border-l-4 border-red-500 text-red-400 text-sm font-body">
+            {errors.global}
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <fieldset className={styles.formFields} disabled={isLoading}>
-            <fieldset className={styles.fieldGroup}>
-              <legend>Vos coordonnées</legend>
-              <div className={styles.fieldGrid}>
-                <p className={styles.field}>
-                  <label htmlFor="lastName">Nom *</label>
-                  <input
-                    id="lastName"
-                    name="lastName"
-                    type="text"
-                    autoComplete="family-name"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.lastName && <span style={{ color: "#ef4444", fontSize: "0.85rem", marginTop: "0.25rem", display: "block" }}>{errors.lastName}</span>}
+        {!successMessage && (
+          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+            <fieldset disabled={isLoading} className="space-y-6">
+              {/* Coordonnées */}
+              <div className="border border-[#c9a96e]/10 p-6 bg-[#141412]/30 space-y-5">
+                <p className="text-[10px] tracking-[0.3em] uppercase text-[#c9a96e]/80 font-body border-b border-[#c9a96e]/10 pb-2">
+                  Vos coordonnées
                 </p>
-                <p className={styles.field}>
-                  <label htmlFor="firstName">Prénom *</label>
-                  <input
-                    id="firstName"
-                    name="firstName"
-                    type="text"
-                    autoComplete="given-name"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.firstName && <span style={{ color: "#ef4444", fontSize: "0.85rem", marginTop: "0.25rem", display: "block" }}>{errors.firstName}</span>}
-                </p>
-                <p className={styles.field}>
-                  <label htmlFor="phone">Téléphone *</label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.phone && <span style={{ color: "#ef4444", fontSize: "0.85rem", marginTop: "0.25rem", display: "block" }}>{errors.phone}</span>}
-                </p>
-                <p className={styles.field}>
-                  <label htmlFor="email">E-mail *</label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.email && <span style={{ color: "#ef4444", fontSize: "0.85rem", marginTop: "0.25rem", display: "block" }}>{errors.email}</span>}
-                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="lastName" className={labelClass}>Nom *</label>
+                    <input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      required
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      placeholder="Dupont"
+                      className={inputClass}
+                    />
+                    {errors.lastName && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.lastName}</span>}
+                  </div>
+                  <div>
+                    <label htmlFor="firstName" className={labelClass}>Prénom *</label>
+                    <input
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      required
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      placeholder="Marie"
+                      className={inputClass}
+                    />
+                    {errors.firstName && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.firstName}</span>}
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="phone" className={labelClass}>Téléphone *</label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="06 00 00 00 00"
+                      className={inputClass}
+                    />
+                    {errors.phone && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.phone}</span>}
+                  </div>
+                  <div>
+                    <label htmlFor="email" className={labelClass}>Email *</label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="marie@email.fr"
+                      className={inputClass}
+                    />
+                    {errors.email && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.email}</span>}
+                  </div>
+                </div>
               </div>
-            </fieldset>
 
-            <fieldset className={styles.fieldGroup}>
-              <legend>Votre demande</legend>
-              <div className={styles.fieldGrid}>
-                <p className={styles.field}>
-                  <label htmlFor="requestedDate">Date souhaitée *</label>
-                  <input
-                    id="requestedDate"
-                    name="requestedDate"
-                    type="date"
-                    value={formData.requestedDate}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.requestedDate && <span style={{ color: "#ef4444", fontSize: "0.85rem", marginTop: "0.25rem", display: "block" }}>{errors.requestedDate}</span>}
+              {/* Détails Demande */}
+              <div className="border border-[#c9a96e]/10 p-6 bg-[#141412]/30 space-y-5">
+                <p className="text-[10px] tracking-[0.3em] uppercase text-[#c9a96e]/80 font-body border-b border-[#c9a96e]/10 pb-2">
+                  Détails de la réservation
                 </p>
-                <p className={styles.field}>
-                  <label htmlFor="requestedTime">Heure souhaitée *</label>
-                  <input
-                    id="requestedTime"
-                    name="requestedTime"
-                    type="time"
-                    value={formData.requestedTime}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.requestedTime && <span style={{ color: "#ef4444", fontSize: "0.85rem", marginTop: "0.25rem", display: "block" }}>{errors.requestedTime}</span>}
-                </p>
-                <p className={styles.field}>
-                  <label htmlFor="guestCount">Nombre de personnes *</label>
-                  <input
-                    id="guestCount"
-                    name="guestCount"
-                    type="number"
-                    min="1"
-                    inputMode="numeric"
-                    value={formData.guestCount}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.guestCount && <span style={{ color: "#ef4444", fontSize: "0.85rem", marginTop: "0.25rem", display: "block" }}>{errors.guestCount}</span>}
-                </p>
-                <p className={styles.field}>
-                  <label htmlFor="occasion">Occasion spéciale <span>(facultatif)</span></label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                  <div>
+                    <label htmlFor="requestedDate" className={labelClass}>Date souhaitée *</label>
+                    <input
+                      id="requestedDate"
+                      name="requestedDate"
+                      type="date"
+                      required
+                      value={formData.requestedDate}
+                      onChange={handleChange}
+                      className={`${inputClass} [color-scheme:dark]`}
+                    />
+                    {errors.requestedDate && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.requestedDate}</span>}
+                  </div>
+                  <div>
+                    <label htmlFor="requestedTime" className={labelClass}>Heure *</label>
+                    <input
+                      id="requestedTime"
+                      name="requestedTime"
+                      type="time"
+                      required
+                      value={formData.requestedTime}
+                      onChange={handleChange}
+                      className={`${inputClass} [color-scheme:dark]`}
+                    />
+                    {errors.requestedTime && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.requestedTime}</span>}
+                  </div>
+                  <div>
+                    <label htmlFor="guestCount" className={labelClass}>Personnes *</label>
+                    <input
+                      id="guestCount"
+                      name="guestCount"
+                      type="number"
+                      min="1"
+                      required
+                      value={formData.guestCount}
+                      onChange={handleChange}
+                      className={inputClass}
+                    />
+                    {errors.guestCount && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.guestCount}</span>}
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="occasion" className={labelClass}>Occasion spéciale</label>
                   <select
                     id="occasion"
                     name="occasion"
                     value={formData.occasion}
                     onChange={handleChange}
+                    className={`${inputClass} appearance-none cursor-pointer bg-[#1e1e1b]`}
                   >
-                    <option value="">Choisir une occasion</option>
+                    <option value="">Aucune occasion particulière</option>
                     <option value="anniversaire">Anniversaire</option>
-                    <option value="repas-pro">Repas professionnel</option>
-                    <option value="groupe">Groupe</option>
-                    <option value="autre">Autre</option>
+                    <option value="repas-pro">Repas d&apos;affaires / Professionnel</option>
+                    <option value="groupe">Groupe / Fête</option>
+                    <option value="autre">Autre occasion spéciale</option>
                   </select>
-                  {errors.occasion && <span style={{ color: "#ef4444", fontSize: "0.85rem", marginTop: "0.25rem", display: "block" }}>{errors.occasion}</span>}
-                </p>
+                  {errors.occasion && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.occasion}</span>}
+                </div>
+                <div>
+                  <label htmlFor="message" className={labelClass}>Message particulier (facultatif)</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Allergies, spécificités, table calme..."
+                    className={`${inputClass} resize-none`}
+                  />
+                  {errors.message && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.message}</span>}
+                </div>
               </div>
-              <p className={styles.field}>
-                <label htmlFor="message">Message <span>(facultatif)</span></label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={handleChange}
-                />
-                {errors.message && <span style={{ color: "#ef4444", fontSize: "0.85rem", marginTop: "0.25rem", display: "block" }}>{errors.message}</span>}
-              </p>
-              <p className={styles.consent}>
-                <input
-                  id="consent"
-                  name="consent"
-                  type="checkbox"
-                  checked={formData.consent}
-                  onChange={handleChange}
-                  required
-                />
-                <label htmlFor="consent">
-                  J&apos;accepte que mes informations soient utilisées pour traiter ma demande de
-                  réservation. <span>*</span>
-                </label>
-                {errors.consent && <span style={{ color: "#ef4444", fontSize: "0.85rem", marginTop: "0.25rem", display: "block" }}>{errors.consent}</span>}
-              </p>
+
+              {/* Consentement & Submit */}
+              <div className="space-y-4">
+                <div className="flex items-start gap-3 py-2">
+                  <input
+                    id="consent"
+                    name="consent"
+                    type="checkbox"
+                    checked={formData.consent}
+                    onChange={handleChange}
+                    required
+                    className="mt-1 h-4 w-4 bg-[#1e1e1b] border border-[#c9a96e]/20 text-[#c9a96e] focus:ring-[#c9a96e]/50 focus:ring-opacity-25"
+                  />
+                  <label htmlFor="consent" className="text-xs text-[#f0e8d8]/60 leading-tight select-none">
+                    J&apos;accepte que mes coordonnées soient utilisées par {restaurantName} pour traiter ma demande de réservation. *
+                  </label>
+                </div>
+                {errors.consent && <span className="text-red-400 text-[11px] font-body block">{errors.consent}</span>}
+
+                <button
+                  type="submit"
+                  className="w-full py-4 bg-[#c9a96e] text-[#0b0b09] text-[11px] tracking-[0.3em] uppercase font-body font-semibold hover:bg-[#dbbe86] transition-colors"
+                >
+                  Envoyer ma demande de réservation
+                </button>
+              </div>
             </fieldset>
+          </form>
+        )}
 
-            <button className={styles.submitAction} type="submit" disabled={isLoading}>
-              {isLoading ? "Envoi en cours..." : "Envoyer ma demande de réservation"}
-            </button>
-          </fieldset>
-        </form>
-      </section>
-
-      <section className={`${styles.section} ${styles.urgentSection}`} aria-labelledby="urgent-title">
-        <p className={styles.notice}>Informations et coordonnées à valider</p>
-        <h2 id="urgent-title">Besoin urgent ?</h2>
-        <p>
-          Pour une demande de dernière minute, contactez directement le restaurant. Les
-          coordonnées de contact seront publiées après validation par La Loge.
-        </p>
-        <Link className={styles.secondaryAction} href="/contact">
-          Contact &amp; accès
-        </Link>
-      </section>
-
-      <section className={styles.section} aria-labelledby="information-title">
-        <p className={styles.notice}>Informations provisoires à valider</p>
-        <h2 id="information-title">Informations utiles</h2>
-        <dl className={styles.informationList}>
+        {/* Urgence */}
+        <div className="mt-12 pt-10 border-t border-[#c9a96e]/12 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <dt>Confirmation</dt>
-            <dd>Aucune table n&apos;est confirmée immédiatement après l&apos;envoi d&apos;une demande.</dd>
+            <p className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e]/60 font-body mb-1">Besoin d&apos;une réponse urgente ?</p>
+            <p className="text-[#f0e8d8]/45 text-sm font-body font-light">Tél : {phoneText} · Email : {emailText}</p>
           </div>
-          <div>
-            <dt>Délai de réponse</dt>
-            <dd>Le délai de traitement sera précisé par le restaurant avant publication.</dd>
-          </div>
-          <div>
-            <dt>Annulation</dt>
-            <dd>Les conditions d&apos;annulation et de modification restent à confirmer.</dd>
-          </div>
-          <div>
-            <dt>Accès</dt>
-            <dd>L&apos;adresse, les horaires et les indications pratiques sont à valider.</dd>
-          </div>
-        </dl>
-      </section>
-
-      <section className={`${styles.section} ${styles.finalCta}`} aria-labelledby="contact-title">
-        <h2 id="contact-title">Une question avant votre demande ?</h2>
-        <p>Consultez les informations de contact et d&apos;accès de La Loge.</p>
-        <Link className={styles.secondaryAction} href="/contact">
-          Contact &amp; accès
-        </Link>
-      </section>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-[#c9a96e]/35 text-[#c9a96e] text-xs uppercase tracking-wider font-body hover:bg-[#c9a96e] hover:text-[#0b0b09] transition-all"
+          >
+            Contact &amp; Accès
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

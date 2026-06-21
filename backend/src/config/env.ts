@@ -32,6 +32,7 @@ export const env = {
   smtpPass: process.env.SMTP_PASS ?? process.env.EMAIL_PROVIDER_API_KEY,
   emailFrom: process.env.EMAIL_FROM,
   restaurantNotificationEmail: process.env.RESTAURANT_NOTIFICATION_EMAIL,
+  corsOrigin: process.env.CORS_ORIGIN,
 };
 
 export function requireDatabaseConfiguration() {

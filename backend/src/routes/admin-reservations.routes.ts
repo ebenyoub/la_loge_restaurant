@@ -15,9 +15,9 @@ import { requireRole } from "../middlewares/role.middleware.js";
 
 export const adminReservationsRouter = Router();
 
-// Apply auth and role protection globally on all admin reservation routes
-adminReservationsRouter.use(authMiddleware);
-adminReservationsRouter.use(requireRole("gerant"));
+// Scope authentication to admin paths so public routes remain accessible.
+adminReservationsRouter.use("/api/v1/admin", authMiddleware);
+adminReservationsRouter.use("/api/v1/admin", requireRole("gerant"));
 
 adminReservationsRouter.get("/api/v1/admin/reservations", validateListReservations, listReservations);
 adminReservationsRouter.get("/api/v1/admin/reservations/:id", getReservation);
