@@ -1,6 +1,6 @@
 # État du projet — La Loge Bar & Food
 
-**Dernière mise à jour :** 20 juin 2026  
+**Dernière mise à jour :** 21 juin 2026  
 **Phase :** Socle technique, base de données, APIs publiques, intégration des formulaires publics, routes d'administration backend et interface d'administration MVP frontend (login, réservations, contacts) opérationnels.
 
 ## 1. État réel actuel du projet
@@ -36,7 +36,7 @@
 | Architecture CSS | Validé | Les CSS Modules sont conservés jusqu'à la fin du MVP public. Tailwind reste configuré pour le socle technique ; aucune migration des styles existants n'est engagée avant le refactor UI après MVP. |
 | Schéma de données MVP | Migré | Traduit dans `backend/prisma/schema.prisma` et migré sur MySQL local via `prisma migrate dev`. |
 | Architecture backend MVP | Routes d'administration backend complètes | MySQL, Prisma, Express, bcrypt et JWT. Les routes d'administration des réservations, de la carte, des réglages généraux et des messages de contact sont opérationnelles et protégées par rôle. |
-| Stratégie de tests backend | Opérationnelle | Vitest configuré avec Supertest, mock automatique de Prisma pour isoler les tests de base de données. Tests d'API passants sur health, validations, authentification et protection de routes. |
+| Stratégie de tests backend | Opérationnelle | Vitest configuré avec Supertest, mock complet de Prisma. 43 tests passants couvrant 100% des routes publiques et d'administration (cas nominaux, erreurs d'auth, validations et IDs inexistants). |
 | Stratégie de tests frontend | Opérationnelle | Playwright configuré pour des tests E2E locaux. Les appels d'API sont mockés afin de pouvoir exécuter et valider l'authentification et les dashboards en isolation. |
 | Contrats d'API MVP | Documenté | `docs/api-contracts.md` définit les requêtes, réponses, validations, statuts HTTP et règles RGPD des flux Réservation et Contact. |
 | Prérequis backend MVP | Documenté | `docs/backend-prerequisites.md` liste les décisions critiques de secrets, hébergement, MySQL, authentification, e-mail, RGPD, risques et validation avant installation. |

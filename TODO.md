@@ -42,6 +42,7 @@
 - [x] Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend with E2E tests.
 
 - [x] Implémenter l'envoi d'e-mails transactionnels côté backend (notifications de nouvelle demande pour le gérant et accusé de réception pour le client) avec Nodemailer/SMTP.
+- [x] Renforcer les tests d'intégration backend (Vitest + Supertest) sur l'ensemble des routes admin (reservations, contacts, carte, settings, validations et cas d'erreurs).
 
 ## Prochaine tâche proposée — à valider
 
