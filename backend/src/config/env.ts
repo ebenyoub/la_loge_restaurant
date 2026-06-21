@@ -28,10 +28,10 @@ export const env = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? "8h",
   smtpHost: process.env.SMTP_HOST ?? "smtp-relay.brevo.com",
   smtpPort: Number(process.env.SMTP_PORT ?? "587"),
-  smtpUser: process.env.SMTP_USER ?? "",
-  smtpPass: process.env.SMTP_PASS ?? process.env.EMAIL_PROVIDER_API_KEY ?? "",
-  emailFrom: process.env.EMAIL_FROM ?? "no-reply@laloge.fr",
-  restaurantNotificationEmail: process.env.RESTAURANT_NOTIFICATION_EMAIL ?? "manager@laloge.fr",
+  smtpUser: process.env.SMTP_USER,
+  smtpPass: process.env.SMTP_PASS ?? process.env.EMAIL_PROVIDER_API_KEY,
+  emailFrom: process.env.EMAIL_FROM,
+  restaurantNotificationEmail: process.env.RESTAURANT_NOTIFICATION_EMAIL,
 };
 
 export function requireDatabaseConfiguration() {
