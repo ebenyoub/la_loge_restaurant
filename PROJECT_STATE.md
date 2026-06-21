@@ -13,7 +13,7 @@
 ### Backend Express (TypeScript & Express 5)
 - **Opérationnel** : Serveur Express configuré avec injection de `requestId`, logs épurés et gestionnaire d'erreurs global sans fuite technique vers le client.
 - **Prisma & MySQL** : Modèles Prisma complets traduits du schéma logique, base locale MySQL (`la_loge_db`) connectée, et migration initiale appliquée avec succès.
-- **Endpoints publics** : Les routes `POST /api/v1/reservations` et `POST /api/v1/contact-messages` sont actives avec validation stricte et routage asynchrone des e-mails.
+- **Endpoints publics** : Les routes `POST /api/v1/reservations` et `POST /api/v1/contact-messages` sont actives avec validation stricte, vérification des horaires d'ouverture (OpeningHour) et routage asynchrone des e-mails.
 - **Authentification Admin** : Système d'authentification robuste implémenté (`POST /api/v1/admin/login` et middleware de protection de route `authMiddleware` via JWT et hashage `bcrypt`).
 - **Sécurité JWT** : `JWT_SECRET` obligatoire au démarrage, devant faire au moins 32 caractères de long (échec automatique du serveur en cas d'absence ou clé trop faible).
 - **E-mails transactionnels** : Intégration complète de Nodemailer (SMTP Brevo) configurée de manière asynchrone et sécurisée (notification manager et accusé réception client).
@@ -36,7 +36,7 @@
 | Architecture CSS | Validé | Les CSS Modules sont conservés jusqu'à la fin du MVP public. Tailwind reste configuré pour le socle technique ; aucune migration des styles existants n'est engagée avant le refactor UI après MVP. |
 | Schéma de données MVP | Migré | Traduit dans `backend/prisma/schema.prisma` et migré sur MySQL local via `prisma migrate dev`. |
 | Architecture backend MVP | Routes d'administration backend complètes | MySQL, Prisma, Express, bcrypt et JWT. Les routes d'administration des réservations, de la carte, des réglages généraux et des messages de contact sont opérationnelles et protégées par rôle. |
-| Stratégie de tests backend | Opérationnelle | Vitest configuré avec Supertest, mock complet de Prisma. 43 tests passants couvrant 100% des routes publiques et d'administration (cas nominaux, erreurs d'auth, validations et IDs inexistants). |
+| Stratégie de tests backend | Opérationnelle | Vitest configuré avec Supertest, mock complet de Prisma. 45 tests passants couvrant 100% des routes publiques et d'administration (cas nominaux, erreurs d'auth, validations d'horaires et IDs inexistants). |
 | Stratégie de tests frontend | Opérationnelle | Playwright configuré pour des tests E2E locaux. Les appels d'API sont mockés afin de pouvoir exécuter et valider l'authentification et les dashboards en isolation. |
 | Contrats d'API MVP | Documenté | `docs/api-contracts.md` définit les requêtes, réponses, validations, statuts HTTP et règles RGPD des flux Réservation et Contact. |
 | Prérequis backend MVP | Documenté | `docs/backend-prerequisites.md` liste les décisions critiques de secrets, hébergement, MySQL, authentification, e-mail, RGPD, risques et validation avant installation. |

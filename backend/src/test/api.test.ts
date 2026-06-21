@@ -32,6 +32,7 @@ describe("API Endpoints Tests", () => {
         status: "nouvelle",
       };
       vi.mocked(prisma.reservation.create).mockResolvedValueOnce(mockReservation as any);
+      vi.mocked(prisma.openingHour.findFirst).mockResolvedValueOnce(null);
 
       // Fix past date checking in validation: always supply a future date
       const futureDate = new Date(Date.now() + 24 * 60 * 60 * 1000)
@@ -55,6 +56,64 @@ describe("API Endpoints Tests", () => {
 
       expect(res.status).toBe(201);
       expect(res.body.data.id).toBe("mock-id");
+    });
+
+    it("should fail reservation if restaurant is closed on that day", async () => {
+      const futureDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      const futureDateStr = futureDate.toISOString().split("T")[0];
+      const dayOfWeek = futureDate.getDay();
+
+      vi.mocked(prisma.openingHour.findFirst).mockResolvedValueOnce({
+        id: "oh-1",
+        dayOfWeek,
+        isClosed: true,
+      } as any);
+
+      const res = await request(app)
+        .post("/api/v1/reservations")
+        .send({
+          firstName: "Jean",
+          lastName: "Dupont",
+          phone: "0600000000",
+          email: "jean@example.com",
+          requestedDate: futureDateStr,
+          requestedTime: "19:30",
+          guestCount: 2,
+          consent: true,
+        });
+
+      expect(res.status).toBe(400);
+      expect(res.body.error.code).toBe("OUTSIDE_OPENING_HOURS");
+    });
+
+    it("should fail reservation if requested time is outside opening hours", async () => {
+      const futureDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      const futureDateStr = futureDate.toISOString().split("T")[0];
+      const dayOfWeek = futureDate.getDay();
+
+      vi.mocked(prisma.openingHour.findFirst).mockResolvedValueOnce({
+        id: "oh-1",
+        dayOfWeek,
+        isClosed: false,
+        opensAt: "12:00",
+        closesAt: "15:00",
+      } as any);
+
+      const res = await request(app)
+        .post("/api/v1/reservations")
+        .send({
+          firstName: "Jean",
+          lastName: "Dupont",
+          phone: "0600000000",
+          email: "jean@example.com",
+          requestedDate: futureDateStr,
+          requestedTime: "19:30",
+          guestCount: 2,
+          consent: true,
+        });
+
+      expect(res.status).toBe(400);
+      expect(res.body.error.code).toBe("OUTSIDE_OPENING_HOURS");
     });
   });
 

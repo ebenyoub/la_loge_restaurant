@@ -55,6 +55,7 @@ vi.mock("../lib/prisma.js", () => {
     },
     openingHour: {
       findMany: vi.fn(),
+      findFirst: vi.fn(),
       update: vi.fn(),
       create: vi.fn(),
     },

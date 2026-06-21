@@ -43,6 +43,7 @@
 
 - [x] Implémenter l'envoi d'e-mails transactionnels côté backend (notifications de nouvelle demande pour le gérant et accusé de réception pour le client) avec Nodemailer/SMTP.
 - [x] Renforcer les tests d'intégration backend (Vitest + Supertest) sur l'ensemble des routes admin (reservations, contacts, carte, settings, validations et cas d'erreurs).
+- [x] Ajouter la validation des horaires d'ouverture (OpeningHour) sur l'API publique de demande de réservation (POST /api/v1/reservations).
 
 ## Prochaine tâche proposée — à valider
 

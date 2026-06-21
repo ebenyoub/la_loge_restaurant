@@ -21,6 +21,34 @@ export async function createReservation(req: Request, res: Response, next: NextF
 
     const requestId = (req as any).requestId;
 
+    // Validate reservation time against opening hours
+    const dateObj = new Date(requestedDate);
+    const dayOfWeek = dateObj.getDay(); // 0 (Sunday) to 6 (Saturday)
+
+    const openingHour = await prisma.openingHour.findFirst({
+      where: { dayOfWeek }
+    });
+
+    if (openingHour) {
+      if (openingHour.isClosed) {
+        return next({
+          status: 400,
+          code: "OUTSIDE_OPENING_HOURS",
+          message: "Le restaurant est fermé ce jour-là."
+        });
+      }
+
+      if (openingHour.opensAt && openingHour.closesAt) {
+        if (requestedTime < openingHour.opensAt || requestedTime > openingHour.closesAt) {
+          return next({
+            status: 400,
+            code: "OUTSIDE_OPENING_HOURS",
+            message: `Le restaurant est fermé à cette heure-là. Créneau ouvert : ${openingHour.opensAt} - ${openingHour.closesAt}.`
+          });
+        }
+      }
+    }
+
     // Create the reservation and its initial status history entry
     const reservation = await prisma.reservation.create({
       data: {

@@ -100,10 +100,12 @@ Ne jamais laisser la roadmap sans prochaine tâche proposée.
 * [x] Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend avec tests Playwright correspondants.
 * [x] Implémenter l'envoi d'e-mails transactionnels (Nodemailer/SMTP Brevo) côté backend pour les réservations et messages de contact (notifications gérant, confirmations client).
 * [x] Renforcer les tests backend MVP (tests d'intégration complets sur toutes les routes d'administration, cas d'erreurs, validations de payloads et IDs inexistants).
+* [x] Ajouter la validation des horaires d'ouverture (OpeningHour) sur POST /api/v1/reservations (rejet si jour fermé ou hors créneau avec code OUTSIDE_OPENING_HOURS) et tests correspondants.
 
 ---
 
 ## Prochaine tâche proposée
 
 Préparer le déploiement en production et la validation finale du MVP (configuration des secrets de production, migration vers une base MySQL managée, et validation réelle du relais SMTP avec le nom de domaine).
+
 
