@@ -31,6 +31,7 @@
 - [x] Implémentation complète de P1-27 (Contact, accès, horaires cliquables et dynamiques sur les pages publiques et le footer).
 - [x] Implémentation complète de P1-26 (SEO local, sitemap.xml, robots.txt, canonicals, OpenGraph, Twitter cards et structured data JSON-LD Restaurant).
 - [x] Implémentation complète de P1-28 (Optimisation des images responsives next/image avec l'attribut sizes correct et lazy loading des iframes).
+- [x] Implémentation complète de P1-29 (Conformité RGPD) : cases à cocher de consentement explicite avec liens sur les formulaires et affichage admin des durées de conservation.
 
 
 

@@ -16,6 +16,7 @@
 - Fondation technique React Hook Form + Zod opérationnelle (`src/lib/forms/` et `src/lib/validation/`).
 - Métadonnées SEO et SEO local : Balises title/description dynamiques, OpenGraph, Twitter, canonical, données structurées JSON-LD (Restaurant), sitemap.xml et robots.txt configurés.
 - Optimisations d'images et de performance (P1-28) : Utilisation systématique de `next/image` avec attributs `sizes` responsives valides (media queries standard) et lazy loading natif sur l'iframe de localisation (ContactMap).
+- Conformité RGPD (P1-29) : Consentement explicite avec cases à cocher obligatoires et liens hypertexte vers la politique de confidentialité sur les formulaires de Contact et de Réservation. Affichage réglementaire des durées de conservation des données dans l'espace d'administration.
 
 
 ### Administration

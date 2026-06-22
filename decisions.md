@@ -142,3 +142,12 @@ Suite aux migrations réussies des formulaires de Contact, de Réservation et du
 - **Hook dédié :** Chaque formulaire utilise un hook personnalisé `useXxxForm` pour isoler les requêtes et mutations.
 - **Composants réutilisables :** Les champs de formulaires doivent être découpés en composants réutilisables et consommer les primitives de `src/components/ui/`.
 - **Pages orchestratrices :** Les pages Next.js (`page.tsx`) doivent uniquement assembler et orchestrer les composants et déléguer toute la logique métier.
+
+## D-018 — Conformité RGPD et absence de cookies non essentiels
+
+**Statut :** validée  
+**Date :** 22 juin 2026
+
+Le site collecte uniquement les données nécessaires au traitement des demandes via les formulaires de Contact et de Réservation. L'utilisateur doit consentir explicitement à cette collecte via une case à cocher obligatoire contenant un lien hypertexte vers la politique de confidentialité.
+
+Conformément aux directives de la CNIL et du RGPD, aucun cookie non essentiel (comme le suivi publicitaire ou analytique tiers) n'étant déposé, l'affichage d'une bannière de consentement aux cookies est jugé inutile et évité pour optimiser l'expérience utilisateur. Les durées de conservation des données sont documentées publiquement et rappelées aux administrateurs sur leurs tableaux de bord respectifs (3 ans maximum).

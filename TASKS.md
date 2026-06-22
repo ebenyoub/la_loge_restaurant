@@ -2,8 +2,7 @@
 
 ## Tâche en cours
 
-Implémentation complète de P1-28 (Optimisation des images et performances) — terminée. L'attribut sizes et les requêtes media CSS ont été corrigés pour les composants next/image et le lazy loading a été appliqué.
-
+Aucune. P1-29 (Conformité RGPD) est terminé. Les formulaires de Contact et de Réservation intègrent désormais des consentements explicites obligatoires avec liens hypertexte vers la politique de confidentialité, et les durées de conservation des données sont affichées dans l'espace d'administration.
 
 ## Règles de travail
 
@@ -34,9 +33,10 @@ Implémentation complète de P1-28 (Optimisation des images et performances) —
 - [x] Implémentation complète de P1-27 (Contact, accès et horaires) : téléphone, itinéraire et e-mail cliquables et dynamisés depuis une source unique.
 - [x] Implémentation complète de P1-26 (SEO local) : injection dynamique des metatags (OG, Twitter, canonical), donnees structurees JSON-LD (Restaurant) et routages sitemap.xml / robots.txt.
 - [x] Implémentation complète de P1-28 (Optimisation des images et performances) : correction de sizes et des requetes media CSS pour les composants next/image, et validation du lazy loading de l'iframe Maps.
+- [x] Implémentation complète de P1-29 (RGPD) : intégration du consentement explicite, politique de confidentialité liée et affichage des durées de conservation des données dans l'administration.
 
 ## Prochaine tâche proposée
 
-Recette finale & Alignement Figma :
+Recette finale & Alignement Figma (P1-02, P1-03, P1-30) :
 - valider l'alignement des espacements et contrastes avec la maquette Figma
 - obtenir la validation finale des droits médias pour mise en ligne

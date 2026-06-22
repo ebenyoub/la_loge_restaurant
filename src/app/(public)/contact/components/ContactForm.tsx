@@ -89,7 +89,20 @@ export function ContactForm({
         <Checkbox
           id="consent"
           required
-          label={`J'accepte que mes informations soient collectées et utilisées par ${restaurantName} pour traiter ma demande de contact conformément à la politique de confidentialité. *`}
+          label={
+            <span>
+              J&apos;accepte que mes informations soient collectées et utilisées par {restaurantName} pour traiter ma demande de contact conformément à la{" "}
+              <a
+                href="/mentions-legales#confidentialite"
+                className="underline hover:text-[#c9a96e] transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                politique de confidentialité
+              </a>
+              . *
+            </span>
+          }
           error={errors.consent?.message}
           {...register("consent")}
         />

@@ -217,6 +217,9 @@ export default function ContactMessagesPage() {
       <div className="border border-[#c9a96e]/15 bg-[#141412] p-6 flex flex-col h-[calc(100vh-140px)] overflow-hidden">
         <div className="mb-6 space-y-4 shrink-0">
           <h2 className="font-body font-medium text-2xl text-[#f0e8d8]">Messages de Contact</h2>
+          <p className="text-[10px] text-[#f0e8d8]/40 font-body leading-normal">
+            Conformément au RGPD, les messages de contact et coordonnées associées sont conservés pour une durée maximale de 3 ans après le dernier échange.
+          </p>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}

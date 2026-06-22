@@ -238,6 +238,9 @@ export default function ReservationsPage() {
       <div className="border border-[#c9a96e]/15 bg-[#141412] p-6 flex flex-col h-[calc(100vh-140px)] overflow-hidden">
         <div className="mb-6 space-y-4 shrink-0">
           <h2 className="font-body font-medium text-2xl text-[#f0e8d8]">Réservations</h2>
+          <p className="text-[10px] text-[#f0e8d8]/40 font-body leading-normal">
+            Conformément au RGPD, les données de réservation sont conservées pour une durée maximale de 3 ans après la date de visite.
+          </p>
           <div className="flex flex-col gap-3">
             <select
               value={statusFilter}
