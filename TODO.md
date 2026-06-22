@@ -26,7 +26,9 @@
 - [x] Navigation admin visible sous le header fixe sur desktop et mobile.
 - [x] Typographie publique sans-serif, sans italique visible, et correction des ancres de catégories de la carte.
 - [x] Tests frontend : lint, build, Playwright admin et tests E2E publics validés (14 tests passants couvrant carte, contact, réservation, et menu burger).
-- [x] Fondation technique RHF + Zod opérationnelle et formulaires Contact, Réservation, Login Admin migrés.
+- [x] Fondation technique RHF + Zod opérationnelle et formulaires Contact, Réservation, Login Admin et documents légaux migrés.
+- [x] Implémentation complète de P1-23 (Documents légaux / RGPD) dynamisés depuis MySQL et administrables via React Hook Form + Zod.
+
 
 ## Explicitement hors périmètre actuel
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { API_BASE_URL } from "@/lib/api";
+import { LegalSettingsForm } from "./components/LegalSettingsForm";
 
 interface OpeningHour {
   id?: string;
@@ -479,6 +480,9 @@ export default function AdminSettingsPage() {
           </div>
         </form>
       )}
+
+      {/* Legal & RGPD Documents Form */}
+      {!isLoading && <LegalSettingsForm />}
     </div>
   );
 }

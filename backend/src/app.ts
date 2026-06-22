@@ -8,7 +8,9 @@ import { adminSettingsRouter } from "./routes/admin-settings.routes.js";
 import { adminCategoriesRouter } from "./routes/admin-categories.routes.js";
 import { adminItemsRouter } from "./routes/admin-items.routes.js";
 import { adminContactsRouter } from "./routes/admin-contacts.routes.js";
+import { adminLegalRouter } from "./routes/admin-legal.routes.js";
 import { publicRouter } from "./routes/public.routes.js";
+
 import cors from "cors";
 import { env } from "./config/env.js";
 import { requestIdMiddleware } from "./middlewares/request-id.middleware.js";
@@ -69,6 +71,8 @@ app.use(adminSettingsRouter);
 app.use(adminCategoriesRouter);
 app.use(adminItemsRouter);
 app.use(adminContactsRouter);
+app.use(adminLegalRouter);
 app.use(publicRouter);
+
 
 app.use(errorHandlerMiddleware);

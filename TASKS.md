@@ -2,7 +2,8 @@
 
 ## Tâche en cours
 
-Refactorisation des formulaires du projet — terminée. Les formulaires publics (Contact, Réservation) et d'administration (Login Admin) ont été migrés avec succès vers React Hook Form et Zod, respectant le nouveau standard frontend.
+Implémentation complète de P1-23 (Documents légaux / RGPD) — terminée. Les endpoints d'API publique et d'administration ont été créés, l'édition des documents légaux est intégrée sous RHF + Zod dans /admin/settings et la page publique /mentions-legales a été dynamisée.
+
 
 ## Règles de travail
 
@@ -29,6 +30,7 @@ Refactorisation des formulaires du projet — terminée. Les formulaires publics
 - [x] Migration du formulaire de login admin vers React Hook Form + Zod.
 - [x] Migration des formulaires publics de Contact et de Réservation vers React Hook Form + Zod.
 - [x] Enregistrement de la décision d'architecture D-017 (Standard de Formulaires RHF + Zod).
+- [x] Implémentation complète de P1-23 (Documents légaux / RGPD) : création des API publiques/admin, édition via RHF + Zod dans /admin/settings et dynamisation de /mentions-legales.
 
 ## Prochaine tâche proposée
 

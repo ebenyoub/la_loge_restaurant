@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { API_BASE_URL } from "@/lib/api";
 
 function GoldLine() {
   return (
@@ -21,44 +25,35 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
+interface LegalDocument {
+  id: string;
+  documentKey: string;
+  title: string;
+  body: string;
+  version: string;
+  updatedAt: string;
+}
+
 export default function MentionsLegalesPage() {
-  const sections = [
-    {
-      id: "editeur",
-      title: "Éditeur du site",
-      content: "La dénomination sociale, la forme juridique, l'adresse du siège, le SIREN ou SIRET, le capital social le cas échéant et les coordonnées de l'éditeur doivent être confirmés avant publication."
-    },
-    {
-      id: "publication",
-      title: "Responsable de publication",
-      content: "L'identité et les coordonnées du responsable de publication seront indiquées après validation par le restaurant."
-    },
-    {
-      id: "hebergement",
-      title: "Hébergement",
-      content: "Le nom, l'adresse et les coordonnées de l'hébergeur seront ajoutés une fois le prestataire technique définitivement retenu."
-    },
-    {
-      id: "propriete",
-      title: "Propriété intellectuelle",
-      content: "Les règles applicables aux textes, photographies, éléments graphiques et contenus du site seront publiées après confirmation de leurs titulaires et de leurs droits d'utilisation."
-    },
-    {
-      id: "confidentialite",
-      title: "Confidentialité",
-      content: "La politique de confidentialité précisera les données collectées, leur finalité, leur durée de conservation, les destinataires et les droits des personnes. Elle doit être validée avant l'activation des formulaires de contact ou de réservation."
-    },
-    {
-      id: "cookies",
-      title: "Cookies",
-      content: "La politique relative aux cookies et, si nécessaire, le mécanisme de consentement seront définis avant l'ajout de services nécessitant un dépôt ou une lecture de cookies non essentiels."
-    },
-    {
-      id: "contact",
-      title: "Contact",
-      content: "L'adresse e-mail légale et les modalités de contact de l'éditeur doivent être confirmées. Les informations pratiques du restaurant sont présentées sur la page Contact & accès après validation."
+  const [documents, setDocuments] = useState<LegalDocument[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadDocs() {
+      try {
+        const res = await fetch(`${API_BASE_URL}/public/legal-documents`);
+        const json = await res.json();
+        if (res.ok && json.data) {
+          setDocuments(json.data);
+        }
+      } catch (err) {
+        console.error("Failed to load legal documents", err);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  ];
+    loadDocs();
+  }, []);
 
   return (
     <div className="min-h-screen pt-[72px] bg-[#0b0b09] text-[#f0e8d8] font-body">
@@ -70,7 +65,7 @@ export default function MentionsLegalesPage() {
             Mentions légales
           </h1>
           <p className="mt-4 text-[#f0e8d8]/35 text-xs tracking-wide">
-            Dernière mise à jour : juin 2025
+            Dernière mise à jour : juin 2026
           </p>
         </div>
       </div>
@@ -83,42 +78,46 @@ export default function MentionsLegalesPage() {
           <span aria-current="page" className="text-[#f0e8d8]/80">Mentions légales</span>
         </nav>
 
-        <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-16">
-          {/* Sidebar Navigation */}
-          <nav aria-label="Navigation mentions légales" className="hidden lg:block">
-            <div className="sticky top-24 space-y-1">
-              {sections.map(({ id, title }) => (
-                <a
-                  key={id}
-                  href={`#${id}`}
-                  className="block text-[10px] tracking-[0.3em] uppercase font-body text-[#f0e8d8]/35 hover:text-[#c9a96e] transition-colors py-2 border-l-2 border-transparent hover:border-[#c9a96e]/40 pl-4"
-                >
-                  {title}
-                </a>
+        {isLoading ? (
+          <div className="text-center py-12 text-[#f0e8d8]/45">Chargement...</div>
+        ) : (
+          <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-16">
+            {/* Sidebar Navigation */}
+            <nav aria-label="Navigation mentions légales" className="hidden lg:block">
+              <div className="sticky top-24 space-y-1">
+                {documents.map((doc) => (
+                  <a
+                    key={doc.documentKey}
+                    href={`#${doc.documentKey}`}
+                    className="block text-[10px] tracking-[0.3em] uppercase font-body text-[#f0e8d8]/35 hover:text-[#c9a96e] transition-colors py-2 border-l-2 border-transparent hover:border-[#c9a96e]/40 pl-4"
+                  >
+                    {doc.title}
+                  </a>
+                ))}
+              </div>
+            </nav>
+
+            {/* Legal Content */}
+            <div className="space-y-14">
+              {documents.map((doc) => (
+                <section key={doc.documentKey} id={doc.documentKey} className="scroll-mt-24">
+                  <div className="mb-5">
+                    <div className="w-8 h-px bg-[#c9a96e]/50 mb-4" />
+                    <span className="text-[10px] uppercase tracking-widest text-[#c9a96e]/60 font-body block mb-1">
+                      Version {doc.version}
+                    </span>
+                    <h2 className="font-body font-medium tracking-[-0.02em] text-xl md:text-2xl text-[#f0e8d8]">
+                      {doc.title}
+                    </h2>
+                  </div>
+                  <div className="text-[#f0e8d8]/50 text-sm font-body font-light leading-relaxed whitespace-pre-wrap">
+                    {doc.body}
+                  </div>
+                </section>
               ))}
             </div>
-          </nav>
-
-          {/* Legal Content */}
-          <div className="space-y-14">
-            {sections.map(({ id, title, content }) => (
-              <section key={id} id={id} className="scroll-mt-24">
-                <div className="mb-5">
-                  <div className="w-8 h-px bg-[#c9a96e]/50 mb-4" />
-                  <span className="text-[10px] uppercase tracking-widest text-[#c9a96e]/60 font-body block mb-1">
-                    À valider
-                  </span>
-                  <h2 className="font-body font-medium tracking-[-0.02em] text-xl md:text-2xl text-[#f0e8d8]">
-                    {title}
-                  </h2>
-                </div>
-                <p className="text-[#f0e8d8]/50 text-sm font-body font-light leading-relaxed">
-                  {content}
-                </p>
-              </section>
-            ))}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

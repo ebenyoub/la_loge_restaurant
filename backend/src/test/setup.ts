@@ -69,6 +69,12 @@ vi.mock("../lib/prisma.js", () => {
       update: vi.fn(),
       create: vi.fn(),
     },
+    legalDocument: {
+      findMany: vi.fn(),
+      update: vi.fn(),
+      create: vi.fn(),
+      upsert: vi.fn(),
+    },
   };
   
   prismaMock.$transaction = vi.fn((cb) => cb(prismaMock));

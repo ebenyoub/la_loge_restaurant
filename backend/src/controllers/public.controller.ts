@@ -66,3 +66,21 @@ export async function getPublicMenu(req: Request, res: Response, next: NextFunct
     next(error);
   }
 }
+
+export async function getPublicLegalDocuments(req: Request, res: Response, next: NextFunction) {
+  try {
+    const requestId = (req as any).requestId;
+
+    const documents = await prisma.legalDocument.findMany({
+      orderBy: { documentKey: "asc" }
+    });
+
+    res.status(200).json({
+      data: documents,
+      requestId
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+

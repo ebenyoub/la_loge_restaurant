@@ -74,7 +74,51 @@ async function main() {
     });
   }
 
-  console.log("Settings seeded successfully!");
+  // Seed legal documents
+  const legalDocs = [
+    {
+      documentKey: "mentions_legales",
+      title: "Mentions Légales",
+      body: "Éditeur du site :\nLa dénomination sociale, la forme juridique, l'adresse du siège, le SIREN ou SIRET, le capital social le cas échéant et les coordonnées de l'éditeur doivent être confirmés avant publication.\n\nResponsable de publication :\nL'identité et les coordonnées du responsable de publication seront indiquées après validation par le restaurant.\n\nHébergement :\nLe nom, l'adresse et les coordonnées de l'hébergeur seront ajoutés une fois le prestataire technique définitivement retenu.\n\nPropriété intellectuelle :\nLes règles applicables aux textes, photographies, éléments graphiques et contenus du site seront publiées après confirmation de leurs titulaires et de leurs droits d'utilisation.\n\nContact :\nL'adresse e-mail légale et les modalités de contact de l'éditeur doivent être confirmées. Les informations pratiques du restaurant sont présentées sur la page Contact & accès après validation.",
+      version: "1.0.0",
+      publishedAt: new Date()
+    },
+    {
+      documentKey: "confidentialite",
+      title: "Politique de Confidentialité",
+      body: "La politique de confidentialité précisera les données collectées, leur finalité, leur durée de conservation, les destinataires et les droits des personnes. Elle doit être validée avant l'activation des formulaires de contact ou de réservation.",
+      version: "1.0.0",
+      publishedAt: new Date()
+    },
+    {
+      documentKey: "cookies",
+      title: "Gestion des Cookies",
+      body: "La politique relative aux cookies et, si nécessaire, le mécanisme de consentement seront définis avant l'ajout de services nécessitant un dépôt ou une lecture de cookies non essentiels.",
+      version: "1.0.0",
+      publishedAt: new Date()
+    }
+  ];
+
+  for (const doc of legalDocs) {
+    await prisma.legalDocument.upsert({
+      where: { documentKey: doc.documentKey },
+      update: {
+        title: doc.title,
+        body: doc.body,
+        version: doc.version,
+        publishedAt: doc.publishedAt
+      },
+      create: {
+        documentKey: doc.documentKey,
+        title: doc.title,
+        body: doc.body,
+        version: doc.version,
+        publishedAt: doc.publishedAt
+      }
+    });
+  }
+
+  console.log("Settings and legal documents seeded successfully!");
 }
 
 main()

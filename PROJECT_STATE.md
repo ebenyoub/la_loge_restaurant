@@ -7,7 +7,7 @@
 
 ### Frontend
 
-- Pages publiques : Accueil, Carte, Réservation, Contact/Accès et Mentions légales.
+- Pages publiques : Accueil, Carte, Réservation, Contact/Accès et Mentions légales (chargées dynamiquement depuis MySQL).
 - Carte publique connectée à MySQL via `GET /api/v1/public/menu` : 9 catégories et 46 plats lors du dernier contrôle.
 - Réglages publics chargés via `GET /api/v1/public/settings`; les états de chargement techniques ne sont pas affichés dans le header ni le footer.
 - Formulaires Réservation et Contact connectés à l'API et migrés vers le standard React Hook Form + Zod.
@@ -23,7 +23,7 @@
 - Réservations : liste, filtres, fiche détail, changement de statut et notes internes avec états de mutation, désactivation des actions et mise à jour immédiate de l'interface.
 - Contacts : liste, détail et changement de statut.
 - Carte : CRUD catégories et plats. Les vues admin lisent les mêmes données MySQL que la carte publique (9 catégories, 46 plats lors du dernier contrôle).
-- Réglages : informations générales, horaires, réseaux sociaux et SEO.
+- Réglages : informations générales, horaires, réseaux sociaux, SEO et documents légaux / RGPD (éditables via React Hook Form + Zod).
 - La barre admin reste sous le header public fixe, y compris sur mobile.
 
 ### Backend et données
