@@ -47,7 +47,7 @@ Ce document est la source de vérité pour le déroulement de la recette finale 
 ### 2.2. Gestion des Réservations
 - [x] **Liste & Filtres :** Filtres par date et par statut (`nouvelle`, `en attente`, `confirmée`, `refusée`, `annulée`).
 - [x] **Fiche Détail & Notes Internes :** Visualisation des détails et ajout de notes internes persistées sans rechargement de page.
-- [x] **Indication de charge :** Affichage de la charge pour aider le gérant dans sa prise de décision.
+- [ ] **Indication de charge :** Affichage de la charge (reporté en post-MVP).
 - [x] **Rappel RGPD :** Message affiché indiquant la durée de conservation maximale de 3 ans.
 - [ ] **À tester manuellement :** Changer le statut d'une réservation et vérifier la mise à jour instantanée du compteur ou de la couleur du statut dans la liste.
 
@@ -107,3 +107,4 @@ Ce document est la source de vérité pour le déroulement de la recette finale 
 * Notifications SMS ou WhatsApp pour les confirmations de réservations.
 * Synchronisation avec Google Calendar.
 * Statistiques de visites et de conversion (Dashboard admin).
+* Paramètres de capacité, alertes de surcharge, et tableau de bord de charge.

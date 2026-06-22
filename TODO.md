@@ -43,4 +43,4 @@
 - [ ] Confirmation/blocage automatiques de réservations, synchronisation calendrier ou Google Calendar.
 - [ ] E-mails lors d'un changement de statut de réservation.
 - [ ] Captcha et rate limiting, à planifier avant exposition publique si requis.
-- [ ] SMS, WhatsApp, push, statistiques avancées, galerie, événements privés, avis clients et page builder.
+- [ ] SMS, WhatsApp, push, statistiques avancées, galerie, événements privés, avis clients, page builder, paramètres de capacité, alertes de surcharge et tableau de bord de charge.

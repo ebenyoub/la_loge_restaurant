@@ -11,7 +11,7 @@ Une demande de réservation **n'est pas une réservation confirmée**. Le géran
 ## État d'implémentation au 22 juin 2026
 
 - Livré : P1-01, P1-04 à P1-09, P1-11 à P1-15, P1-19 (réglages structurés), P1-20, P1-23 (édition SEO et documents légaux OK), P1-25, P1-26 (SEO local, JSON-LD, sitemap, robots.txt OK), P1-27 (contact, accès et horaires cliquables et dynamiques), P1-28 (optimisation des images responsives), P1-29 (conformité RGPD) et P1-30 (checklist recette rédigée). Les pages publiques, formulaires, API, persistance, e-mails de création, login JWT, réservation/contact admin, sections/plats admin et réglages sont opérationnels. Les derniers ajustements incluent la migration complète des formulaires de Contact, de Réservation, du Login Admin et de la gestion des documents légaux vers le standard React Hook Form + Zod, la séparation nette des layouts public et admin, la redirection automatique 401 vers la page de login avec message de session expirée, la validation par touche `Enter` sur le login, l'intégration des mentions de consentement explicite et des durées de conservation des données, et la rédaction de la checklist de recette globale.
-- Partiel ou à valider : P1-02 (alignement final avec la capture Figma et médias autorisés), P1-03 (recette responsive - tests iPhone local à revalider après déploiement ou sur réseau Wi-Fi stable), P1-16 à P1-18 (lecture de charge à confirmer).
+- Partiel ou à valider : P1-02 (alignement final avec la capture Figma et médias autorisés) et P1-03 (recette responsive - tests iPhone local à revalider après déploiement ou sur réseau Wi-Fi stable).
 - Différé explicitement : anti-spam et limitation de débit de P1-10, e-mails de changement de statut et déploiement. Ils ne doivent pas être ajoutés avant la finalisation contenus/images/fidélité visuelle, sauf décision contraire documentée.
 
 | ID | Fonctionnalité | Priorité | Description | Critères d'acceptation |
@@ -31,9 +31,7 @@ Une demande de réservation **n'est pas une réservation confirmée**. Le géran
 | P1-13 | Filtres admin | P1 | Retrouver rapidement une demande. | Filtres opérationnels par date, statut et nom, sur mobile et desktop. |
 | P1-14 | Détail & note interne | P1 | Consulter les données et consigner le suivi. | Téléphone, e-mail, message, occasion, statut et note interne sont visibles ; la note n'est jamais exposée au client. |
 | P1-15 | Changement de statut | P1 | Permettre le traitement par le gérant. | Le gérant peut passer une demande entre les cinq statuts autorisés ; le changement est persisté et daté. |
-| P1-16 | Paramètres de capacité | P1 | Définir des seuils indicatifs par service et éventuellement par créneau. | Le gérant peut modifier le maximum de couverts par service et, si activé, le maximum de demandes par créneau. |
-| P1-17 | Alertes de surcharge | P1 | Rendre visibles les créneaux chargés. | L'administration affiche couverts demandés et nombre de demandes par date/créneau ; seuil dépassé = alerte visuelle, jamais blocage automatique. |
-| P1-18 | Tableau de bord de charge | P1 | Donner une lecture rapide de la charge. | Une vue permet d'identifier sans ouvrir chaque fiche les dates ou créneaux proches/dépassant les seuils. |
+
 | P1-19 | Admin contenus généraux | P1 | Gérer texte d'accueil, présentation, horaires, adresse, téléphone, e-mail et réseaux sociaux. | Les modifications sont sauvegardées et visibles sur le site sans modification du code. |
 | P1-20 | Admin carte/menu | P1 | Gérer catégories et plats. | Catégories et plats sont créables/modifiables ; un plat comprend nom, description, prix, image et disponibilité. |
 | P1-23 | Admin SEO et légal | P1 | Gérer les métadonnées principales et mentions légales. | Title, meta description, mots-clés locaux et mentions légales sont éditables dans des champs structurés. |
@@ -45,16 +43,19 @@ Une demande de réservation **n'est pas une réservation confirmée**. Le géran
 | P1-29 | RGPD et données clients | P1 | Encadrer la collecte et l'accès aux données de réservation. | Consentement de formulaire, politique de confidentialité, accès admin restreint et durée de conservation définie avant lancement. |
 | P1-30 | Recette MVP | P1 | Valider les parcours avant publication. | Tests documentés : demande, deux e-mails, gestion admin, alertes de charge, contenus, SEO, responsive et accessibilité de base. |
 
-> Note de traçabilité : `P1-21` est reporté en `P2-08` ; `P1-22` est reporté en `P2-09`.
+> Note de traçabilité : P1-16, P1-17, P1-18 sont reportés respectivement en P2-12, P2-13, P2-14 ; P1-21 est reporté en P2-08 ; P1-22 est reporté en P2-09.
 
 | P2-01 | Statistiques simples | P2 | Afficher des métriques de demandes, appels et conversions. | Source de données, consentement et métriques décidés ; aucun suivi non conforme. |
 | P2-02 | Notifications SMS / WhatsApp | P2 | Ajouter un canal d'alerte complémentaire. | Consentement, prestataire, coûts, règles d'envoi et échecs de délivrance cadrés. |
 | P2-03 | Notifications push | P2 | Notifier le gérant sur appareil compatible. | Opt-in, appareil cible et stratégie de repli par e-mail définis. |
 | P2-04 | Disponibilités fines | P2 | Calculer les disponibilités et règles de capacité plus précisément. | Services, tables, exceptions et conflits modélisés et validés avec le restaurant. |
 | P2-05 | Blocage/confirmation automatiques | P2 | Automatiser tout ou partie du traitement des demandes. | Règles métier testées, messages client adaptés et procédure de reprise manuelle validée. |
-| P2-06 | Google Calendar | P2 | Synchroniser les demandes/réservations avec un calendrier. | Sens de synchronisation, droits, conflits et suppression sont définis avant intégration. |
+| P2-06 | Google Calendar | P2 | Synchroniser les demandes/reservations avec un calendrier. | Sens de synchronisation, droits, conflits et suppression sont définis avant intégration. |
 | P2-07 | Disposition avancée | P2 | Étendre la personnalisation de la mise en page. | Garde-fous responsive, SEO et accessibilité définis ; aucun builder libre sans décision spécifique. |
 | P2-08 | Galerie publique et administration | P2 | Créer une galerie publique et permettre sa gestion dans l'administration. | Ajout, retrait, ordre et texte alternatif des images sont possibles ; droits des images validés avant publication. |
 | P2-09 | Événements privés | P2 | Créer une page, un parcours et une gestion de contenu pour les groupes et privatisations. | Capacités, offres, demandes et délais de réponse sont validés avant publication. |
 | P2-10 | Avis clients | P2 | Afficher une sélection d'avis clients et son lien source. | Avis vérifiables, actualisés et non trompeurs ; règles d'affichage définies. |
 | P2-11 | Statut ouvert / fermé dynamique | P2 | Calculer et afficher le statut à partir des horaires et exceptions. | Fuseau Europe/Paris, jours fériés et exceptions sont correctement pris en compte ; les horaires restent visibles en repli. |
+| P2-12 | Paramètres de capacité | P2 | Définir des seuils indicatifs par service et éventuellement par créneau. | Le gérant peut modifier le maximum de couverts par service et, si activé, le maximum de demandes par créneau. |
+| P2-13 | Alertes de surcharge | P2 | Rendre visibles les créneaux chargés. | L'administration affiche couverts demandés et nombre de demandes par date/créneau ; seuil dépassé = alerte visuelle, jamais blocage automatique. |
+| P2-14 | Tableau de bord de charge | P2 | Donner une lecture rapide de la charge. | Une vue permet d'identifier sans ouvrir chaque fiche les dates ou créneaux proches/dépassant les seuils. |
