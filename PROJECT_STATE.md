@@ -29,6 +29,7 @@
 - Carte : CRUD catégories et plats. Les vues admin lisent les mêmes données MySQL que la carte publique (9 catégories, 46 plats lors du dernier contrôle).
 - Réglages : informations générales, horaires, réseaux sociaux, SEO et documents légaux / RGPD (éditables via React Hook Form + Zod).
 - La barre admin reste sous le header public fixe, y compris sur mobile.
+- Notifications : Polling toutes les 30 secondes avec préférence sonore persistée via localStorage. Émission de sons distincts générés via Web Audio API (C5->E5 pour réservation, G5->D5->G5 pour contact) et indicateur visuel de texte animé arc-en-ciel sur le menu concerné, réinitialisé à l'ouverture de la section correspondante.
 
 ### Backend et données
 

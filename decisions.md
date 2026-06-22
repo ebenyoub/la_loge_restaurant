@@ -148,6 +148,18 @@ Suite aux migrations réussies des formulaires de Contact, de Réservation et du
 **Statut :** validée  
 **Date :** 22 juin 2026
 
-Le site collecte uniquement les données nécessaires au traitement des demandes via les formulaires de Contact et de Réservation. L'utilisateur doit consentir explicitement à cette collecte via une case à cocher obligatoire contenant un lien hypertexte vers la politique de confidentialité.
+- Le site collecte uniquement les données nécessaires au traitement des demandes via les formulaires de Contact et de Réservation. L'utilisateur doit consentir explicitement à cette collecte via une case à cocher obligatoire contenant un lien hypertexte vers la politique de confidentialité.
 
 Conformément aux directives de la CNIL et du RGPD, aucun cookie non essentiel (comme le suivi publicitaire ou analytique tiers) n'étant déposé, l'affichage d'une bannière de consentement aux cookies est jugé inutile et évité pour optimiser l'expérience utilisateur. Les durées de conservation des données sont documentées publiquement et rappelées aux administrateurs sur leurs tableaux de bord respectifs (3 ans maximum).
+
+## D-019 — Notifications admin améliorées (sons et indicateurs visuels)
+
+**Statut :** validée  
+**Date :** 22 juin 2026
+
+Afin d'améliorer la réactivité du gérant et la clarté des notifications sans dépendances externes ou fichiers audio lourds :
+- **Sons distincts :** Utilisation de l'API Web Audio native avec des synthèses d'oscillateurs et des rampes de gain linéaires pour éviter les bugs WebKit/Safari.
+  - Réservations : Chime ascendant à deux tons (C5 -> E5).
+  - Contacts : Chime à trois tons (G5 -> D5 -> G5).
+- **Indicateur visuel :** Suppression des pastilles dorées au profit d'un effet textuel dégradé arc-en-ciel animé (`animate-rainbow-text`) sur le libellé du menu concerné. L'indicateur visuel est fluide, lisible sur fond noir et possède un fallback de couleur dorée (#c9a96e) pour les navigateurs incompatibles.
+- **Reset indépendant :** L'animation d'un menu donné s'efface immédiatement dès que l'administrateur accède à la page correspondante.

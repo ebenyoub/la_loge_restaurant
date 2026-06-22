@@ -33,8 +33,9 @@ Aucune. P1-30 (Recette MVP finale) est terminé. La checklist de recette complè
 - [x] Implémentation complète de P1-27 (Contact, accès et horaires) : téléphone, itinéraire et e-mail cliquables et dynamisés depuis une source unique.
 - [x] Implémentation complète de P1-26 (SEO local) : injection dynamique des metatags (OG, Twitter, canonical), donnees structurees JSON-LD (Restaurant) et routages sitemap.xml / robots.txt.
 - [x] Implémentation complète de P1-28 (Optimisation des images et performances) : correction de sizes et des requetes media CSS pour les composants next/image, et validation du lazy loading de l'iframe Maps.
-- [x] Implémentation complète de P1-29 (RGPD) : intégration du consentement explicite, politique de confidentialité liée et affichage des durées de conservation des données dans l'administration.
-- [x] Implémentation complète de P1-30 (Recette MVP finale) : rédaction de la checklist de recette globale dans docs/checklist-recette-mvp.md.
+- [x] Implémentation complète de P1-29 (Conformité RGPD) : intégration du consentement explicite, politique de confidentialité liée et affichage des durées de conservation des données dans l'administration.
+- [x] Implémentation complète de P1-30 (Recette MVP) : rédaction de la checklist de recette globale dans docs/checklist-recette-mvp.md.
+- [x] Amélioration des notifications admin : sons distincts pour réservations et messages contact, remplacement des pastilles par un effet de texte arc-en-ciel animé resetable à l'ouverture de la section.
 
 ## Prochaine tâche proposée
 

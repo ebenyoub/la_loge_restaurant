@@ -99,3 +99,34 @@
     scroll-behavior: smooth;
   }
 }
+
+@keyframes rainbow-text {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-rainbow-text {
+  color: #c9a96e; /* Fallback text color if background-clip is not supported */
+  font-weight: 500;
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .animate-rainbow-text {
+    background: linear-gradient(
+      90deg,
+      #ff7b93,
+      #ffae70,
+      #fff275,
+      #6bf178,
+      #4da1ff,
+      #d783ff,
+      #ff7b93
+    );
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: rainbow-text 4s linear infinite;
+  }
+}

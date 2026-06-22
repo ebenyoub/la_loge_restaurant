@@ -36,12 +36,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }, [pathname]);
 
   // Sound generator using Web Audio API
-  const playNotificationSound = () => {
+  const playNotificationSound = (type: "booking" | "contact") => {
     try {
       const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
       if (!AudioContextClass) return;
       const ctx = new AudioContextClass();
       
+      const now = ctx.currentTime;
       const playTone = (freq: number, start: number, duration: number) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -59,9 +60,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         osc.stop(start + duration);
       };
       
-      const now = ctx.currentTime;
-      playTone(523.25, now, 0.3); // C5
-      playTone(659.25, now + 0.12, 0.4); // E5
+      if (type === "booking") {
+        // Dual-tone ascending chime: C5 (523.25 Hz) -> E5 (659.25 Hz)
+        playTone(523.25, now, 0.3);
+        playTone(659.25, now + 0.12, 0.4);
+      } else {
+        // Triple-tone chime: G5 (783.99 Hz) -> D5 (587.33 Hz) -> G5 (783.99 Hz)
+        playTone(783.99, now, 0.15);
+        playTone(587.33, now + 0.1, 0.15);
+        playTone(783.99, now + 0.2, 0.3);
+      }
     } catch (err) {
       console.error("Erreur de lecture sonore :", err);
     }
@@ -70,10 +78,20 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const toggleAudioNotifications = () => {
     const newEnabled = !audioEnabled;
     setAudioEnabled(newEnabled);
+    localStorage.setItem("admin_audio_enabled", String(newEnabled));
     if (newEnabled) {
-      playNotificationSound();
+      playNotificationSound("booking");
     }
   };
+
+  useEffect(() => {
+    const stored = localStorage.getItem("admin_audio_enabled");
+    if (stored === "true") {
+      Promise.resolve().then(() => {
+        setAudioEnabled(true);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (pathname === "/admin/login") {
@@ -117,7 +135,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         });
         const dataContacts = await resContacts.json();
 
-        let playedSound = false;
+        let playedBookingSound = false;
+        let playedContactSound = false;
 
         if (resReservations.ok && dataReservations.data?.items) {
           const currentIds = dataReservations.data.items.map((item: { id: string }) => item.id);
@@ -125,7 +144,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           if (!isInitialRef.current) {
             const hasNew = currentIds.some((id: string) => !knownReservationIdsRef.current.has(id));
             if (hasNew) {
-              playedSound = true;
+              playedBookingSound = true;
               if (!pathname.startsWith("/admin/reservations")) {
                 setHasNewReservations(true);
               }
@@ -141,7 +160,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           if (!isInitialRef.current) {
             const hasNew = currentIds.some((id: string) => !knownContactIdsRef.current.has(id));
             if (hasNew) {
-              playedSound = true;
+              playedContactSound = true;
               if (!pathname.startsWith("/admin/contact-messages")) {
                 setHasNewContacts(true);
               }
@@ -151,8 +170,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           knownContactIdsRef.current = new Set(currentIds);
         }
 
-        if (playedSound && audioEnabled) {
-          playNotificationSound();
+        if (audioEnabled) {
+          if (playedBookingSound) {
+            playNotificationSound("booking");
+          }
+          if (playedContactSound) {
+            playNotificationSound("contact");
+          }
         }
 
         isInitialRef.current = false;
@@ -233,10 +257,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                       : "text-[#f0e8d8]/65 hover:text-[#f0e8d8] pb-1"
                   }`}
                 >
-                  <span>{item.label}</span>
-                  {showDot && (
-                    <span className="w-1.5 h-1.5 bg-[#c9a96e] rounded-full animate-pulse absolute -right-3.5 top-1" />
-                  )}
+                  <span className={showDot ? "animate-rainbow-text" : ""}>{item.label}</span>
                 </Link>
               );
             })}
@@ -295,10 +316,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                       : "text-[#f0e8d8]/60 hover:text-[#f0e8d8]"
                   }`}
                 >
-                  <span>{item.label}</span>
-                  {showDot && (
-                    <span className="w-1.5 h-1.5 bg-[#c9a96e] rounded-full animate-pulse absolute -right-2 top-0.5" />
-                  )}
+                  <span className={showDot ? "animate-rainbow-text" : ""}>{item.label}</span>
                 </Link>
               );
             })}
