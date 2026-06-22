@@ -123,6 +123,7 @@ export default function Home() {
           src="/images/imported/restaurant-facade-nuit-01.webp"
           alt="La Loge — ambiance extérieure de nuit"
           fill
+          sizes="100vw"
           className="object-cover opacity-40"
           priority
         />
@@ -177,7 +178,7 @@ export default function Home() {
               alt="Ardoise du jour et ambiance de La Loge"
               fill
               className="object-cover"
-              sizes="(max-w-1024px) 100vw, 50vw"
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-[#0b0b09]/40 to-transparent" />
             <div className="absolute bottom-8 right-0 bg-[#c9a96e] text-[#0b0b09] px-6 py-4">
@@ -235,7 +236,7 @@ export default function Home() {
                 alt="Plat signature proposé par notre chef" 
                 fill
                 className="object-cover"
-                sizes="(max-w-1024px) 100vw, 50vw"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#141412]/80 via-transparent to-transparent" />
             </div>

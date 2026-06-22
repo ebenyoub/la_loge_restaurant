@@ -15,6 +15,7 @@
 - Direction typographique publique sans-serif, sans italique visible, conformément à la capture Figma fournie comme référence visuelle actuelle.
 - Fondation technique React Hook Form + Zod opérationnelle (`src/lib/forms/` et `src/lib/validation/`).
 - Métadonnées SEO et SEO local : Balises title/description dynamiques, OpenGraph, Twitter, canonical, données structurées JSON-LD (Restaurant), sitemap.xml et robots.txt configurés.
+- Optimisations d'images et de performance (P1-28) : Utilisation systématique de `next/image` avec attributs `sizes` responsives valides (media queries standard) et lazy loading natif sur l'iframe de localisation (ContactMap).
 
 
 ### Administration
