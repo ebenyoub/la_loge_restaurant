@@ -162,22 +162,20 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <p className="animate-pulse">Vérification des droits d&apos;accès...</p>
       </div>
     );
-  }
-
-  const navItems = [
+  }  const navItems = [
     { label: "Réservations", href: "/admin/reservations" },
     { label: "Contacts", href: "/admin/contact-messages" },
-    { label: "Sections de la carte", href: "/admin/categories" },
+    { label: "Sections", href: "/admin/categories" },
     { label: "Plats", href: "/admin/plats" },
     { label: "Réglages", href: "/admin/settings" },
   ];
-
+ 
   return (
     <div className="min-h-screen bg-[#0b0b09] text-[#f0e8d8] font-body flex flex-col">
       {/* Admin Navigation Bar */}
       <header className="bg-[#141412] border-b border-[#c9a96e]/15 sticky top-0 z-40">
         <div className="relative max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Link
               href="/"
               className="group flex flex-col leading-none text-left focus:outline-none"
@@ -191,22 +189,22 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               </span>
             </Link>
             <div className="h-6 w-px bg-[#c9a96e]/20" />
-            <span className="font-body font-medium text-xs md:text-sm text-[#f0e8d8] tracking-wide whitespace-nowrap">
-              La Loge - <span className="text-[10px] uppercase tracking-widest text-[#c9a96e] font-body ml-0.5">Admin</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#c9a96e] font-body font-medium whitespace-nowrap">
+              Admin
             </span>
           </div>
           
-          <nav className="hidden lg:flex items-center gap-6" aria-label="Navigation administration">
+          <nav className="hidden lg:flex items-center gap-8" aria-label="Navigation administration">
             {navItems.map((item) => {
               const active = pathname.startsWith(item.href);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-xs uppercase tracking-wider transition-colors duration-200 ${
+                  className={`text-[11px] uppercase tracking-[0.2em] transition-colors duration-200 ${
                     active
-                      ? "text-[#c9a96e] font-semibold border-b border-[#c9a96e]/60 pb-1"
-                      : "text-[#f0e8d8]/60 hover:text-[#f0e8d8] pb-1"
+                      ? "text-[#c9a96e] font-medium border-b border-[#c9a96e]/60 pb-1"
+                      : "text-[#f0e8d8]/65 hover:text-[#f0e8d8] pb-1"
                   }`}
                 >
                   {item.label}
@@ -214,42 +212,36 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               );
             })}
           </nav>
-
-          <div className="flex items-center gap-4">
+ 
+          <div className="flex items-center gap-3">
             <button
               onClick={toggleAudioNotifications}
-              className={`flex items-center gap-2 text-[10px] tracking-wider uppercase font-semibold px-3 py-2 border rounded transition-all cursor-pointer ${
+              className={`p-2 rounded border transition-all cursor-pointer flex items-center justify-center ${
                 audioEnabled
                   ? "text-[#c9a96e] border-[#c9a96e]/30 bg-[#c9a96e]/5 hover:bg-[#c9a96e]/10"
-                  : "text-[#f0e8d8]/40 border-[#c9a96e]/15 hover:text-[#f0e8d8]/60"
+                  : "text-[#f0e8d8]/40 border-[#c9a96e]/12 hover:text-[#f0e8d8]/60 hover:border-[#c9a96e]/30"
               }`}
               title={audioEnabled ? "Désactiver les notifications sonores" : "Activer les notifications sonores"}
             >
               {audioEnabled ? (
-                <>
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                  </svg>
-                  <span className="hidden sm:inline">Son Actif</span>
-                </>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                </svg>
               ) : (
-                <>
-                  <svg className="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zm11.95 3.182a9 9 0 000-12.728m-2.828 9.9a5 5 0 000-7.072" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
-                  </svg>
-                  <span className="hidden sm:inline">Son Inactif</span>
-                </>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zm11.95 3.182a9 9 0 000-12.728m-2.828 9.9a5 5 0 000-7.072" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
+                </svg>
               )}
             </button>
             {adminUser && (
-              <span className="inline-flex px-2.5 py-1 bg-[#c9a96e]/10 text-[#c9a96e] text-[10px] uppercase tracking-wider font-semibold border border-[#c9a96e]/20 rounded-full">
-                {adminUser.displayName} ({adminUser.role})
+              <span className="inline-flex px-2 py-0.5 bg-[#c9a96e]/5 text-[#c9a96e] text-[9px] uppercase tracking-wider font-semibold border border-[#c9a96e]/15 rounded-sm">
+                {adminUser.displayName}
               </span>
             )}
             <button
               onClick={handleLogout}
-              className="text-[11px] tracking-wider uppercase text-red-400 hover:text-red-300 font-semibold px-4 py-2 border border-red-500/20 hover:border-red-500/40 bg-red-500/5 hover:bg-red-500/10 transition-all cursor-pointer rounded"
+              className="text-[9px] tracking-widest uppercase text-red-400 hover:text-red-300 font-semibold px-2.5 py-1.5 border border-red-500/15 hover:border-red-500/35 bg-red-500/5 hover:bg-red-500/10 transition-all cursor-pointer rounded-sm"
             >
               Déconnexion
             </button>
