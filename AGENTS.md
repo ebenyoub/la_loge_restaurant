@@ -72,6 +72,15 @@ Toute évolution doit synchroniser les fichiers suivants :
 - Les types vivent dans :
   - `types.ts`
 
+### Standards de Formulaire (RHF + Zod)
+- **React Hook Form :** Tous les formulaires doivent utiliser React Hook Form pour la gestion de leur état.
+- **Validation Zod :** Toutes les validations de saisie doivent être définies à l'aide de schémas Zod.
+- **Centralisation des schémas :** Les schémas Zod doivent être centralisés dans `src/lib/validation/` (ou localement si spécifique à une feature).
+- **Hooks de formulaires :** Chaque formulaire doit posséder son hook dédié (ex: `useXxxForm`) pour séparer la logique de l'affichage.
+- **Découpage des champs :** Les champs doivent être découpés en composants réutilisables lorsque cela apporte de la valeur et s'intégrer avec les primitives `src/components/ui/`.
+- **Pages orchestratrices :** Les pages doivent rester des orchestrateurs et contenir le moins de logique métier possible.
+- **Nouveaux formulaires :** Toute nouvelle fonctionnalité de formulaire doit respecter strictement ce standard.
+
 ### Taille des pages
 - **250 lignes :** la page est candidate à une refactorisation.
 - **400 lignes :** la taille doit être justifiée.

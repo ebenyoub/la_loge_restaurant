@@ -129,3 +129,16 @@ Le standard Frontend officiel applicable au développement est défini par les r
 - **Zod :** Valider les schémas de données côté client et serveur via Zod.
 - **Pages orchestratrices :** Les pages (`page.tsx`) servent uniquement d'orchestrateurs et de layouts, déportant la logique métier et la validation.
 - **Types dérivés des schémas :** Dériver directement les types TypeScript à partir des schémas Zod (`z.infer<typeof schema>`).
+
+## D-017 — Standard de Formulaires (RHF + Zod)
+
+**Statut :** validée
+**Date :** 22 juin 2026
+
+Suite aux migrations réussies des formulaires de Contact, de Réservation et du Login Admin, le standard RHF + Zod est étendu et formalisé comme suit :
+- **Obligation RHF :** Tous les formulaires de l'application doivent utiliser React Hook Form.
+- **Validation Zod :** Toutes les règles de validation doivent être déclarées via un schéma Zod.
+- **Centralisation :** Les schémas Zod résident dans `src/lib/validation/` pour assurer la réutilisabilité et la cohérence.
+- **Hook dédié :** Chaque formulaire utilise un hook personnalisé `useXxxForm` pour isoler les requêtes et mutations.
+- **Composants réutilisables :** Les champs de formulaires doivent être découpés en composants réutilisables et consommer les primitives de `src/components/ui/`.
+- **Pages orchestratrices :** Les pages Next.js (`page.tsx`) doivent uniquement assembler et orchestrer les composants et déléguer toute la logique métier.

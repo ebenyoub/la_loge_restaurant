@@ -16,7 +16,7 @@
 ## Livré
 
 - [x] Redirection automatique de l'espace d'administration en cas de jeton invalide ou expiré (401), nettoyage du stockage local et cookie, et message d'avertissement.
-- [x] Pages publiques et formulaires Réservation/Contact connectés au backend.
+- [x] Pages publiques et formulaires Réservation/Contact connectés au backend et migrés vers le standard React Hook Form + Zod.
 - [x] Persistance MySQL et e-mails client/gérant pour les nouvelles demandes.
 - [x] Validation des horaires d'ouverture pour les demandes de réservation.
 - [x] Authentification JWT admin, routes protégées et administration complète des réservations, contacts, catégories, plats et réglages.
@@ -26,6 +26,7 @@
 - [x] Navigation admin visible sous le header fixe sur desktop et mobile.
 - [x] Typographie publique sans-serif, sans italique visible, et correction des ancres de catégories de la carte.
 - [x] Tests frontend : lint, build, Playwright admin et tests E2E publics validés (14 tests passants couvrant carte, contact, réservation, et menu burger).
+- [x] Fondation technique RHF + Zod opérationnelle et formulaires Contact, Réservation, Login Admin migrés.
 
 ## Explicitement hors périmètre actuel
 

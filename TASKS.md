@@ -2,7 +2,7 @@
 
 ## Tâche en cours
 
-Chantier P0 Mobile iPhone & résolution du chargement des réglages — terminée. Tests iPhone local à revalider après déploiement ou sur réseau Wi-Fi stable.
+Refactorisation des formulaires du projet — terminée. Les formulaires publics (Contact, Réservation) et d'administration (Login Admin) ont été migrés avec succès vers React Hook Form et Zod, respectant le nouveau standard frontend.
 
 ## Règles de travail
 
@@ -26,6 +26,9 @@ Chantier P0 Mobile iPhone & résolution du chargement des réglages — terminé
 - [x] Mise à jour documentaire selon l'état réel du dépôt.
 - [x] Enregistrement de la décision D-016 (standard Frontend : RHF + Zod + UI Foundation).
 - [x] Création de la fondation technique React Hook Form + Zod et exemples réutilisables.
+- [x] Migration du formulaire de login admin vers React Hook Form + Zod.
+- [x] Migration des formulaires publics de Contact et de Réservation vers React Hook Form + Zod.
+- [x] Enregistrement de la décision d'architecture D-017 (Standard de Formulaires RHF + Zod).
 
 ## Prochaine tâche proposée
 

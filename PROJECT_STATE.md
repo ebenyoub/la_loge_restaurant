@@ -10,14 +10,14 @@
 - Pages publiques : Accueil, Carte, Réservation, Contact/Accès et Mentions légales.
 - Carte publique connectée à MySQL via `GET /api/v1/public/menu` : 9 catégories et 46 plats lors du dernier contrôle.
 - Réglages publics chargés via `GET /api/v1/public/settings`; les états de chargement techniques ne sont pas affichés dans le header ni le footer.
-- Formulaires Réservation et Contact connectés à l'API.
+- Formulaires Réservation et Contact connectés à l'API et migrés vers le standard React Hook Form + Zod.
 - Menu mobile accessible ; navigation de la carte avec ancres dont l'offset tient compte du header et de la barre de catégories sticky.
 - Direction typographique publique sans-serif, sans italique visible, conformément à la capture Figma fournie comme référence visuelle actuelle.
 - Fondation technique React Hook Form + Zod opérationnelle (`src/lib/forms/` et `src/lib/validation/`).
 
 ### Administration
 
-- Login JWT avec formulaire navigateur standard (`Enter`, `autocomplete` identifiant/mot de passe).
+- Login JWT migré vers React Hook Form + Zod, avec formulaire navigateur standard (`Enter`, `autocomplete` identifiant/mot de passe).
 - Redirection automatique si le jeton JWT admin est invalide ou expiré (détection 401 sur toutes les requêtes admin, suppression de `admin_token`, `admin_user` du localStorage et cookie, redirection vers `/admin/login?expired=true` avec un message d'avertissement).
 - Navigation admin complète : Réservations, Contacts, Sections de la carte, Plats et Réglages.
 - Réservations : liste, filtres, fiche détail, changement de statut et notes internes avec états de mutation, désactivation des actions et mise à jour immédiate de l'interface.
@@ -54,6 +54,7 @@
 | Images | Aucun média de `public/images/imported/` ne peut être publié sans validation écrite des droits. |
 | Hors périmètre actuel | Captcha, rate limiting, e-mails de changement de statut, déploiement, calendrier et confirmation automatique. |
 | Standard Frontend | UI Foundation, Architecture modulaire, React Hook Form, Zod, Pages orchestratrices, Types dérivés des schémas. |
+| Standard Formulaires | React Hook Form et Zod obligatoires. Centralisation dans `src/lib/validation/`, hook par formulaire `useXxxForm` et intégration avec les primitives UI. |
 
 ## Restant avant mise en ligne
 
