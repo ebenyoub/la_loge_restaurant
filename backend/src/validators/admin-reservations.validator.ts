@@ -51,7 +51,7 @@ export function validateListReservations(req: Request, _res: Response, next: Nex
 }
 
 export function validateUpdateReservationStatus(req: Request, _res: Response, next: NextFunction) {
-  const allowedKeys = ["status"];
+  const allowedKeys = ["status", "reason"];
 
   const unknownFields = checkUnknownFields(req.body, allowedKeys);
   if (unknownFields.length > 0) {
@@ -62,7 +62,7 @@ export function validateUpdateReservationStatus(req: Request, _res: Response, ne
     });
   }
 
-  const { status } = req.body;
+  const { status, reason } = req.body;
   const validTransitions = ["en_attente", "confirmee", "refusee", "annulee"];
 
   if (typeof status !== "string" || status.trim() === "") {
@@ -80,6 +80,15 @@ export function validateUpdateReservationStatus(req: Request, _res: Response, ne
       code: "VALIDATION_ERROR",
       message: "Certains champs doivent être corrigés.",
       fields: { status: `Statut de transition invalide. Choix autorisés : ${validTransitions.join(", ")}.` }
+    });
+  }
+
+  if (reason !== undefined && typeof reason !== "string") {
+    return next({
+      status: 422,
+      code: "VALIDATION_ERROR",
+      message: "Certains champs doivent être corrigés.",
+      fields: { reason: "Le motif doit être une chaîne de caractères." }
     });
   }
 

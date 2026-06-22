@@ -214,6 +214,33 @@ describe("Admin API Endpoints Integration Tests", () => {
       expect(res.body.data.status).toBe("confirmee");
     });
 
+    it("should update reservation status with reason successfully", async () => {
+      const mockRes = { 
+        id: "res-3b", 
+        status: "nouvelle" as any,
+        firstName: "Jean",
+        lastName: "Dupont",
+        email: "jean@example.com",
+        requestedDate: new Date("2026-06-22"),
+        requestedTime: "12:00",
+        guestCount: 2
+      };
+      vi.mocked(prisma.reservation.findUnique).mockResolvedValueOnce(mockRes as any);
+      vi.mocked(prisma.reservation.update).mockResolvedValueOnce({
+        id: "res-3b",
+        status: "refusee" as any,
+        statusChangedAt: new Date()
+      } as any);
+
+      const res = await request(app)
+        .patch("/api/v1/admin/reservations/res-3b/status")
+        .set("Authorization", `Bearer ${mockToken}`)
+        .send({ status: "refusee", reason: "Restaurant complet" });
+
+      expect(res.status).toBe(200);
+      expect(res.body.data.status).toBe("refusee");
+    });
+
     it("should add an internal note to a reservation", async () => {
       const mockRes = { id: "res-4" };
       vi.mocked(prisma.reservation.findUnique).mockResolvedValueOnce(mockRes as any);

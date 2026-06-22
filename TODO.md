@@ -35,6 +35,7 @@
 - [x] Implémentation complète de P1-30 (Recette MVP) : rédaction de la checklist de recette complète dans docs/checklist-recette-mvp.md.
 - [x] Amélioration des notifications admin (sons distincts et indicateur visuel de texte animé arc-en-ciel).
 - [x] E-mails automatiques au client lors d'un changement de statut de réservation (confirmée, refusée, annulée, en attente).
+- [x] Ajout des motifs de refus et d'annulation dans la modale de confirmation et transmission de la raison dans les e-mails clients.
 
 ## Explicitement hors périmètre actuel
 

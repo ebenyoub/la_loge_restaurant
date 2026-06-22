@@ -37,6 +37,7 @@ Aucune. P1-30 (Recette MVP finale) est terminé. La checklist de recette complè
 - [x] Implémentation complète de P1-30 (Recette MVP) : rédaction de la checklist de recette globale dans docs/checklist-recette-mvp.md.
 - [x] Amélioration des notifications admin : sons distincts pour réservations et messages contact, remplacement des pastilles par un effet de texte arc-en-ciel animé resetable à l'ouverture de la section.
 - [x] Envoi automatique d'e-mails au client lors d'un changement de statut de réservation (confirmée, refusée, annulée, en attente).
+- [x] Ajout des motifs de refus et d'annulation dans la modale de confirmation et transmission de la raison dans les e-mails clients.
 
 ## Prochaine tâche proposée
 

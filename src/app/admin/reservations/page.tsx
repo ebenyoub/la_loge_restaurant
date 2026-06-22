@@ -51,6 +51,8 @@ export default function ReservationsPage() {
   const [detailsError, setDetailsError] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [pendingStatus, setPendingStatus] = useState<string | null>(null);
+  const [selectedReason, setSelectedReason] = useState("");
+  const [customReason, setCustomReason] = useState("");
 
   const fetchReservations = useCallback(async () => {
     Promise.resolve().then(() => {
@@ -145,10 +147,12 @@ export default function ReservationsPage() {
     if (!details || statusUpdatingTo) return;
     if (details.status === newStatus) return;
     setPendingStatus(newStatus);
+    setSelectedReason("");
+    setCustomReason("");
     setShowConfirmModal(true);
   };
 
-  const updateStatus = async (newStatus: string) => {
+  const updateStatus = async (newStatus: string, reason?: string) => {
     if (!details || statusUpdatingTo) return;
     if (details.status === newStatus) return;
     setStatusUpdatingTo(newStatus);
@@ -160,7 +164,7 @@ export default function ReservationsPage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({ status: newStatus, reason }),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -538,6 +542,61 @@ export default function ReservationsPage() {
               </div>
             </div>
 
+            {(pendingStatus === "refusee" || pendingStatus === "annulee") && (
+              <div className="space-y-3 font-body">
+                <label htmlFor="modal-reason-select" className="block text-xs text-[#f0e8d8]/60 font-light">
+                  Motif de {pendingStatus === "refusee" ? "refus" : "l'annulation"} :
+                </label>
+                <select
+                  id="modal-reason-select"
+                  value={selectedReason}
+                  onChange={(e) => {
+                    setSelectedReason(e.target.value);
+                    if (e.target.value !== "Autre") {
+                      setCustomReason("");
+                    }
+                  }}
+                  className={`${inputClass} w-full cursor-pointer`}
+                >
+                  <option value="">Sélectionnez un motif...</option>
+                  {pendingStatus === "refusee" ? (
+                    <>
+                      <option value="Restaurant complet">Restaurant complet</option>
+                      <option value="Créneau indisponible">Créneau indisponible</option>
+                      <option value="Événement privé">Événement privé</option>
+                      <option value="Réservation hors horaires">Réservation hors horaires</option>
+                      <option value="Demande incomplète">Demande incomplète</option>
+                      <option value="Autre">Autre</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value="Fermeture exceptionnelle">Fermeture exceptionnelle</option>
+                      <option value="Problème technique">Problème technique</option>
+                      <option value="Événement privé">Événement privé</option>
+                      <option value="Erreur de réservation">Erreur de réservation</option>
+                      <option value="Autre">Autre</option>
+                    </>
+                  )}
+                </select>
+
+                {selectedReason === "Autre" && (
+                  <div className="space-y-1">
+                    <label htmlFor="modal-custom-reason" className="block text-[11px] text-[#f0e8d8]/55 font-light">
+                      Motif personnalisé (optionnel) :
+                    </label>
+                    <textarea
+                      id="modal-custom-reason"
+                      placeholder="Saisissez un motif..."
+                      value={customReason}
+                      onChange={(e) => setCustomReason(e.target.value)}
+                      rows={3}
+                      className="w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] p-3 text-xs font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/40 transition-colors resize-none"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="bg-amber-500/10 border-l-2 border-amber-500/80 p-3 text-[11px] text-amber-300 font-body">
               ⚠️ <strong>Avertissement :</strong> Un e-mail sera envoyé au client.
             </div>
@@ -557,8 +616,9 @@ export default function ReservationsPage() {
                 onClick={async () => {
                   setShowConfirmModal(false);
                   const statusToUpdate = pendingStatus;
+                  const reasonToSend = selectedReason === "Autre" ? customReason : selectedReason;
                   setPendingStatus(null);
-                  await updateStatus(statusToUpdate);
+                  await updateStatus(statusToUpdate, reasonToSend || undefined);
                 }}
                 disabled={Boolean(statusUpdatingTo)}
                 className="px-4 py-2 bg-[#c9a96e] text-[#0b0b09] hover:bg-[#dbbe86] text-xs font-body font-semibold cursor-pointer uppercase tracking-wider disabled:opacity-60 disabled:cursor-not-allowed"

@@ -248,7 +248,7 @@ describe("Mail Service Unit Tests", () => {
         })
       );
 
-      // 2. Refusée
+      // 2. Refusée sans motif
       sendReservationStatusEmail({ ...mockRes, status: "refusee" });
       await new Promise((resolve) => setTimeout(resolve, 5));
       expect(mockSendMail).toHaveBeenCalledWith(
@@ -258,7 +258,19 @@ describe("Mail Service Unit Tests", () => {
         })
       );
 
-      // 3. Annulée
+      // 3. Refusée avec motif
+      sendReservationStatusEmail({ ...mockRes, status: "refusee", reason: "Restaurant complet" });
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      expect(mockSendMail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: "jean@example.com",
+          subject: "Votre demande de réservation - La Loge Bar & Food",
+          html: expect.stringContaining("Motif :</strong><br/>Restaurant complet"),
+          text: expect.stringContaining("Motif :\nRestaurant complet")
+        })
+      );
+
+      // 4. Annulée sans motif
       sendReservationStatusEmail({ ...mockRes, status: "annulee" });
       await new Promise((resolve) => setTimeout(resolve, 5));
       expect(mockSendMail).toHaveBeenCalledWith(
@@ -268,7 +280,19 @@ describe("Mail Service Unit Tests", () => {
         })
       );
 
-      // 4. En attente
+      // 5. Annulée avec motif
+      sendReservationStatusEmail({ ...mockRes, status: "annulee", reason: "Fermeture exceptionnelle" });
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      expect(mockSendMail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: "jean@example.com",
+          subject: "Annulation de votre réservation - La Loge Bar & Food",
+          html: expect.stringContaining("Motif :</strong><br/>Fermeture exceptionnelle"),
+          text: expect.stringContaining("Motif :\nFermeture exceptionnelle")
+        })
+      );
+
+      // 6. En attente
       sendReservationStatusEmail({ ...mockRes, status: "en_attente" });
       await new Promise((resolve) => setTimeout(resolve, 5));
       expect(mockSendMail).toHaveBeenCalledWith(

@@ -154,6 +154,7 @@ export async function updateReservationStatus(req: Request, res: Response, next:
   try {
     const id = req.params.id as string;
     const status = req.body.status as string;
+    const reason = req.body.reason as string | undefined;
     const adminId = (req as any).admin.id;
     const requestId = (req as any).requestId;
 
@@ -206,7 +207,8 @@ export async function updateReservationStatus(req: Request, res: Response, next:
       requestedDate: reservation.requestedDate,
       requestedTime: reservation.requestedTime,
       guestCount: reservation.guestCount,
-      status: status
+      status: status,
+      reason: reason
     });
 
     res.status(200).json({

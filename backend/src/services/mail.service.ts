@@ -125,6 +125,7 @@ export function sendReservationStatusEmail(res: {
   requestedTime: string;
   guestCount: number;
   status: string;
+  reason?: string;
 }) {
   if (!res.email || !res.firstName) {
     console.warn("[Mail Service] Données de réservation insuffisantes pour envoyer l'email de changement de statut.");
@@ -154,19 +155,21 @@ export function sendReservationStatusEmail(res: {
       <h2>Bonjour ${res.firstName},</h2>
       <p>Nous faisons suite à votre demande de réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime}.</p>
       <p>Malheureusement, nous ne sommes pas en mesure de répondre favorablement à votre demande pour ce créneau spécifique.</p>
+      ${res.reason ? `<p><strong>Motif :</strong><br/>${res.reason.replace(/\n/g, "<br/>")}</p>` : ""}
       <p>Nous espérons avoir le plaisir de vous accueillir à une autre occasion.</p>
       <p>Cordialement,<br/>L'équipe de La Loge Bar &amp; Food</p>
     `;
-    text = `Bonjour ${res.firstName}, concernant votre demande de réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime}, nous sommes au regret de ne pouvoir y répondre favorablement. L'équipe de La Loge.`;
+    text = `Bonjour ${res.firstName}, concernant votre demande de réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime}, nous sommes au regret de ne pouvoir y répondre favorablement.${res.reason ? `\n\nMotif :\n${res.reason}` : ""} L'équipe de La Loge.`;
   } else if (res.status === "annulee") {
     subject = "Annulation de votre réservation - La Loge Bar & Food";
     html = `
       <h2>Bonjour ${res.firstName},</h2>
       <p>Nous vous informons que votre réservation pour <strong>${res.guestCount} personnes</strong> le <strong>${formattedDate} à ${res.requestedTime}</strong> a bien été annulée.</p>
+      ${res.reason ? `<p><strong>Motif :</strong><br/>${res.reason.replace(/\n/g, "<br/>")}</p>` : ""}
       <p>Si vous souhaitez réserver pour une autre date, n'hésitez pas à déposer une nouvelle demande sur notre site.</p>
       <p>À bientôt,<br/>L'équipe de La Loge Bar &amp; Food</p>
     `;
-    text = `Bonjour ${res.firstName}, votre réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime} a bien été annulée. L'équipe de La Loge.`;
+    text = `Bonjour ${res.firstName}, votre réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime} a bien été annulée.${res.reason ? `\n\nMotif :\n${res.reason}` : ""} L'équipe de La Loge.`;
   } else if (res.status === "en_attente") {
     subject = "Mise en attente de votre demande de réservation - La Loge Bar & Food";
     html = `

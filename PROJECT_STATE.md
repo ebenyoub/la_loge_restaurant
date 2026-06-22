@@ -38,7 +38,8 @@
 - Validation des horaires d'ouverture sur les réservations.
 - Authentification JWT/bcrypt et routes admin protégées sous `/api/v1/admin`.
 - API publique distincte : `/api/v1/public/menu` et `/api/v1/public/settings`.
-- Tests backend : 49 tests passants lors de la dernière validation backend.
+- Tests backend : 56 tests passants lors de la dernière validation backend.
+- Prise en charge des motifs (raisons) lors d'un refus ou d'une annulation de réservation avec intégration dans l'email envoyé au client.
 
 ### Validation réalisée
 
