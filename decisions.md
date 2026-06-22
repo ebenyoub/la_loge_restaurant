@@ -116,3 +116,16 @@ Les médias de `public/images/imported/` sont des éléments d'audit. Leur prove
 **Date :** 21 juin 2026
 
 Captcha, rate limiting, e-mails de changement de statut et déploiement sont volontairement différés jusqu'à la finalisation de la connexion des contenus, des images, de la fidélité Figma et du responsive.
+
+## D-016 — Standard Frontend du projet
+
+**Statut :** validée
+**Date :** 22 juin 2026
+
+Le standard Frontend officiel applicable au développement est défini par les règles suivantes :
+- **UI Foundation :** Tous les composants primitifs réutilisables vont dans `src/components/ui/`.
+- **Architecture modulaire :** Découpler le code en déplaçant types, hook et sous-composants dans la structure de dossier de la fonctionnalité (`feature/`).
+- **React Hook Form :** Utiliser cette librairie pour la gestion et la validation des formulaires complexes ou dynamiques.
+- **Zod :** Valider les schémas de données côté client et serveur via Zod.
+- **Pages orchestratrices :** Les pages (`page.tsx`) servent uniquement d'orchestrateurs et de layouts, déportant la logique métier et la validation.
+- **Types dérivés des schémas :** Dériver directement les types TypeScript à partir des schémas Zod (`z.infer<typeof schema>`).

@@ -24,6 +24,7 @@ Chantier P0 Mobile iPhone & résolution du chargement des réglages — terminé
 - [x] Correction de l'offset des ancres de catégories de la carte et de la superposition de la barre admin sous le header fixe.
 - [x] Passe typographique publique/admin : suppression des usages visibles serif et italiques, sans changer la logique métier.
 - [x] Mise à jour documentaire selon l'état réel du dépôt.
+- [x] Enregistrement de la décision D-016 (standard Frontend : RHF + Zod + UI Foundation).
 
 ## Prochaine tâche proposée
 

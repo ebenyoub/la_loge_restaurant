@@ -52,6 +52,7 @@
 | Design public | Capture Figma actuelle fournie par le client comme référence visuelle. Sans-serif et sans italique visible sur les pages publiques. |
 | Images | Aucun média de `public/images/imported/` ne peut être publié sans validation écrite des droits. |
 | Hors périmètre actuel | Captcha, rate limiting, e-mails de changement de statut, déploiement, calendrier et confirmation automatique. |
+| Standard Frontend | UI Foundation, Architecture modulaire, React Hook Form, Zod, Pages orchestratrices, Types dérivés des schémas. |
 
 ## Restant avant mise en ligne
 
