@@ -2,7 +2,7 @@
 
 ## Tâche en cours
 
-Implémentation complète de P1-27 (Contact, accès et horaires) — terminée. Le téléphone, l'adresse (itinéraire) et l'e-mail ont été rendus cliquables et dynamisés sur toutes les pages publiques et le footer depuis le context de settings unique.
+Implémentation complète de P1-26 (SEO local) — terminée. Les balises meta (OpenGraph, Twitter, canonical) et les données structurées JSON-LD (Restaurant) ont été dynamisées, et les fichiers sitemap.xml et robots.txt ont été générés.
 
 
 ## Règles de travail
@@ -32,6 +32,7 @@ Implémentation complète de P1-27 (Contact, accès et horaires) — terminée. 
 - [x] Enregistrement de la décision d'architecture D-017 (Standard de Formulaires RHF + Zod).
 - [x] Implémentation complète de P1-23 (Documents légaux / RGPD) : création des API publiques/admin, édition via RHF + Zod dans /admin/settings et dynamisation de /mentions-legales.
 - [x] Implémentation complète de P1-27 (Contact, accès et horaires) : téléphone, itinéraire et e-mail cliquables et dynamisés depuis une source unique.
+- [x] Implémentation complète de P1-26 (SEO local) : injection dynamique des metatags (OG, Twitter, canonical), donnees structurees JSON-LD (Restaurant) et routages sitemap.xml / robots.txt.
 
 ## Prochaine tâche proposée
 

@@ -29,6 +29,8 @@
 - [x] Fondation technique RHF + Zod opérationnelle et formulaires Contact, Réservation, Login Admin et documents légaux migrés.
 - [x] Implémentation complète de P1-23 (Documents légaux / RGPD) dynamisés depuis MySQL et administrables via React Hook Form + Zod.
 - [x] Implémentation complète de P1-27 (Contact, accès, horaires cliquables et dynamiques sur les pages publiques et le footer).
+- [x] Implémentation complète de P1-26 (SEO local, sitemap.xml, robots.txt, canonicals, OpenGraph, Twitter cards et structured data JSON-LD Restaurant).
+
 
 
 

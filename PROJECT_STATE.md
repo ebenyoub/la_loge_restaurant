@@ -14,6 +14,8 @@
 - Menu mobile accessible ; navigation de la carte avec ancres dont l'offset tient compte du header et de la barre de catégories sticky.
 - Direction typographique publique sans-serif, sans italique visible, conformément à la capture Figma fournie comme référence visuelle actuelle.
 - Fondation technique React Hook Form + Zod opérationnelle (`src/lib/forms/` et `src/lib/validation/`).
+- Métadonnées SEO et SEO local : Balises title/description dynamiques, OpenGraph, Twitter, canonical, données structurées JSON-LD (Restaurant), sitemap.xml et robots.txt configurés.
+
 
 ### Administration
 
