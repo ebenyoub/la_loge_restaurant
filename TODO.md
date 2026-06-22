@@ -25,7 +25,7 @@
 - [x] Actions admin de statut et de notes synchronisées immédiatement avec états de chargement.
 - [x] Navigation admin visible sous le header fixe sur desktop et mobile.
 - [x] Typographie publique sans-serif, sans italique visible, et correction des ancres de catégories de la carte.
-- [x] Tests frontend : lint, build et Playwright validés lors de la dernière passe.
+- [x] Tests frontend : lint, build, Playwright admin et tests E2E publics validés (14 tests passants couvrant carte, contact, réservation, et menu burger).
 
 ## Explicitement hors périmètre actuel
 

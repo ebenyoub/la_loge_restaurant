@@ -38,7 +38,7 @@
 
 - `npm run lint` : OK.
 - `npm run build` : OK.
-- `npm run test:e2e` : OK (9 tests).
+- `npm run test:e2e` : OK (14 tests passants couvrant les espaces d'administration et les parcours publics : carte, contact, réservation, et menu burger).
 
 ## Décisions de portée en vigueur
 

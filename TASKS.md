@@ -2,7 +2,7 @@
 
 ## Tâche en cours
 
-Revue technique complète et validation de l'authentification admin expirée — terminée dans cette passe.
+Ajout des tests E2E publics Playwright (carte, formulaires contact/réservation, validation horaires/jours fermés, burger mobile) — terminée.
 
 ## Règles de travail
 
@@ -14,6 +14,7 @@ Revue technique complète et validation de l'authentification admin expirée —
 
 ## Historique récent
 
+- [x] Tests E2E publics ajoutés (carte publique, formulaire contact, formulaire réservation, validation horaire/jour fermé, menu burger mobile).
 - [x] Redirection automatique vers la page de connexion si le token admin est invalide ou expiré (401), suppression du localStorage et affichage du message de session expirée.
 - [x] Connexion de la carte publique et des réglages à l'API publique MySQL ; correction du routage admin qui interceptait les routes publiques.
 - [x] Correction des données catégories/plats de l'admin : réponses API directes `data` lues correctement (9 catégories, 46 plats).
@@ -25,4 +26,9 @@ Revue technique complète et validation de l'authentification admin expirée —
 
 ## Prochaine tâche proposée
 
-Valider les contenus réels et les droits des photos, puis effectuer une recette visuelle responsive contre la capture Figma actuelle. Le déploiement reste une tâche distincte.
+P0 Mobile iPhone :
+- vérifier menu burger réel sur iPhone
+- corriger débordements formulaire réservation
+- heure en liste de créneaux
+- nombre de personnes en select 2 à 15
+- vérifier carte et admin depuis iPhone
