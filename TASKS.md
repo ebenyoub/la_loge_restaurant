@@ -25,6 +25,7 @@ Chantier P0 Mobile iPhone & résolution du chargement des réglages — terminé
 - [x] Passe typographique publique/admin : suppression des usages visibles serif et italiques, sans changer la logique métier.
 - [x] Mise à jour documentaire selon l'état réel du dépôt.
 - [x] Enregistrement de la décision D-016 (standard Frontend : RHF + Zod + UI Foundation).
+- [x] Création de la fondation technique React Hook Form + Zod et exemples réutilisables.
 
 ## Prochaine tâche proposée
 
