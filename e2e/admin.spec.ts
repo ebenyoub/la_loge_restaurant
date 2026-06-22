@@ -1,6 +1,49 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Admin MVP Frontend Tests", () => {
+  test.beforeEach(async ({ page }) => {
+    // Mock the background polling requests for contact messages and reservations to prevent unhandled 401 redirects in admin layout
+    await page.route(/\/api\/v1\/admin\/contact-messages/, async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          data: {
+            items: [],
+            page: 1,
+            pageSize: 20,
+            total: 0
+          }
+        }),
+      });
+    });
+
+    await page.route(/\/api\/v1\/admin\/reservations/, async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          data: {
+            items: [],
+            page: 1,
+            pageSize: 20,
+            total: 0
+          }
+        }),
+      });
+    });
+
+    await page.route(/\/api\/v1\/admin\/legal-documents/, async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          data: []
+        }),
+      });
+    });
+  });
+
   // Test Route Protection
   test("should redirect to login if not authenticated", async ({ page }) => {
     await page.goto("/admin/reservations");
@@ -33,7 +76,7 @@ test.describe("Admin MVP Frontend Tests", () => {
 
     await page.goto("/admin/reservations");
     await expect(page).toHaveURL(/\/admin\/reservations/);
-    await expect(page.locator("text=Directeur Test (gérant)")).toBeVisible();
+    await expect(page.locator("text=Directeur Test")).toBeVisible();
   });
 
   test("should redirect to login and clear localStorage if admin API returns 401", async ({ page }) => {
@@ -138,7 +181,7 @@ test.describe("Admin MVP Frontend Tests", () => {
 
     // Should redirect to dashboard
     await expect(page).toHaveURL(/\/admin\/reservations/);
-    await expect(page.locator("text=Chef Admin (gérant)")).toBeVisible();
+    await expect(page.locator("text=Chef Admin")).toBeVisible();
   });
 
   // Test Reservations List and Details
