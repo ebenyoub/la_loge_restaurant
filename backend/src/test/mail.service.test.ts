@@ -6,6 +6,7 @@ import {
   sendContactNotificationToManager,
   sendContactConfirmationToClient,
   sendContactReplyToClient,
+  sendReservationStatusEmail,
 } from "../services/mail.service.js";
 
 const mockSendMail = vi.fn();
@@ -222,6 +223,58 @@ describe("Mail Service Unit Tests", () => {
           from: "no-reply@laloge.fr",
           to: "jean@example.com",
           subject: "Re: Question sur la carte",
+        })
+      );
+    });
+
+    it("should send reservation status change email to client for each status", async () => {
+      mockSendMail.mockResolvedValue({ messageId: "status-change-success-id" });
+      const mockRes = {
+        firstName: "Jean",
+        lastName: "Dupont",
+        email: "jean@example.com",
+        requestedDate: "2026-06-22",
+        requestedTime: "12:00",
+        guestCount: 2,
+      };
+
+      // 1. Confirmée
+      sendReservationStatusEmail({ ...mockRes, status: "confirmee" });
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      expect(mockSendMail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: "jean@example.com",
+          subject: "Votre réservation est confirmée - La Loge Bar & Food",
+        })
+      );
+
+      // 2. Refusée
+      sendReservationStatusEmail({ ...mockRes, status: "refusee" });
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      expect(mockSendMail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: "jean@example.com",
+          subject: "Votre demande de réservation - La Loge Bar & Food",
+        })
+      );
+
+      // 3. Annulée
+      sendReservationStatusEmail({ ...mockRes, status: "annulee" });
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      expect(mockSendMail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: "jean@example.com",
+          subject: "Annulation de votre réservation - La Loge Bar & Food",
+        })
+      );
+
+      // 4. En attente
+      sendReservationStatusEmail({ ...mockRes, status: "en_attente" });
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      expect(mockSendMail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: "jean@example.com",
+          subject: "Mise en attente de votre demande de réservation - La Loge Bar & Food",
         })
       );
     });

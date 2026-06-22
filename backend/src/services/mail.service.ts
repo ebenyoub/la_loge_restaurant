@@ -117,6 +117,79 @@ export function sendReservationConfirmationToClient(res: {
   });
 }
 
+export function sendReservationStatusEmail(res: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  requestedDate: string | Date;
+  requestedTime: string;
+  guestCount: number;
+  status: string;
+}) {
+  if (!res.email || !res.firstName) {
+    console.warn("[Mail Service] Données de réservation insuffisantes pour envoyer l'email de changement de statut.");
+    return;
+  }
+
+  const formattedDate = res.requestedDate instanceof Date 
+    ? res.requestedDate.toLocaleDateString("fr-FR")
+    : String(res.requestedDate);
+
+  let subject = "";
+  let html = "";
+  let text = "";
+
+  if (res.status === "confirmee") {
+    subject = "Votre réservation est confirmée - La Loge Bar & Food";
+    html = `
+      <h2>Bonjour ${res.firstName},</h2>
+      <p>Nous avons le plaisir de vous confirmer votre réservation pour <strong>${res.guestCount} personnes</strong> le <strong>${formattedDate} à ${res.requestedTime}</strong>.</p>
+      <p>Nous nous réjouissons de vous accueillir prochainement.</p>
+      <p>À très bientôt,<br/>L'équipe de La Loge Bar &amp; Food</p>
+    `;
+    text = `Bonjour ${res.firstName}, nous avons le plaisir de vous confirmer votre réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime}. À bientôt, l'équipe de La Loge.`;
+  } else if (res.status === "refusee") {
+    subject = "Votre demande de réservation - La Loge Bar & Food";
+    html = `
+      <h2>Bonjour ${res.firstName},</h2>
+      <p>Nous faisons suite à votre demande de réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime}.</p>
+      <p>Malheureusement, nous ne sommes pas en mesure de répondre favorablement à votre demande pour ce créneau spécifique.</p>
+      <p>Nous espérons avoir le plaisir de vous accueillir à une autre occasion.</p>
+      <p>Cordialement,<br/>L'équipe de La Loge Bar &amp; Food</p>
+    `;
+    text = `Bonjour ${res.firstName}, concernant votre demande de réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime}, nous sommes au regret de ne pouvoir y répondre favorablement. L'équipe de La Loge.`;
+  } else if (res.status === "annulee") {
+    subject = "Annulation de votre réservation - La Loge Bar & Food";
+    html = `
+      <h2>Bonjour ${res.firstName},</h2>
+      <p>Nous vous informons que votre réservation pour <strong>${res.guestCount} personnes</strong> le <strong>${formattedDate} à ${res.requestedTime}</strong> a bien été annulée.</p>
+      <p>Si vous souhaitez réserver pour une autre date, n'hésitez pas à déposer une nouvelle demande sur notre site.</p>
+      <p>À bientôt,<br/>L'équipe de La Loge Bar &amp; Food</p>
+    `;
+    text = `Bonjour ${res.firstName}, votre réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime} a bien été annulée. L'équipe de La Loge.`;
+  } else if (res.status === "en_attente") {
+    subject = "Mise en attente de votre demande de réservation - La Loge Bar & Food";
+    html = `
+      <h2>Bonjour ${res.firstName},</h2>
+      <p>Votre demande de réservation pour <strong>${res.guestCount} personnes</strong> le <strong>${formattedDate} à ${res.requestedTime}</strong> est actuellement en attente de traitement.</p>
+      <p>Nous étudions nos disponibilités et vous contacterons rapidement pour vous confirmer ou non la table.</p>
+      <p>À bientôt,<br/>L'équipe de La Loge Bar &amp; Food</p>
+    `;
+    text = `Bonjour ${res.firstName}, votre demande de réservation pour ${res.guestCount} personnes le ${formattedDate} à ${res.requestedTime} est actuellement en cours de traitement. L'équipe de La Loge.`;
+  } else {
+    // Ne rien faire pour les autres statuts (ex: "nouvelle")
+    return;
+  }
+
+  // Envoi asynchrone sécurisé (ne bloque pas le thread principal)
+  sendMailSafe({
+    to: res.email,
+    subject,
+    html,
+    text,
+  });
+}
+
 // ----------------------------------------------------
 // Contact Messages
 // ----------------------------------------------------

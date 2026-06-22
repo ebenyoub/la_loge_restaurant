@@ -34,14 +34,10 @@
 - [x] Implémentation complète de P1-29 (Conformité RGPD) : cases à cocher de consentement explicite avec liens sur les formulaires et affichage admin des durées de conservation.
 - [x] Implémentation complète de P1-30 (Recette MVP) : rédaction de la checklist de recette complète dans docs/checklist-recette-mvp.md.
 - [x] Amélioration des notifications admin (sons distincts et indicateur visuel de texte animé arc-en-ciel).
-
-
-
-
+- [x] E-mails automatiques au client lors d'un changement de statut de réservation (confirmée, refusée, annulée, en attente).
 
 ## Explicitement hors périmètre actuel
 
 - [ ] Confirmation/blocage automatiques de réservations, synchronisation calendrier ou Google Calendar.
-- [ ] E-mails lors d'un changement de statut de réservation.
 - [ ] Captcha et rate limiting, à planifier avant exposition publique si requis.
 - [ ] SMS, WhatsApp, push, statistiques avancées, galerie, événements privés, avis clients, page builder, paramètres de capacité, alertes de surcharge et tableau de bord de charge.

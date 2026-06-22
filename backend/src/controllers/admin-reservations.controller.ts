@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prisma.js";
+import { sendReservationStatusEmail } from "../services/mail.service.js";
 
 export async function listReservations(req: Request, res: Response, next: NextFunction) {
   try {
@@ -195,6 +196,17 @@ export async function updateReservationStatus(req: Request, res: Response, next:
           statusChangedAt: new Date()
         }
       });
+    });
+
+    // Envoi de l'e-mail de notification au client (asynchrone, non bloquant)
+    sendReservationStatusEmail({
+      firstName: reservation.firstName,
+      lastName: reservation.lastName,
+      email: reservation.email,
+      requestedDate: reservation.requestedDate,
+      requestedTime: reservation.requestedTime,
+      guestCount: reservation.guestCount,
+      status: status
     });
 
     res.status(200).json({

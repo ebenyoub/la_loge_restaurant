@@ -49,6 +49,8 @@ export default function ReservationsPage() {
   const [isNoteSubmitting, setIsNoteSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [detailsError, setDetailsError] = useState<string | null>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [pendingStatus, setPendingStatus] = useState<string | null>(null);
 
   const fetchReservations = useCallback(async () => {
     Promise.resolve().then(() => {
@@ -138,6 +140,13 @@ export default function ReservationsPage() {
 
     fetchDetails();
   }, [selectedId]);
+
+  const promptStatusUpdate = (newStatus: string) => {
+    if (!details || statusUpdatingTo) return;
+    if (details.status === newStatus) return;
+    setPendingStatus(newStatus);
+    setShowConfirmModal(true);
+  };
 
   const updateStatus = async (newStatus: string) => {
     if (!details || statusUpdatingTo) return;
@@ -349,7 +358,7 @@ export default function ReservationsPage() {
               </span>
               <div className="flex flex-wrap gap-3">
                 <button
-                  onClick={() => updateStatus("en_attente")}
+                  onClick={() => promptStatusUpdate("en_attente")}
                   disabled={Boolean(statusUpdatingTo)}
                   className={`px-4 py-2 text-[10px] tracking-wider uppercase font-body font-semibold border transition-all disabled:cursor-not-allowed disabled:opacity-60 ${
                     details.status === "en_attente"
@@ -360,7 +369,7 @@ export default function ReservationsPage() {
                   {statusUpdatingTo === "en_attente" ? "Mise à jour..." : "Mettre en attente"}
                 </button>
                 <button
-                  onClick={() => updateStatus("confirmee")}
+                  onClick={() => promptStatusUpdate("confirmee")}
                   disabled={Boolean(statusUpdatingTo)}
                   className={`px-4 py-2 text-[10px] tracking-wider uppercase font-body font-semibold border transition-all disabled:cursor-not-allowed disabled:opacity-60 ${
                     details.status === "confirmee"
@@ -371,7 +380,7 @@ export default function ReservationsPage() {
                   {statusUpdatingTo === "confirmee" ? "Mise à jour..." : "Confirmer"}
                 </button>
                 <button
-                  onClick={() => updateStatus("refusee")}
+                  onClick={() => promptStatusUpdate("refusee")}
                   disabled={Boolean(statusUpdatingTo)}
                   className={`px-4 py-2 text-[10px] tracking-wider uppercase font-body font-semibold border transition-all disabled:cursor-not-allowed disabled:opacity-60 ${
                     details.status === "refusee"
@@ -382,7 +391,7 @@ export default function ReservationsPage() {
                   {statusUpdatingTo === "refusee" ? "Mise à jour..." : "Refuser"}
                 </button>
                 <button
-                  onClick={() => updateStatus("annulee")}
+                  onClick={() => promptStatusUpdate("annulee")}
                   disabled={Boolean(statusUpdatingTo)}
                   className={`px-4 py-2 text-[10px] tracking-wider uppercase font-body font-semibold border transition-all disabled:cursor-not-allowed disabled:opacity-60 ${
                     details.status === "annulee"
@@ -495,6 +504,71 @@ export default function ReservationsPage() {
           </div>
         ) : null}
       </div>
+      {/* Confirmation Modal */}
+      {showConfirmModal && pendingStatus && details && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" role="dialog" aria-modal="true">
+          <div className="bg-[#141412] border border-[#c9a96e]/30 max-w-md w-full p-6 space-y-6">
+            <div className="space-y-2 border-b border-[#c9a96e]/15 pb-4">
+              <h3 className="font-body font-medium text-lg text-[#f0e8d8]">Confirmer le changement de statut</h3>
+              <p className="text-xs text-[#f0e8d8]/55">
+                Veuillez valider le nouveau statut de la demande ci-dessous.
+              </p>
+            </div>
+
+            <div className="space-y-3 text-xs font-body">
+              <div className="flex justify-between">
+                <span className="text-[#f0e8d8]/40 font-light">Client :</span>
+                <span className="text-[#f0e8d8] font-medium">{details.customerName}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#f0e8d8]/40 font-light">E-mail :</span>
+                <span className="text-[#f0e8d8]">{details.email}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-[#f0e8d8]/40 font-light">Statut actuel :</span>
+                <span className={`text-[9px] tracking-wider uppercase px-2 py-0.5 font-semibold ${getStatusBadgeClass(details.status)}`}>
+                  {details.status.replace("_", " ")}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-[#f0e8d8]/40 font-light">Nouveau statut :</span>
+                <span className={`text-[9px] tracking-wider uppercase px-2 py-0.5 font-semibold ${getStatusBadgeClass(pendingStatus)}`}>
+                  {pendingStatus.replace("_", " ")}
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-amber-500/10 border-l-2 border-amber-500/80 p-3 text-[11px] text-amber-300 font-body">
+              ⚠️ <strong>Avertissement :</strong> Un e-mail sera envoyé au client.
+            </div>
+
+            <div className="flex justify-end gap-3 pt-2">
+              <button
+                onClick={() => {
+                  setShowConfirmModal(false);
+                  setPendingStatus(null);
+                }}
+                disabled={Boolean(statusUpdatingTo)}
+                className="px-4 py-2 border border-[#c9a96e]/20 text-[#f0e8d8]/60 hover:text-[#f0e8d8] hover:border-[#c9a96e]/40 text-xs font-body font-semibold cursor-pointer uppercase tracking-wider"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={async () => {
+                  setShowConfirmModal(false);
+                  const statusToUpdate = pendingStatus;
+                  setPendingStatus(null);
+                  await updateStatus(statusToUpdate);
+                }}
+                disabled={Boolean(statusUpdatingTo)}
+                className="px-4 py-2 bg-[#c9a96e] text-[#0b0b09] hover:bg-[#dbbe86] text-xs font-body font-semibold cursor-pointer uppercase tracking-wider disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                Confirmer l&apos;envoi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

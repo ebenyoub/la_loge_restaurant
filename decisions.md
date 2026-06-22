@@ -23,9 +23,7 @@ Le formulaire collecte nom, prénom, téléphone, e-mail, date, heure, couverts,
 **Statut :** validée
 **Date :** 20 juin 2026
 
-Une demande valide est persistée avant l'envoi d'un e-mail au gérant et d'un accusé de réception au client via SMTP Brevo.
-
-**Limite actuelle :** aucun e-mail n'est envoyé lors d'un changement de statut.
+Une demande de réservation valide est persistée avant l'envoi d'un e-mail au gérant et d'un accusé de réception au client via SMTP Brevo. De plus, lors du changement de statut d'une réservation (confirmée, refusée, annulée, en attente) par le gérant, un e-mail récapitulatif adapté est automatiquement envoyé au client de manière asynchrone sans bloquer l'interface.
 
 ## D-004 — Administration des réservations
 

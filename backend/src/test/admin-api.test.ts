@@ -11,7 +11,8 @@ vi.mock("../services/mail.service.js", () => ({
   sendReservationNotificationToManager: vi.fn(),
   sendReservationConfirmationToClient: vi.fn(),
   sendContactNotificationToManager: vi.fn(),
-  sendContactConfirmationToClient: vi.fn()
+  sendContactConfirmationToClient: vi.fn(),
+  sendReservationStatusEmail: vi.fn()
 }));
 
 const testAdmin = {

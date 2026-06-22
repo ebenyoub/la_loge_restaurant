@@ -51,7 +51,7 @@
 | Sujet | Décision |
 | --- | --- |
 | Réservation | Demande manuelle : aucune confirmation ou blocage automatique. |
-| E-mails | E-mails de création au client et au gérant uniquement ; pas d'e-mail de changement de statut à ce stade. |
+| E-mails | E-mails de création au client/gérant, et e-mail automatique au client lors d'un changement de statut (confirmée, refusée, annulée, en attente). |
 | API frontend | Toute requête passe par `src/lib/api.ts` et `NEXT_PUBLIC_API_URL`; aucun appel relatif `/api/v1`. |
 | Carte publique | Source de vérité : `MenuCategory` et `MenuItem` MySQL. Une absence de données produit un état vide, pas des plats inventés. |
 | Administration | Administration JWT avec gestion des réservations, contacts, catégories, plats et réglages. |
