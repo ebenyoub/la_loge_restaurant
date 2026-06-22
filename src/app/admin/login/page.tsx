@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { API_BASE_URL } from "@/lib/api";
+import { loginSchema, LoginFormData } from "@/lib/validation/login";
+import { Input, Button, Alert } from "@/components/ui";
 
 function GoldLine() {
   return (
@@ -16,11 +20,21 @@ function GoldLine() {
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isExpired, setIsExpired] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("admin_token");
@@ -39,8 +53,7 @@ export default function AdminLoginPage() {
     }
   }, [router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     setError(null);
     setIsExpired(false);
@@ -51,7 +64,7 @@ export default function AdminLoginPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(data),
       });
 
       const result = await response.json();
@@ -65,7 +78,8 @@ export default function AdminLoginPage() {
         localStorage.setItem("admin_user", JSON.stringify(admin));
 
         // Set a cookie so middleware or server components could potentially read it if needed later
-        document.cookie = `admin_token=${token}; path=/; max-age=28800; SameSite=Strict; Secure`;
+        /* eslint-disable-next-line react-hooks/immutability */
+        window.document.cookie = `admin_token=${token}; path=/; max-age=28800; SameSite=Strict; Secure`;
 
         // Redirect to admin reservation dashboard
         router.push("/admin/reservations");
@@ -77,9 +91,6 @@ export default function AdminLoginPage() {
     }
   };
 
-  const inputClass = "w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-4 py-3 text-sm font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/50 transition-colors";
-  const labelClass = "block text-[10px] tracking-[0.3em] uppercase font-body text-[#c9a96e]/70 mb-2";
-
   return (
     <div className="min-h-screen bg-[#0b0b09] flex items-center justify-center px-6 py-12 text-[#f0e8d8] font-body">
       <section className="max-w-md w-full border border-[#c9a96e]/15 bg-[#141412] p-8 md:p-10" aria-labelledby="login-title">
@@ -90,57 +101,47 @@ export default function AdminLoginPage() {
         </div>
 
         {isExpired && !error && (
-          <div className="p-4 mb-6 bg-[#c9a96e]/10 border border-[#c9a96e]/20 text-[#c9a96e] text-xs font-body" role="status">
-            <p>Votre session a expiré, veuillez vous reconnecter.</p>
-          </div>
+          <Alert variant="gold" layout="banner" className="mb-6">
+            Votre session a expiré, veuillez vous reconnecter.
+          </Alert>
         )}
 
         {error && (
-          <div className="p-4 mb-6 bg-red-500/10 border-l-4 border-red-500 text-red-400 text-sm font-body" role="alert">
-            <p>{error}</p>
-          </div>
+          <Alert variant="error" layout="banner" className="mb-6">
+            {error}
+          </Alert>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="email" className={labelClass}>Adresse e-mail</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@example.com"
-              required
-              autoComplete="username"
-              disabled={isLoading}
-              className={inputClass}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className={labelClass}>Mot de passe</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-              autoComplete="current-password"
-              disabled={isLoading}
-              className={inputClass}
-            />
-          </div>
-
-          <button
-            type="submit"
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <Input
+            id="email"
+            type="email"
+            label="Adresse e-mail"
+            placeholder="admin@example.com"
+            autoComplete="username"
             disabled={isLoading}
-            className="w-full py-4 bg-[#c9a96e] text-[#0b0b09] text-[11px] tracking-[0.3em] uppercase font-body font-semibold hover:bg-[#dbbe86] active:bg-[#b8924a] transition-all cursor-pointer border-0"
+            error={errors.email?.message}
+            {...register("email")}
+          />
+
+          <Input
+            id="password"
+            type="password"
+            label="Mot de passe"
+            placeholder="••••••••"
+            autoComplete="current-password"
+            disabled={isLoading}
+            error={errors.password?.message}
+            {...register("password")}
+          />
+
+          <Button
+            type="submit"
+            isLoading={isLoading}
+            fullWidth
           >
-            {isLoading ? "Connexion en cours..." : "Se connecter"}
-          </button>
+            Se connecter
+          </Button>
         </form>
       </section>
     </div>
