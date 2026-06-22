@@ -1,45 +1,41 @@
 import React from "react";
-import { ReservationFormData, FormErrors } from "../types";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { ReservationFormData } from "@/lib/validation/reservation";
 import { ReservationContactFields } from "./ReservationContactFields";
 import { ReservationDateField } from "./ReservationDateField";
 import { ReservationTimeField } from "./ReservationTimeField";
 import { ReservationGuestCountField } from "./ReservationGuestCountField";
 import { ReservationMessageField } from "./ReservationMessageField";
 import { ReservationConsentField } from "./ReservationConsentField";
+import { Select, Button } from "@/components/ui";
 
 interface ReservationFormProps {
-  formData: ReservationFormData;
+  register: UseFormRegister<ReservationFormData>;
+  errors: FieldErrors<ReservationFormData>;
+  requestedDate?: string;
   isLoading: boolean;
-  errors: FormErrors;
   slots: string[];
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
-  handleSubmit: (e: React.FormEvent) => void;
+  onSubmit: (e: React.FormEvent) => void;
   restaurantName: string;
-  inputClass: string;
-  labelClass: string;
 }
 
 export function ReservationForm({
-  formData,
-  isLoading,
+  register,
   errors,
+  requestedDate,
+  isLoading,
   slots,
-  handleChange,
-  handleSubmit,
+  onSubmit,
   restaurantName,
-  inputClass,
-  labelClass,
 }: ReservationFormProps) {
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+    <form onSubmit={onSubmit} className="space-y-6" noValidate>
       <fieldset disabled={isLoading} className="space-y-6 min-w-0 w-full">
         {/* Coordonnées */}
         <ReservationContactFields
-          formData={formData}
-          handleChange={handleChange}
+          register={register}
           errors={errors}
-          inputClass={inputClass}
-          labelClass={labelClass}
         />
 
         {/* Détails Demande */}
@@ -49,69 +45,52 @@ export function ReservationForm({
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <ReservationDateField
-              value={formData.requestedDate}
-              onChange={handleChange}
-              error={errors.requestedDate}
-              inputClass={inputClass}
-              labelClass={labelClass}
+              register={register}
+              error={errors.requestedDate?.message}
             />
             <ReservationTimeField
-              value={formData.requestedTime}
-              onChange={handleChange}
-              error={errors.requestedTime}
+              register={register}
+              error={errors.requestedTime?.message}
               slots={slots}
-              hasDate={!!formData.requestedDate}
-              inputClass={inputClass}
-              labelClass={labelClass}
+              hasDate={!!requestedDate}
             />
             <ReservationGuestCountField
-              value={formData.guestCount}
-              onChange={handleChange}
-              error={errors.guestCount}
-              inputClass={inputClass}
-              labelClass={labelClass}
+              register={register}
+              error={errors.guestCount?.message}
             />
           </div>
-          <div>
-            <label htmlFor="occasion" className={labelClass}>Occasion spéciale</label>
-            <select
-              id="occasion"
-              name="occasion"
-              value={formData.occasion}
-              onChange={handleChange}
-              className={`${inputClass} appearance-none cursor-pointer bg-[#1e1e1b]`}
-            >
-              <option value="">Aucune occasion particulière</option>
-              <option value="anniversaire">Anniversaire</option>
-              <option value="repas-pro">Repas d&apos;affaires / Professionnel</option>
-              <option value="groupe">Groupe / Fête</option>
-              <option value="autre">Autre occasion spéciale</option>
-            </select>
-            {errors.occasion && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.occasion}</span>}
-          </div>
+          <Select
+            id="occasion"
+            label="Occasion spéciale"
+            error={errors.occasion?.message}
+            {...register("occasion")}
+          >
+            <option value="">Aucune occasion particulière</option>
+            <option value="anniversaire">Anniversaire</option>
+            <option value="repas-pro">Repas d&apos;affaires / Professionnel</option>
+            <option value="groupe">Groupe / Fête</option>
+            <option value="autre">Autre occasion spéciale</option>
+          </Select>
           <ReservationMessageField
-            value={formData.message}
-            onChange={handleChange}
-            error={errors.message}
-            inputClass={inputClass}
-            labelClass={labelClass}
+            register={register}
+            error={errors.message?.message}
           />
         </div>
 
         {/* Consentement & Submit */}
         <div className="space-y-4">
           <ReservationConsentField
-            checked={formData.consent}
-            onChange={handleChange}
-            error={errors.consent}
+            register={register}
+            error={errors.consent?.message}
             restaurantName={restaurantName}
           />
-          <button
+          <Button
             type="submit"
-            className="w-full py-4 bg-[#c9a96e] text-[#0b0b09] text-[11px] tracking-[0.3em] uppercase font-body font-semibold hover:bg-[#dbbe86] transition-colors"
+            isLoading={isLoading}
+            fullWidth
           >
             Envoyer ma demande de réservation
-          </button>
+          </Button>
         </div>
       </fieldset>
     </form>

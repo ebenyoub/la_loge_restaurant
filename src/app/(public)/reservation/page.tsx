@@ -30,13 +30,14 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function ReservationPage() {
   const { settings } = useSettings();
   const {
-    formData,
-    isLoading,
+    register,
+    requestedDate,
     errors,
+    isLoading,
+    globalError,
     successMessage,
     slots,
-    handleChange,
-    handleSubmit,
+    onSubmit,
   } = useReservationForm(settings);
 
   // Dynamic SEO from database
@@ -50,8 +51,7 @@ export default function ReservationPage() {
   const phoneText = settings?.phone || "04 78 00 00 00";
   const emailText = settings?.email || "contact@laloge-lyon.fr";
 
-  const inputClass = "w-full box-border max-w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-4 py-3.5 text-sm font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/50 transition-colors duration-200";
-  const labelClass = "block text-[10px] tracking-[0.4em] uppercase font-body text-[#c9a96e]/70 mb-2";
+
 
   return (
     <div className="min-h-screen pt-[72px] bg-[#0b0b09] text-[#f0e8d8] font-body">
@@ -89,20 +89,18 @@ export default function ReservationPage() {
 
         <ReservationStatusMessage
           successMessage={successMessage}
-          globalError={errors.global}
+          globalError={globalError ?? undefined}
         />
 
         {!successMessage && (
           <ReservationForm
-            formData={formData}
-            isLoading={isLoading}
+            register={register}
             errors={errors}
+            requestedDate={requestedDate}
+            isLoading={isLoading}
             slots={slots}
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
             restaurantName={restaurantName}
-            inputClass={inputClass}
-            labelClass={labelClass}
           />
         )}
 

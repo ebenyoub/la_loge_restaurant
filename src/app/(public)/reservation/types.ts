@@ -1,15 +1,6 @@
-export interface ReservationFormData {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  requestedDate: string;
-  requestedTime: string;
-  guestCount: number;
-  occasion: string;
-  message: string;
-  consent: boolean;
-}
+import { ReservationFormData } from "@/lib/validation/reservation";
+
+export type { ReservationFormData };
 
 export interface FormErrors {
   global?: string;

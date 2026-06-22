@@ -1,31 +1,23 @@
+import React from "react";
+import { UseFormRegister } from "react-hook-form";
+import { ReservationFormData } from "@/lib/validation/reservation";
+import { Input } from "@/components/ui";
+
 interface ReservationDateFieldProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  register: UseFormRegister<ReservationFormData>;
   error?: string;
-  inputClass: string;
-  labelClass: string;
 }
 
-export function ReservationDateField({
-  value,
-  onChange,
-  error,
-  inputClass,
-  labelClass,
-}: ReservationDateFieldProps) {
+export function ReservationDateField({ register, error }: ReservationDateFieldProps) {
   return (
-    <div>
-      <label htmlFor="requestedDate" className={labelClass}>Date souhaitée *</label>
-      <input
-        id="requestedDate"
-        name="requestedDate"
-        type="date"
-        required
-        value={value}
-        onChange={onChange}
-        className={`${inputClass} [color-scheme:dark]`}
-      />
-      {error && <span className="text-red-400 text-[11px] font-body mt-1 block">{error}</span>}
-    </div>
+    <Input
+      id="requestedDate"
+      type="date"
+      required
+      label="Date souhaitée *"
+      className="[color-scheme:dark]"
+      error={error}
+      {...register("requestedDate")}
+    />
   );
 }

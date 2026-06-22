@@ -1,36 +1,30 @@
+import React from "react";
+import { UseFormRegister } from "react-hook-form";
+import { ReservationFormData } from "@/lib/validation/reservation";
+import { Select } from "@/components/ui";
+
 interface ReservationGuestCountFieldProps {
-  value: number;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  register: UseFormRegister<ReservationFormData>;
   error?: string;
-  inputClass: string;
-  labelClass: string;
 }
 
 export function ReservationGuestCountField({
-  value,
-  onChange,
+  register,
   error,
-  inputClass,
-  labelClass,
 }: ReservationGuestCountFieldProps) {
   return (
-    <div>
-      <label htmlFor="guestCount" className={labelClass}>Personnes *</label>
-      <select
-        id="guestCount"
-        name="guestCount"
-        required
-        value={value}
-        onChange={onChange}
-        className={`${inputClass} appearance-none cursor-pointer bg-[#1e1e1b]`}
-      >
-        {Array.from({ length: 14 }, (_, i) => i + 2).map((num) => (
-          <option key={num} value={num}>
-            {num} personne{num > 1 ? "s" : ""}
-          </option>
-        ))}
-      </select>
-      {error && <span className="text-red-400 text-[11px] font-body mt-1 block">{error}</span>}
-    </div>
+    <Select
+      id="guestCount"
+      required
+      label="Personnes *"
+      error={error}
+      {...register("guestCount", { valueAsNumber: true })}
+    >
+      {Array.from({ length: 14 }, (_, i) => i + 2).map((num) => (
+        <option key={num} value={num}>
+          {num} personne{num > 1 ? "s" : ""}
+        </option>
+      ))}
+    </Select>
   );
 }

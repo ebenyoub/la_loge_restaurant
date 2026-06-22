@@ -1,30 +1,46 @@
 import { useState, useEffect, useCallback } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { API_BASE_URL } from "@/lib/api";
 import { SettingsData } from "@/components/settings-context";
-import { ReservationFormData, FormErrors } from "../types";
+import { reservationSchema, ReservationFormData } from "@/lib/validation/reservation";
 
 export function useReservationForm(settings: SettingsData | null) {
-  const [formData, setFormData] = useState<ReservationFormData>({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    requestedDate: "",
-    requestedTime: "",
-    guestCount: 2,
-    occasion: "",
-    message: "",
-    consent: false,
-  });
-
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [globalError, setGlobalError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm<ReservationFormData>({
+    resolver: zodResolver(reservationSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      phone: "",
+      email: "",
+      requestedDate: "",
+      requestedTime: "",
+      guestCount: 2,
+      occasion: "",
+      message: "",
+      consent: false,
+    },
+  });
+
+  const requestedDate = useWatch({ control, name: "requestedDate" });
+  const requestedTime = useWatch({ control, name: "requestedTime" });
+
   const getAvailableTimeSlots = useCallback(() => {
-    if (!formData.requestedDate || !settings?.openingHours) return [];
+    if (!requestedDate || !settings?.openingHours) return [];
     
-    const [year, month, day] = formData.requestedDate.split("-").map(Number);
+    const [year, month, day] = requestedDate.split("-").map(Number);
     const dateObj = new Date(year, month - 1, day);
     const dayOfWeek = dateObj.getDay();
 
@@ -47,64 +63,26 @@ export function useReservationForm(settings: SettingsData | null) {
       current.setMinutes(current.getMinutes() + 30);
     }
     return slots;
-  }, [formData.requestedDate, settings]);
+  }, [requestedDate, settings]);
 
   const slots = getAvailableTimeSlots();
 
   useEffect(() => {
-    if (formData.requestedDate && settings?.openingHours) {
+    if (requestedDate && settings?.openingHours) {
       const validSlots = getAvailableTimeSlots();
-      if (formData.requestedTime && !validSlots.includes(formData.requestedTime)) {
-        Promise.resolve().then(() => {
-          setFormData((prev) => ({
-            ...prev,
-            requestedTime: "",
-          }));
-        });
+      if (requestedTime && !validSlots.includes(requestedTime)) {
+        setValue("requestedTime", "");
       }
     }
-  }, [formData.requestedDate, settings, getAvailableTimeSlots, formData.requestedTime]);
+  }, [requestedDate, settings, getAvailableTimeSlots, requestedTime, setValue]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value, type } = e.target;
-    const val = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: val,
-    }));
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined,
-      }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: ReservationFormData) => {
     setIsLoading(true);
-    setErrors({});
+    setGlobalError(null);
     setSuccessMessage(null);
 
-    const fieldsErrors: FormErrors = {};
-    if (!formData.firstName.trim()) fieldsErrors.firstName = "Le prénom est requis.";
-    if (!formData.lastName.trim()) fieldsErrors.lastName = "Le nom est requis.";
-    if (!formData.phone.trim()) fieldsErrors.phone = "Le numéro de téléphone est requis.";
-    if (!formData.email.trim()) fieldsErrors.email = "L'adresse e-mail est requise.";
-    if (!formData.requestedDate) fieldsErrors.requestedDate = "La date est requise.";
-    if (!formData.requestedTime) fieldsErrors.requestedTime = "L'heure est requise.";
-    if (!formData.consent) fieldsErrors.consent = "Votre consentement est requis.";
-
-    if (Object.keys(fieldsErrors).length > 0) {
-      setErrors(fieldsErrors);
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      const occasionMapped = formData.occasion === "repas-pro" ? "repas_pro" : formData.occasion || null;
+      const occasionMapped = data.occasion === "repas-pro" ? "repas_pro" : data.occasion || null;
 
       const response = await fetch(`${API_BASE_URL}/reservations`, {
         method: "POST",
@@ -112,16 +90,16 @@ export function useReservationForm(settings: SettingsData | null) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          phone: formData.phone,
-          email: formData.email,
-          requestedDate: formData.requestedDate,
-          requestedTime: formData.requestedTime,
-          guestCount: Number(formData.guestCount),
+          firstName: data.firstName,
+          lastName: data.lastName,
+          phone: data.phone,
+          email: data.email,
+          requestedDate: data.requestedDate,
+          requestedTime: data.requestedTime,
+          guestCount: Number(data.guestCount),
           occasion: occasionMapped,
-          message: formData.message || null,
-          consent: formData.consent,
+          message: data.message || null,
+          consent: data.consent,
         }),
       });
 
@@ -129,15 +107,19 @@ export function useReservationForm(settings: SettingsData | null) {
 
       if (!response.ok) {
         if (result.error && result.error.code === "VALIDATION_ERROR" && result.error.fields) {
-          setErrors(result.error.fields);
-        } else {
-          setErrors({
-            global: result.error?.message || "Une erreur est survenue lors de l'envoi de votre demande.",
+          const fields = result.error.fields;
+          Object.keys(fields).forEach((key) => {
+            setError(key as keyof ReservationFormData, {
+              type: "server",
+              message: fields[key],
+            });
           });
+        } else {
+          setGlobalError(result.error?.message || "Une erreur est survenue lors de l'envoi de votre demande.");
         }
       } else {
         setSuccessMessage(result.data.message || "Votre demande de réservation a bien été envoyée !");
-        setFormData({
+        reset({
           firstName: "",
           lastName: "",
           phone: "",
@@ -151,21 +133,20 @@ export function useReservationForm(settings: SettingsData | null) {
         });
       }
     } catch {
-      setErrors({
-        global: "Impossible de joindre le serveur. Veuillez vérifier votre connexion.",
-      });
+      setGlobalError("Impossible de joindre le serveur. Veuillez vérifier votre connexion.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return {
-    formData,
-    isLoading,
+    register,
+    requestedDate,
     errors,
+    isLoading,
+    globalError,
     successMessage,
     slots,
-    handleChange,
-    handleSubmit,
+    onSubmit: handleSubmit(onSubmit),
   };
 }

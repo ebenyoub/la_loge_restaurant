@@ -1,31 +1,25 @@
+import React from "react";
+import { UseFormRegister } from "react-hook-form";
+import { ReservationFormData } from "@/lib/validation/reservation";
+import { Textarea } from "@/components/ui";
+
 interface ReservationMessageFieldProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  register: UseFormRegister<ReservationFormData>;
   error?: string;
-  inputClass: string;
-  labelClass: string;
 }
 
 export function ReservationMessageField({
-  value,
-  onChange,
+  register,
   error,
-  inputClass,
-  labelClass,
 }: ReservationMessageFieldProps) {
   return (
-    <div>
-      <label htmlFor="message" className={labelClass}>Message particulier (facultatif)</label>
-      <textarea
-        id="message"
-        name="message"
-        rows={4}
-        value={value}
-        onChange={onChange}
-        placeholder="Allergies, spécificités, table calme..."
-        className={`${inputClass} resize-none`}
-      />
-      {error && <span className="text-red-400 text-[11px] font-body mt-1 block">{error}</span>}
-    </div>
+    <Textarea
+      id="message"
+      rows={4}
+      label="Message particulier (facultatif)"
+      placeholder="Allergies, spécificités, table calme..."
+      error={error}
+      {...register("message")}
+    />
   );
 }

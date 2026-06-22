@@ -1,19 +1,16 @@
-import { ReservationFormData, FormErrors } from "../types";
+import React from "react";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { ReservationFormData } from "@/lib/validation/reservation";
+import { Input } from "@/components/ui";
 
 interface ReservationContactFieldsProps {
-  formData: ReservationFormData;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  errors: FormErrors;
-  inputClass: string;
-  labelClass: string;
+  register: UseFormRegister<ReservationFormData>;
+  errors: FieldErrors<ReservationFormData>;
 }
 
 export function ReservationContactFields({
-  formData,
-  handleChange,
+  register,
   errors,
-  inputClass,
-  labelClass,
 }: ReservationContactFieldsProps) {
   return (
     <div className="border border-[#c9a96e]/10 p-4 sm:p-6 bg-[#141412]/30 space-y-5">
@@ -21,64 +18,44 @@ export function ReservationContactFields({
         Vos coordonnées
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="lastName" className={labelClass}>Nom *</label>
-          <input
-            id="lastName"
-            name="lastName"
-            type="text"
-            required
-            value={formData.lastName}
-            onChange={handleChange}
-            placeholder="Dupont"
-            className={inputClass}
-          />
-          {errors.lastName && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.lastName}</span>}
-        </div>
-        <div>
-          <label htmlFor="firstName" className={labelClass}>Prénom *</label>
-          <input
-            id="firstName"
-            name="firstName"
-            type="text"
-            required
-            value={formData.firstName}
-            onChange={handleChange}
-            placeholder="Marie"
-            className={inputClass}
-          />
-          {errors.firstName && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.firstName}</span>}
-        </div>
+        <Input
+          id="lastName"
+          type="text"
+          required
+          label="Nom *"
+          placeholder="Dupont"
+          error={errors.lastName?.message}
+          {...register("lastName")}
+        />
+        <Input
+          id="firstName"
+          type="text"
+          required
+          label="Prénom *"
+          placeholder="Marie"
+          error={errors.firstName?.message}
+          {...register("firstName")}
+        />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="phone" className={labelClass}>Téléphone *</label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            required
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="06 00 00 00 00"
-            className={inputClass}
-          />
-          {errors.phone && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.phone}</span>}
-        </div>
-        <div>
-          <label htmlFor="email" className={labelClass}>Email *</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="marie@email.fr"
-            className={inputClass}
-          />
-          {errors.email && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.email}</span>}
-        </div>
+        <Input
+          id="phone"
+          type="tel"
+          required
+          label="Téléphone *"
+          placeholder="06 00 00 00 00"
+          error={errors.phone?.message}
+          {...register("phone")}
+        />
+        <Input
+          id="email"
+          type="email"
+          required
+          label="Email *"
+          placeholder="marie@email.fr"
+          error={errors.email?.message}
+          {...register("email")}
+        />
       </div>
     </div>
   );
