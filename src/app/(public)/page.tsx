@@ -133,7 +133,7 @@ export default function Home() {
           <SectionLabel>{settings?.city ? `${settings.city} · France` : "Place des Célestins · Lyon 2e"}</SectionLabel>
           <h1
             id="home-title"
-            className="font-display italic text-[clamp(3.5rem,10vw,6.5rem)] leading-[0.88] text-[#f0e8d8] mb-5"
+            className="font-body font-light tracking-[-0.04em] text-[clamp(3.5rem,10vw,6.5rem)] leading-[0.88] text-[#f0e8d8] mb-5"
           >
             {restaurantName.split(" ").slice(0, 2).join(" ")}
           </h1>
@@ -189,7 +189,7 @@ export default function Home() {
           {/* Text */}
           <div>
             <SectionLabel>Notre histoire</SectionLabel>
-            <h2 id="presentation-title" className="font-display italic text-[clamp(2.2rem,5vw,3.5rem)] leading-[1.05] text-[#f0e8d8] mb-6">
+            <h2 id="presentation-title" className="font-body font-medium tracking-[-0.03em] text-[clamp(2.2rem,5vw,3.5rem)] leading-[1.05] text-[#f0e8d8] mb-6">
               Un lieu vivant,<br />une cuisine sincère
             </h2>
             <div className="w-12 h-px bg-[#c9a96e]/50 mb-8" />
@@ -208,7 +208,7 @@ export default function Home() {
                 { n: "7j/7", label: "Ouverture" },
               ].map(({ n, label }) => (
                 <div key={n}>
-                  <p className="font-display italic text-2xl text-[#c9a96e] mb-1">{n}</p>
+                  <p className="font-body font-medium text-2xl text-[#c9a96e] mb-1">{n}</p>
                   <p className="text-[10px] tracking-[0.3em] uppercase text-[#f0e8d8]/40 font-body">{label}</p>
                 </div>
               ))}
@@ -222,7 +222,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <SectionLabel>La carte</SectionLabel>
-            <h2 id="menu-title" className="font-display italic text-[clamp(2rem,4vw,3rem)] text-[#f0e8d8]">
+            <h2 id="menu-title" className="font-body font-medium tracking-[-0.03em] text-[clamp(2rem,4vw,3rem)] text-[#f0e8d8]">
               Quelques-uns de nos plats
             </h2>
           </div>
@@ -259,11 +259,11 @@ export default function Home() {
                       <span className="text-[9px] tracking-[0.4em] uppercase text-[#c9a96e]/80 font-body">
                         {item.categoryName}
                       </span>
-                      <span className="font-display italic text-lg text-[#c9a96e]">
+                      <span className="font-body font-medium text-lg text-[#c9a96e]">
                         {(item.priceCents / 100).toFixed(2)} €
                       </span>
                     </div>
-                    <h3 className="font-display italic text-xl text-[#f0e8d8] group-hover:text-[#c9a96e] transition-colors duration-200">
+                    <h3 className="font-body font-medium text-xl text-[#f0e8d8] group-hover:text-[#c9a96e] transition-colors duration-200">
                       {item.name}
                     </h3>
                     {item.description ? (
@@ -271,7 +271,7 @@ export default function Home() {
                         {item.description}
                       </p>
                     ) : (
-                      <p className="text-[#f0e8d8]/35 text-xs font-body italic mt-1">
+                      <p className="text-[#f0e8d8]/35 text-xs font-body mt-1">
                         Description à confirmer.
                       </p>
                     )}
@@ -300,7 +300,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <SectionLabel>Accès rapide</SectionLabel>
-            <h2 id="access-title" className="font-display italic text-[clamp(2rem,4vw,3rem)] text-[#f0e8d8]">
+            <h2 id="access-title" className="font-body font-medium tracking-[-0.03em] text-[clamp(2rem,4vw,3rem)] text-[#f0e8d8]">
               Nous trouver
             </h2>
           </div>
@@ -369,7 +369,7 @@ export default function Home() {
               <p className="text-[#f0e8d8]/65 text-sm font-body font-light leading-relaxed">
                 Ouvert 7 jours sur 7
               </p>
-              <p className="text-[#f0e8d8]/50 text-xs font-body leading-relaxed mt-2 italic">
+              <p className="text-[#f0e8d8]/50 text-xs font-body leading-relaxed mt-2">
                 Consultez tous nos horaires détaillés dans l&apos;onglet Contact ou en bas de page.
               </p>
             </div>
@@ -397,7 +397,7 @@ export default function Home() {
         />
         <div className="relative max-w-2xl mx-auto text-center z-10">
           <SectionLabel>Réservation</SectionLabel>
-          <h2 id="reservation-title-footer" className="font-display italic text-[clamp(2.2rem,5vw,3.5rem)] leading-[1.05] text-[#f0e8d8] mb-5">
+          <h2 id="reservation-title-footer" className="font-body font-medium tracking-[-0.03em] text-[clamp(2.2rem,5vw,3.5rem)] leading-[1.05] text-[#f0e8d8] mb-5">
             Réservez votre table<br />à La Loge
           </h2>
           <p className="text-[#f0e8d8]/50 font-body font-light leading-relaxed mb-3">

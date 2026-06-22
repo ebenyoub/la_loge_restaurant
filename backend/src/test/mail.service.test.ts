@@ -5,6 +5,7 @@ import {
   sendReservationConfirmationToClient,
   sendContactNotificationToManager,
   sendContactConfirmationToClient,
+  sendContactReplyToClient,
 } from "../services/mail.service.js";
 
 const mockSendMail = vi.fn();
@@ -200,6 +201,27 @@ describe("Mail Service Unit Tests", () => {
           from: "no-reply@laloge.fr",
           to: "manager@laloge.fr",
           subject: "[Nouveau Contact] Question - par Jean",
+        })
+      );
+    });
+
+    it("should send contact reply to client with correct data", async () => {
+      mockSendMail.mockResolvedValue({ messageId: "contact-reply-success-id" });
+
+      const result = await sendContactReplyToClient({
+        name: "Jean Dupont",
+        email: "jean@example.com",
+        subject: "Question sur la carte",
+        replyMessage: "Voici la réponse."
+      });
+
+      expect(result).toBe(true);
+      expect(mockSendMail).toHaveBeenCalledTimes(1);
+      expect(mockSendMail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          from: "no-reply@laloge.fr",
+          to: "jean@example.com",
+          subject: "Re: Question sur la carte",
         })
       );
     });

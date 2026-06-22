@@ -1,95 +1,118 @@
 # Décisions produit — La Loge Bar & Food
 
-Ce document est la source de vérité des décisions de portée. Les propositions techniques non validées sont explicitement marquées comme telles.
+Ce document est la source de vérité des décisions de portée applicables au MVP.
 
 ## D-001 — Réservation MVP par demande manuelle
 
 **Statut :** validée
 **Date :** 20 juin 2026
 
-Le site ne propose pas de moteur de réservation automatique complexe. Le client soumet une demande complète. Le gérant accepte, refuse ou contacte le client si nécessaire.
+Le client envoie une demande complète ; le gérant la confirme, la refuse, l'annule ou reprend contact. Aucune table n'est confirmée ou bloquée automatiquement.
 
-**Conséquence :** les libellés, e-mails et écrans doivent parler de « demande de réservation » et d'« attente de confirmation », jamais de table automatiquement réservée.
+**Conséquence :** libellés, e-mails et écrans parlent de demande et d'attente de confirmation.
 
-## D-002 — Champs du formulaire de demande
-
-**Statut :** validée  
-**Date :** 20 juin 2026
-
-Le formulaire contient : nom, prénom, téléphone, e-mail, date souhaitée, heure souhaitée, nombre de personnes, message facultatif, occasion spéciale facultative (anniversaire, repas pro, groupe, autre), consentement RGPD et bouton « Envoyer ma demande de réservation ».
-
-**Conséquence :** les champs nécessaires au traitement sont obligatoires et validés côté serveur ; les champs facultatifs ne doivent pas empêcher l'envoi.
-
-## D-003 — Persistance et notifications e-mail
-
-**Statut :** validée  
-**Date :** 20 juin 2026
-
-Après envoi valide, la demande est enregistrée en base de données, un e-mail est envoyé au gérant et un e-mail est envoyé au client. Le site affiche un message de réception clair.
-
-**Conséquence :** l'enregistrement réussi est la condition préalable aux notifications ; les erreurs de traitement ne doivent jamais afficher une fausse confirmation.
-
-## D-004 — Gestion admin des réservations
-
-**Statut :** validée  
-**Date :** 20 juin 2026
-
-L'espace admin responsive permet de voir toutes les demandes, filtrer par date/statut/nom, consulter le détail, voir téléphone/e-mail, modifier le statut et ajouter une note interne.
-
-Les seuls statuts sont : `nouvelle`, `en attente`, `confirmée`, `refusée`, `annulée`.
-
-**Conséquence :** l'accès doit être authentifié et les données clients ne doivent jamais être rendues publiques.
-
-## D-005 — Capacité : alerte, jamais blocage automatique au MVP
-
-**Statut :** validée  
-**Date :** 20 juin 2026
-
-Le gérant peut définir un maximum de couverts par service et, facultativement, un maximum de demandes par créneau. L'administration visualise la charge et signale un dépassement potentiel.
-
-**Conséquence :** une demande doit rester recevable même au-delà d'un seuil ; la décision finale reste humaine.
-
-## D-006 — Administration de contenu structurée
-
-**Statut :** validée  
-**Date :** 20 juin 2026
-
-L'administration gère : textes d'accueil et présentation, horaires, adresse, téléphone, e-mail, réseaux sociaux, carte/menu, catégories, plats, images, événements/privatisations, SEO principal et mentions légales.
-
-**Conséquence :** le modèle de contenu doit couvrir ces objets sans imposer de modification de code pour les mises à jour courantes.
-
-## D-007 — Pas de page builder au MVP
-
-**Statut :** validée  
-**Date :** 20 juin 2026
-
-L'administration permet seulement d'activer/désactiver des sections prévues, modifier les textes et images et, si prévu, modifier l'ordre d'un nombre limité de sections. La mise en page est fixe, responsive et contrôlée.
-
-**Conséquence :** aucun éditeur visuel de type Webflow, aucun composant libre, aucune personnalisation qui puisse casser le design, le SEO ou l'accessibilité.
-
-## D-008 — Priorités post-MVP
-
-**Statut :** validée  
-**Date :** 20 juin 2026
-
-Les statistiques simples, notifications SMS/WhatsApp/push, disponibilité automatique fine, synchronisation Google Calendar et modification avancée de la disposition sont P2.
-
-**Conséquence :** ces fonctions ne doivent pas retarder la mise en ligne P1 ni influer sur l'interface MVP hors compatibilité raisonnable.
-
-## D-009 — Stack technique de référence
-
-**Statut :** proposée, à arbitrer avant développement  
-**Date :** 20 juin 2026
-
-Next.js, TypeScript, Tailwind CSS, PostgreSQL managé, ORM typé, prestataire d'e-mail transactionnel, authentification admin et déploiement Vercel constituent la base proposée.
-
-**Conséquence :** le choix précis de l'hébergeur de base, de l'ORM, du prestataire e-mail et de l'authentification reste à valider avec les exigences de propriété, coût et RGPD.
-
-## D-010 — Architecture backend MVP
+## D-002 — Champs et validation de la demande
 
 **Statut :** validée
 **Date :** 20 juin 2026
 
-Le backend MVP utilise MySQL comme base de données, Prisma comme ORM, Express comme serveur backend et une architecture MVC. Cette décision remplace la préférence PostgreSQL/ORM non précisé de D-009 pour les éléments concernés.
+Le formulaire collecte nom, prénom, téléphone, e-mail, date, heure, couverts, message facultatif, occasion facultative et consentement RGPD. Les champs nécessaires sont validés côté serveur ; les horaires d'ouverture sont contrôlés avant persistance.
 
-**Conséquence :** le schéma de données est traduit ultérieurement en modèles Prisma MySQL et les règles métier sont exposées par une API Express séparée du frontend Next.js. L'installation de Prisma, la création du serveur Express, de la base MySQL, des API et des migrations restent soumises à une instruction d'implémentation distincte.
+## D-003 — Persistance et e-mails de création
+
+**Statut :** validée
+**Date :** 20 juin 2026
+
+Une demande valide est persistée avant l'envoi d'un e-mail au gérant et d'un accusé de réception au client via SMTP Brevo.
+
+**Limite actuelle :** aucun e-mail n'est envoyé lors d'un changement de statut.
+
+## D-004 — Administration des réservations
+
+**Statut :** validée
+**Date :** 20 juin 2026
+
+L'administration authentifiée permet de consulter, filtrer et traiter les demandes, y compris les notes internes. Les seuls statuts sont `nouvelle`, `en attente`, `confirmée`, `refusée` et `annulée`.
+
+## D-005 — Capacité : alerte, jamais blocage automatique
+
+**Statut :** validée
+**Date :** 20 juin 2026
+
+Les règles de capacité ne doivent jamais empêcher la réception d'une demande. La décision finale reste humaine. Les vues d'alerte de charge avancées restent à compléter si elles sont souhaitées.
+
+## D-006 — CMS livré et limites
+
+**Statut :** validée
+**Date :** 21 juin 2026
+
+L'administration livrée gère les réglages généraux, horaires, adresse, téléphone, e-mail, réseaux sociaux, SEO principal, catégories et plats.
+
+**Limite actuelle :** les textes d'accueil structurés, médias, événements/privatisations et édition des mentions légales ne constituent pas encore des fonctions CMS livrées.
+
+## D-007 — Pas de page builder
+
+**Statut :** validée
+**Date :** 20 juin 2026
+
+La mise en page reste fixe, responsive et contrôlée. Aucun éditeur visuel libre, composant arbitraire ou constructeur de pages n'est prévu.
+
+## D-008 — Priorités post-MVP
+
+**Statut :** validée
+**Date :** 20 juin 2026
+
+Statistiques, notifications SMS/WhatsApp/push, disponibilité fine, synchronisation Google Calendar, galerie, événements privés et disposition avancée sont P2.
+
+## D-009 — Stack effectivement implémentée
+
+**Statut :** validée  
+**Date :** 21 juin 2026
+
+Le frontend utilise Next.js, TypeScript et Tailwind CSS. Le backend utilise Express 5, TypeScript, MySQL et Prisma. L'authentification admin utilise JWT et bcrypt ; les e-mails transactionnels utilisent SMTP Brevo.
+
+L'hébergement de production reste à choisir ; aucune décision Vercel, base managée ou fournisseur de secrets n'est implicite.
+
+## D-010 — API séparée et URL centralisée
+
+**Statut :** validée  
+**Date :** 21 juin 2026
+
+Le frontend ne contacte pas `/api/v1` de manière relative. Toutes les requêtes passent par `src/lib/api.ts`, alimenté par `NEXT_PUBLIC_API_URL` (valeur locale par défaut : `http://localhost:4000/api/v1`).
+
+## D-011 — Carte publique : source de vérité MySQL
+
+**Statut :** validée
+**Date :** 21 juin 2026
+
+La carte publique lit `MenuCategory` et `MenuItem` via `GET /api/v1/public/menu`. L'administration utilise les routes `/api/v1/admin/menu-categories` et `/api/v1/admin/menu-items` sur la même API et base de données.
+
+**Conséquence :** aucun plat, prix ou descriptif ne doit être inventé côté frontend. Sans description fournie, elle est masquée ou présentée comme « Description à confirmer ».
+
+## D-012 — Réglages publics
+
+**Statut :** validée  
+**Date :** 21 juin 2026
+
+Le header, footer et contenus pratiques utilisent `GET /api/v1/public/settings`. Les routes admin sont limitées au préfixe `/api/v1/admin` afin de ne pas intercepter les routes publiques.
+
+## D-013 — Référence visuelle et typographie
+
+**Statut :** validée par directive de travail
+**Date :** 21 juin 2026
+
+La capture Figma actuelle fournie par le client est la référence visuelle ; `figma-make/` local n'est pas la source de vérité. Les textes visibles des pages publiques suivent une hiérarchie sans-serif et n'affichent ni serif ni italique sans validation explicite.
+
+## D-014 — Images : droits bloquants avant publication
+
+**Statut :** bloquante avant mise en ligne
+**Date :** 21 juin 2026
+
+Les médias de `public/images/imported/` sont des éléments d'audit. Leur provenance publique ne vaut pas autorisation de réutilisation. Chaque média publié doit être couvert par une validation écrite du client ou remplacé par un média avec droits établis.
+
+## D-015 — Éléments différés
+
+**Statut :** validée
+**Date :** 21 juin 2026
+
+Captcha, rate limiting, e-mails de changement de statut et déploiement sont volontairement différés jusqu'à la finalisation de la connexion des contenus, des images, de la fidélité Figma et du responsive.

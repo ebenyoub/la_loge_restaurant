@@ -1,70 +1,70 @@
 # État du projet — La Loge Bar & Food
 
-**Dernière mise à jour :** 21 juin 2026  
-**Phase :** Socle technique, base de données, APIs publiques, intégration des formulaires publics, routes d'administration backend et interface d'administration MVP frontend (login, réservations, contacts) opérationnels.
+**Dernière mise à jour :** 22 juin 2026  
+**Phase :** MVP fonctionnel avancé ; consolidation des contenus, de la fidélité visuelle et de la recette avant mise en ligne.
 
-## 1. État réel actuel du projet
+## Éléments livrés et vérifiés
 
-### Front-end (Next.js & CSS Modules)
-- **Public** : Les 5 pages publiques sont prêtes, performantes, structurées et connectées au backend.
-- **Administration** : Interface d'administration MVP opérationnelle (login, protection des routes client, réservations, messages de contact, gestion complète de la carte/menu, réglages généraux, horaires d'ouverture, réseaux sociaux et métadonnées SEO).
-- **Tests** : Suite de tests E2E avec Playwright opérationnelle (8 tests passants en isolation couvrant l'authentification, la protection des routes, les réservations, les contacts, les catégories, les plats et les réglages/SEO).
+### Frontend
 
-### Backend Express (TypeScript & Express 5)
-- **Opérationnel** : Serveur Express configuré avec injection de `requestId`, logs épurés et gestionnaire d'erreurs global sans fuite technique vers le client.
-- **Prisma & MySQL** : Modèles Prisma complets traduits du schéma logique, base locale MySQL (`la_loge_db`) connectée, et migration initiale appliquée avec succès.
-- **Endpoints publics** : Les routes `POST /api/v1/reservations` et `POST /api/v1/contact-messages` sont actives avec validation stricte, vérification des horaires d'ouverture (OpeningHour) et routage asynchrone des e-mails.
-- **Authentification Admin** : Système d'authentification robuste implémenté (`POST /api/v1/admin/login` et middleware de protection de route `authMiddleware` via JWT et hashage `bcrypt`).
-- **Sécurité JWT** : `JWT_SECRET` obligatoire au démarrage, devant faire au moins 32 caractères de long (échec automatique du serveur en cas d'absence ou clé trop faible).
-- **E-mails transactionnels** : Intégration complète de Nodemailer (SMTP Brevo) configurée de manière asynchrone et sécurisée (notification manager et accusé réception client).
+- Pages publiques : Accueil, Carte, Réservation, Contact/Accès et Mentions légales.
+- Carte publique connectée à MySQL via `GET /api/v1/public/menu` : 9 catégories et 46 plats lors du dernier contrôle.
+- Réglages publics chargés via `GET /api/v1/public/settings`; les états de chargement techniques ne sont pas affichés dans le header ni le footer.
+- Formulaires Réservation et Contact connectés à l'API.
+- Menu mobile accessible ; navigation de la carte avec ancres dont l'offset tient compte du header et de la barre de catégories sticky.
+- Direction typographique publique sans-serif, sans italique visible, conformément à la capture Figma fournie comme référence visuelle actuelle.
 
-### Éléments non développés / Restants du MVP
-- Aucun (toutes les fonctionnalités P1 requises pour le MVP sont terminées et prêtes).
+### Administration
 
-## 2. Décisions de portée
+- Login JWT avec formulaire navigateur standard (`Enter`, `autocomplete` identifiant/mot de passe).
+- Redirection automatique si le jeton JWT admin est invalide ou expiré (détection 401 sur toutes les requêtes admin, suppression de `admin_token`, `admin_user` du localStorage et cookie, redirection vers `/admin/login?expired=true` avec un message d'avertissement).
+- Navigation admin complète : Réservations, Contacts, Sections de la carte, Plats et Réglages.
+- Réservations : liste, filtres, fiche détail, changement de statut et notes internes avec états de mutation, désactivation des actions et mise à jour immédiate de l'interface.
+- Contacts : liste, détail et changement de statut.
+- Carte : CRUD catégories et plats. Les vues admin lisent les mêmes données MySQL que la carte publique (9 catégories, 46 plats lors du dernier contrôle).
+- Réglages : informations générales, horaires, réseaux sociaux et SEO.
+- La barre admin reste sous le header public fixe, y compris sur mobile.
 
-| Sujet | État | Décision |
-| --- | --- | --- |
-| Réservation | Validé | Formulaire de demande ; aucune confirmation automatique. |
-| Traitement | Validé | Enregistrement en base, e-mail au gérant, e-mail au client, message d'attente sur le site. |
-| Statuts | Validé | `nouvelle`, `en attente`, `confirmée`, `refusée`, `annulée`. |
-| Capacité | Validé | Paramètres de seuil et alertes pour le gérant ; aucun blocage automatique MVP. |
-| Administration réservations | Validé | Liste, filtres date/statut/nom, détail, coordonnées, notes et gestion des statuts, responsive. |
-| Périmètre public MVP | Validé | Accueil, Carte, Réservation, Contact/Accès et Mentions légales uniquement. |
-| Administration contenus | Validé | Infos générales, menu, images liées aux contenus MVP, SEO et légal ; interface structurée. |
-| Mise en page | Validé | Sections limitées activables/désactivables et éventuellement réordonnables ; pas de page builder. |
-| Architecture CSS | Validé | Les CSS Modules sont conservés jusqu'à la fin du MVP public. Tailwind reste configuré pour le socle technique ; aucune migration des styles existants n'est engagée avant le refactor UI après MVP. |
-| Schéma de données MVP | Migré | Traduit dans `backend/prisma/schema.prisma` et migré sur MySQL local via `prisma migrate dev`. |
-| Architecture backend MVP | Routes d'administration backend complètes | MySQL, Prisma, Express, bcrypt et JWT. Les routes d'administration des réservations, de la carte, des réglages généraux et des messages de contact sont opérationnelles et protégées par rôle. |
-| Stratégie de tests backend | Opérationnelle | Vitest configuré avec Supertest, mock complet de Prisma. 45 tests passants couvrant 100% des routes publiques et d'administration (cas nominaux, erreurs d'auth, validations d'horaires et IDs inexistants). |
-| Stratégie de tests frontend | Opérationnelle | Playwright configuré pour des tests E2E locaux. Les appels d'API sont mockés afin de pouvoir exécuter et valider l'authentification et les dashboards en isolation. |
-| Contrats d'API MVP | Documenté | `docs/api-contracts.md` définit les requêtes, réponses, validations, statuts HTTP et règles RGPD des flux Réservation et Contact. |
-| Prérequis backend MVP | Documenté | `docs/backend-prerequisites.md` liste les décisions critiques de secrets, hébergement, MySQL, authentification, e-mail, RGPD, risques et validation avant installation. |
-| Sécurité dépendances backend | À surveiller | `npm audit --omit=dev` signale des vulnérabilités modérées transitives liées à la CLI Prisma 7. Aucun correctif automatique ni downgrade majeur n'est appliqué ; revue requise avant déploiement. |
-| Sitemap et navigation MVP | Validé | Le squelette des cinq routes publiques, le layout commun, le header temporaire et le footer temporaire sont créés et validés. |
+### Backend et données
 
-## 3. Livrables documentaires disponibles
+- Express 5, TypeScript, Prisma et MySQL opérationnels.
+- Réservations et contacts persistés, avec e-mail client et e-mail gérant via SMTP Brevo.
+- Validation des horaires d'ouverture sur les réservations.
+- Authentification JWT/bcrypt et routes admin protégées sous `/api/v1/admin`.
+- API publique distincte : `/api/v1/public/menu` et `/api/v1/public/settings`.
+- Tests backend : 49 tests passants lors de la dernière validation backend.
 
-- [Cahier des charges](./cahier-des-charges.md)
+### Validation réalisée
+
+- `npm run lint` : OK.
+- `npm run build` : OK.
+- `npm run test:e2e` : OK (9 tests).
+
+## Décisions de portée en vigueur
+
+| Sujet | Décision |
+| --- | --- |
+| Réservation | Demande manuelle : aucune confirmation ou blocage automatique. |
+| E-mails | E-mails de création au client et au gérant uniquement ; pas d'e-mail de changement de statut à ce stade. |
+| API frontend | Toute requête passe par `src/lib/api.ts` et `NEXT_PUBLIC_API_URL`; aucun appel relatif `/api/v1`. |
+| Carte publique | Source de vérité : `MenuCategory` et `MenuItem` MySQL. Une absence de données produit un état vide, pas des plats inventés. |
+| Administration | Administration JWT avec gestion des réservations, contacts, catégories, plats et réglages. |
+| Design public | Capture Figma actuelle fournie par le client comme référence visuelle. Sans-serif et sans italique visible sur les pages publiques. |
+| Images | Aucun média de `public/images/imported/` ne peut être publié sans validation écrite des droits. |
+| Hors périmètre actuel | Captcha, rate limiting, e-mails de changement de statut, déploiement, calendrier et confirmation automatique. |
+
+## Restant avant mise en ligne
+
+1. Obtenir les coordonnées, horaires, mentions légales, politique de confidentialité et durées de conservation définitifs.
+2. Obtenir l'autorisation écrite des photos réellement exploitables ou organiser/fournir de nouveaux médias ; retirer tout média non autorisé avant publication.
+3. Valider la carte, les prix, descriptions, disponibilités, allergènes et contenus éditoriaux en production.
+4. Finir l'alignement visuel responsive avec la capture Figma actuelle, avec recette desktop et mobile.
+5. Préparer séparément le déploiement : secrets, CORS, MySQL managé, domaine, SMTP, sauvegardes, supervision et revue de sécurité/RGPD.
+
+## Documents de référence
+
 - [Backlog produit](./product-backlog.md)
 - [Décisions](./decisions.md)
-- [Liste d'actions](./TODO.md)
-- [Sitemap MVP](./docs/sitemap-mvp.md)
-
-## 4. Workflow de pilotage
-
-- Codex lit `TASKS.md` avant chaque tâche et traite une seule tâche à la fois.
-- `npm run lint` et `npm run build` sont obligatoires avant toute livraison.
-- The commit est créé avec `scripts/checkpoint.sh "<message>"`, après vérification des changements avec `scripts/review-state.sh`.
-
-## 5. Bloqueurs avant le développement
-1. Informations publiques et légales exactes : adresse, horaires, coordonnées, identité juridique.
-2. Responsable du traitement des demandes et délai de réponse annoncé.
-3. Paramètres métier : créneaux, groupes, seuils de couverts et règles d'annulation.
-4. Comptes administrateurs nécessaires et politique d'accès.
-5. Assets et contenu : logo, photos exploitables, carte/menu, textes et réseaux.
-6. Arbitrages techniques restants : domaine, fournisseur de base de données, e-mail transactionnel et authentification.
-
-## 6. Prochaine étape proposée — validation humaine requise
-
-Préparer le déploiement en production et la validation du MVP (secrets de production, base MySQL managée, domaine mail).
+- [Actions restantes](./TODO.md)
+- [Contrats d'API](./docs/api-contracts.md)
+- [Inventaire des images](./docs/images-inventory.md)

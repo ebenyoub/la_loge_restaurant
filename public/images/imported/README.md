@@ -1,6 +1,6 @@
 # Inventaire des images importées — La Loge Bar & Food
 
-**Date de collecte :** 20 juin 2026  
+**Date de collecte :** 20 juin 2026 — statut vérifié le 21 juin 2026
 **Périmètre parcouru :**
 
 - `https://la-loge-bar-food-restaurant-lyon.eatbu.com/?lang=fr`
@@ -10,7 +10,7 @@ Le site existant est une vitrine mono-page : les liens publics sont des ancres d
 
 ## Droits et règles d'utilisation
 
-Ces fichiers sont importés uniquement pour préparer la refonte. **Ils ne doivent pas être utilisés ni publiés tant que le client n'a pas confirmé qu'il détient les droits de reproduction nécessaires**, y compris les éventuels droits à l'image des personnes reconnaissables.
+Ces fichiers sont importés uniquement pour préparer la refonte. **Ils ne doivent pas être utilisés ni publiés tant que le client n'a pas confirmé qu'il détient les droits de reproduction nécessaires**, y compris les éventuels droits à l'image des personnes reconnaissables. Toute référence existante dans l'interface doit être considérée comme provisoire et retirée ou autorisée avant mise en ligne.
 
 Les sources proviennent du CDN de la plateforme DISH ; leur présence publique ne constitue pas à elle seule une cession de droits.
 

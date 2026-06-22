@@ -62,8 +62,8 @@ export default function AdminPlatsPage() {
       if (!catsRes.ok || !itemsRes.ok) {
         setError(catsJson.error?.message || itemsJson.error?.message || "Erreur de chargement des données.");
       } else {
-        setCategories(catsJson.data.items || []);
-        const sorted = (itemsJson.data.items || []).sort(
+        setCategories(catsJson.data || []);
+        const sorted = (itemsJson.data || []).sort(
           (a: MenuItem, b: MenuItem) => a.displayOrder - b.displayOrder
         );
         setItems(sorted);
@@ -199,7 +199,7 @@ export default function AdminPlatsPage() {
       {/* Page Header */}
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-[#c9a96e]/15">
         <div>
-          <h1 className="font-display italic text-3xl text-[#f0e8d8]">Carte &amp; Plats</h1>
+          <h1 className="font-body font-medium text-3xl text-[#f0e8d8]">Carte &amp; Plats</h1>
           <p className="text-xs text-[#f0e8d8]/55 font-body mt-1">
             Chaque plat appartient à une section de la carte (ex: Entrées, Plats, Desserts). Les slugs sont gérés automatiquement.
           </p>
@@ -247,7 +247,7 @@ export default function AdminPlatsPage() {
                     {item.description && <div className="text-xs text-[#f0e8d8]/50 mt-1 leading-relaxed font-light">{item.description}</div>}
                   </td>
                   <td className="py-4 px-6 font-semibold text-sm">
-                    {item.category ? item.category.name : <span className="text-[#f0e8d8]/30 italic">Inconnue</span>}
+                    {item.category ? item.category.name : <span className="text-[#f0e8d8]/30">Inconnue</span>}
                   </td>
                   <td className="py-4 px-6 font-semibold text-[#c9a96e]">{(item.priceCents / 100).toFixed(2)} €</td>
                   <td className="py-4 px-6 space-y-1 max-w-xs">
@@ -262,7 +262,7 @@ export default function AdminPlatsPage() {
                       </div>
                     )}
                     {!item.allergenInfo && !item.dietaryInfo && (
-                      <span className="text-[#f0e8d8]/30 text-xs italic">Aucune</span>
+                      <span className="text-[#f0e8d8]/30 text-xs">Aucune</span>
                     )}
                   </td>
                   <td className="py-4 px-6">
@@ -306,7 +306,7 @@ export default function AdminPlatsPage() {
             >
               &times;
             </button>
-            <h2 className="font-display italic text-2xl text-[#f0e8d8] mb-6">
+            <h2 className="font-body font-medium text-2xl text-[#f0e8d8] mb-6">
               {editingId ? "Modifier le Plat" : "Ajouter un Plat"}
             </h2>
 

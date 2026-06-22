@@ -1,7 +1,7 @@
 # Wireframes basse fidélité — pages publiques
 
 **Périmètre :** Accueil, Carte, Réservation, Contact et Mentions légales.  
-**Niveau :** structure, hiérarchie et parcours uniquement. Aucune direction graphique, aucun composant, aucune logique métier ne sont définis ici.
+**Niveau :** document de structure historique. La direction graphique courante est la capture Figma fournie par le client ; elle prévaut sur ces wireframes lorsqu'il y a conflit.
 
 ## Principes communs
 
@@ -15,7 +15,7 @@
 
 - Header visible sur toutes les pages publiques.
 - Le CTA principal ouvre la page **Réservation** et emploie partout le libellé « Demander une réservation », avec la précision visible que la demande est à confirmer.
-- Sur mobile : menu compact et barre basse fixe avec `Demander une réservation`. Les actions d'appel ou d'itinéraire sont ajoutées après validation des coordonnées client.
+- Sur mobile : menu compact accessible avec cible tactile suffisante. Les actions d'appel ou d'itinéraire dépendent des coordonnées validées.
 
 ### Footer global
 

@@ -237,7 +237,7 @@ export default function ReservationsPage() {
       {/* List Section */}
       <div className="border border-[#c9a96e]/15 bg-[#141412] p-6 flex flex-col h-[calc(100vh-140px)] overflow-hidden">
         <div className="mb-6 space-y-4 shrink-0">
-          <h2 className="font-display italic text-2xl text-[#f0e8d8]">Réservations</h2>
+          <h2 className="font-body font-medium text-2xl text-[#f0e8d8]">Réservations</h2>
           <div className="flex flex-col gap-3">
             <select
               value={statusFilter}
@@ -279,7 +279,7 @@ export default function ReservationsPage() {
                 }`}
               >
                 <div className="flex justify-between items-start gap-4 mb-2">
-                  <span className="font-display italic text-sm text-[#f0e8d8] truncate max-w-[180px]">{res.customerName}</span>
+                  <span className="font-body font-medium text-sm text-[#f0e8d8] truncate max-w-[180px]">{res.customerName}</span>
                   <span className={`text-[9px] tracking-wider uppercase px-2 py-0.5 font-body font-semibold ${getStatusBadgeClass(res.status)}`}>
                     {res.status.replace("_", " ")}
                   </span>
@@ -320,7 +320,7 @@ export default function ReservationsPage() {
                 <span className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e]/80 font-body block mb-1">
                   Détail demande
                 </span>
-                <h3 className="font-display italic text-3xl text-[#f0e8d8]">{details.customerName}</h3>
+                <h3 className="font-body font-medium text-3xl text-[#f0e8d8]">{details.customerName}</h3>
               </div>
               <span className={`text-[10px] tracking-widest uppercase px-3 py-1 font-body font-semibold ${getStatusBadgeClass(details.status)}`}>
                 {details.status.replace("_", " ")}
@@ -415,7 +415,7 @@ export default function ReservationsPage() {
                 <span className="block text-[10px] tracking-widest uppercase text-[#c9a96e]/70 font-semibold mb-3">
                   Message du client :
                 </span>
-                <p className="text-sm text-[#f0e8d8]/80 leading-relaxed italic bg-[#1e1e1b] p-4 border-l-2 border-[#c9a96e]/40">
+                <p className="text-sm text-[#f0e8d8]/80 leading-relaxed bg-[#1e1e1b] p-4 border-l-2 border-[#c9a96e]/40">
                   &ldquo;{details.message}&rdquo;
                 </p>
               </div>
@@ -447,7 +447,7 @@ export default function ReservationsPage() {
               </form>
 
               {details.notes.length === 0 ? (
-                <p className="text-xs text-[#f0e8d8]/35 italic">Aucune note de suivi.</p>
+                <p className="text-xs text-[#f0e8d8]/35">Aucune note de suivi.</p>
               ) : (
                 <div className="space-y-4">
                   {details.notes.map((note) => (

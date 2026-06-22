@@ -1,7 +1,7 @@
 # Inventaire des images importées
 
-**Statut :** actifs préparés, non intégrés au site.  
-**Règle :** le client doit confirmer les droits d'utilisation avant toute publication ou import dans un composant.
+**Statut :** actifs en audit ; aucune provenance publique ne vaut autorisation de publication.
+**Règle :** le client doit confirmer par écrit les droits d'utilisation avant toute publication ou import dans un composant. Toute référence existante dans l'interface doit être autorisée formellement ou remplacée avant mise en ligne.
 
 | Fichier | Source | Dimensions | Poids | Origine sur le site existant | Observations |
 | --- | --- | ---: | ---: | --- | --- |

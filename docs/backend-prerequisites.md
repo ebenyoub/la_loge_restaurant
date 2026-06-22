@@ -1,9 +1,9 @@
-# Prérequis avant initialisation backend MVP
+# Prérequis de production backend MVP
 
-**Statut :** checklist de validation — aucun serveur Express, package Prisma, fichier d'environnement, base MySQL, API ou secret n'est créé par ce document.
+**Statut :** le backend local est implémenté (Express, Prisma/MySQL, JWT/bcrypt, SMTP Brevo). Cette checklist concerne désormais le passage vers un environnement exposé et de production.
 
-**Décisions déjà validées :** MySQL, Prisma, Express et architecture MVC.
-**Objectif :** fermer les décisions opérationnelles, de sécurité et de conformité avant d'initialiser le squelette backend.
+**Décisions déjà validées :** MySQL, Prisma, Express, JWT/bcrypt et SMTP Brevo.
+**Objectif :** fermer les décisions opérationnelles, de sécurité et de conformité avant le déploiement, sans exposer de secret dans ce document.
 
 ## 1. Règle de passage
 
@@ -30,9 +30,8 @@ Les noms ci-dessous sont une convention cible. Ils ne doivent être ajoutés ni 
 | `TRUST_PROXY` | Non | Configuration Express derrière un proxy d'hébergement. | Valeur adaptée à l'hébergeur. |
 | `LOG_LEVEL` | Non | Niveau de journalisation sans données personnelles. | Politique de logs par environnement. |
 | `DATABASE_URL` | Oui | Chaîne de connexion MySQL utilisée par Prisma. | Hôte, base, TLS, utilisateur applicatif à privilèges minimaux. |
-| `SESSION_SECRET` | Oui | Secret de signature/chiffrement si une session locale est retenue. | Méthode d'authentification et rotation. |
-| `AUTH_PROVIDER_*` | Oui | Identifiants du fournisseur d'authentification, si retenu. | Fournisseur, redirections et propriétaires de compte. |
-| `EMAIL_PROVIDER_API_KEY` | Oui | Clé d'accès au prestataire d'e-mail transactionnel. | Prestataire, compte propriétaire et rotation. |
+| `JWT_SECRET` | Oui | Signature des jetons JWT admin ; 32 caractères minimum. | Rotation et propriétaire du secret. |
+| `SMTP_*` | Oui | Hôte, port, utilisateur et mot de passe SMTP Brevo. | Compte propriétaire, expéditeur et rotation. |
 | `EMAIL_FROM` | Non | Adresse expéditrice validée. | Domaine et authentification d'envoi. |
 | `RESTAURANT_NOTIFICATION_EMAIL` | Non | Destinataire des nouvelles demandes. | Adresse validée et personnes habilitées. |
 | `RATE_LIMIT_*` | Non | Seuils de limitation des routes publiques. | Seuils et stratégie anti-spam à valider. |
@@ -41,7 +40,7 @@ Les noms ci-dessous sont une convention cible. Ils ne doivent être ajoutés ni 
 
 | Variable | Sensible | Usage | Décision attendue |
 | --- | --- | --- | --- |
-| `NEXT_PUBLIC_API_BASE_URL` | Non | URL API consommée par le navigateur lorsque les formulaires seront branchés. | Doit correspondre à `API_BASE_URL` et à la politique CORS. |
+| `NEXT_PUBLIC_API_URL` | Non | Préfixe API consommé par le navigateur. | Doit correspondre à l'URL publique `/api/v1` et à la politique CORS. |
 
 Les préfixes `NEXT_PUBLIC_` ne doivent jamais contenir de secret, clé e-mail, chaîne MySQL, clé de session ou identifiant d'administration.
 
@@ -170,8 +169,6 @@ Le consentement ne remplace pas les autres obligations légales. La politique de
 - [ ] Les procédures de suppression/anonymisation et de récupération de données sont testées.
 - [ ] Le parcours admin est protégé, testé et limité aux rôles autorisés.
 
-## 10. Résultat de l'initialisation
+## 10. Résultat attendu avant mise en ligne
 
-Le socle Express MVC, TypeScript et Prisma/MySQL est créé dans `backend/`, avec un fichier `.env.example`, une configuration Prisma sans modèle et une route technique `GET /health`. Aucune base, migration, route métier, authentification, e-mail ou formulaire connecté n'est créé.
-
-La prochaine tâche traduit le schéma de données en modèles Prisma et génère le client, sans migration, base de données ni branchement des formulaires publics.
+Le backend de développement reste inchangé tant que cette checklist n'est pas validée. Avant mise en ligne, préparer une configuration de secrets hors Git, MySQL managé avec sauvegardes, CORS restrictif, domaine SMTP vérifié, stratégie de logs sans données personnelles et procédure de rotation/réponse aux incidents.

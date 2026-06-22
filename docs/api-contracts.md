@@ -1,8 +1,22 @@
-# Contrats d'API MVP — Réservation et Contact
+# Contrats d'API MVP — Réservation, Contact, Carte et Administration
 
-**Statut :** spécification d'API — aucun serveur Express, endpoint, package Prisma, migration ou base de données n'est créé par ce document.
+**Statut :** API Express/Prisma implémentée. Ce document décrit le contrat de référence ; les détails historiques marqués « cible » doivent être lus à la lumière de l'état ci-dessous.
 
-**Portée :** contrats publics pour les formulaires Réservation et Contact, puis contrats d'administration indispensables à leur traitement. Les contrats de contenu, médias et authentification détaillée restent hors de cette tâche.
+**Portée livrée :** formulaires publics, authentification JWT admin, réservations, contacts, catégories, plats, réglages, carte publique et réglages publics.
+
+## État d'implémentation au 21 juin 2026
+
+| Domaine | Routes disponibles |
+| --- | --- |
+| Technique | `GET /health` |
+| Public | `POST /api/v1/reservations`, `POST /api/v1/contact-messages`, `GET /api/v1/public/menu`, `GET /api/v1/public/settings` |
+| Auth | `POST /api/v1/admin/login` |
+| Réservations admin | `GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status`, `POST /api/v1/admin/reservations/:id/notes` |
+| Contacts admin | `GET /api/v1/admin/contact-messages`, `GET /api/v1/admin/contact-messages/:id`, `PATCH /api/v1/admin/contact-messages/:id/status` |
+| Carte admin | CRUD `/api/v1/admin/menu-categories` et `/api/v1/admin/menu-items` |
+| Réglages admin | `GET` et `PATCH /api/v1/admin/settings` |
+
+Les réponses des lectures de catégories et plats utilisent actuellement une enveloppe `data` contenant directement un tableau. Les routes admin exigent un jeton JWT. Le frontend construit toutes les URL à partir de `NEXT_PUBLIC_API_URL` via `src/lib/api.ts`.
 
 ## 1. Conventions communes
 
@@ -17,7 +31,7 @@
 | Champs contrôlés par le serveur | Statuts, dates d'audit, identité admin, capacité calculée, version de consentement et destinataires e-mail |
 | Pagination | `page` commence à `1`, `pageSize` est limité à `100` ; valeurs exactes à confirmer à l'implémentation |
 
-Les exemples montrent la forme cible des messages. Ils ne constituent pas une API disponible.
+Les exemples montrent la forme de référence des messages. Vérifier le contrôleur et les tests avant de consommer un champ non documenté.
 
 ### 1.1 Enveloppe de succès
 
@@ -195,7 +209,7 @@ Le serveur attribue `status: "nouveau"`, enregistre les métadonnées RGPD et cr
 }
 ```
 
-Un accusé de réception e-mail au client Contact n'est pas encore une décision MVP. Cette réponse ne promet donc aucun e-mail ni délai de réponse.
+Un accusé de réception e-mail est envoyé au client Contact après persistance réussie. Le contenu ne doit toutefois promettre aucun délai de réponse non validé.
 
 ## 4. Endpoints d'administration — Réservation
 
@@ -470,14 +484,12 @@ Toutes les routes Contact d'administration exigent une session admin valide et l
 7. Une demande de suppression ou d'accès doit pouvoir être reliée à la donnée concernée, selon la politique de conservation validée.
 8. L'URL de l'API, la politique CORS, le prestataire e-mail, les durées de conservation et la version des textes de consentement restent à valider avant l'implémentation.
 
-## 7. Éléments explicitement hors implémentation
+## 7. Limites actuelles
 
-- Aucun serveur Express ni route HTTP n'est créé.
-- Prisma n'est ni installé ni configuré.
-- Aucune base MySQL, migration ou variable d'environnement n'est créée.
-- Aucun formulaire Next.js n'est branché sur ces contrats.
-- Aucun e-mail, mécanisme d'authentification ou anti-spam réel n'est activé.
+- Les e-mails sont envoyés à la création d'une réservation ou d'un message de contact, pas au changement de statut.
+- Captcha et limitation de débit ne sont pas livrés ; ils restent à traiter avant exposition publique selon la politique de sécurité retenue.
+- Les réponses ne doivent jamais révéler de notes internes ni de données personnelles hors administration authentifiée.
 
-## 8. Prochaine étape proposée
+## 8. Prochaine étape documentaire
 
-Les prérequis d'initialisation sont documentés dans `docs/backend-prerequisites.md` et le socle Express/Prisma est créé dans `backend/`. La prochaine tâche traduit le schéma de données en modèles Prisma, sans migration, base de données ni branchement des formulaires publics.
+Conserver ce contrat aligné sur les contrôleurs et les tests. Toute évolution de route, de format de réponse, de validation ou d'authentification doit mettre à jour ce document, `PROJECT_STATE.md` et les tests concernés.

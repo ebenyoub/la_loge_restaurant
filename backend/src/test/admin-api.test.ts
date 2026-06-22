@@ -6,6 +6,14 @@ import { app } from "../app.js";
 import { prisma } from "../lib/prisma.js";
 import { env } from "../config/env.js";
 
+vi.mock("../services/mail.service.js", () => ({
+  sendContactReplyToClient: vi.fn().mockResolvedValue(true),
+  sendReservationNotificationToManager: vi.fn(),
+  sendReservationConfirmationToClient: vi.fn(),
+  sendContactNotificationToManager: vi.fn(),
+  sendContactConfirmationToClient: vi.fn()
+}));
+
 const testAdmin = {
   id: "admin-123",
   email: "admin@example.com",
@@ -273,6 +281,56 @@ describe("Admin API Endpoints Integration Tests", () => {
 
       expect(res.status).toBe(200);
       expect(res.body.data.status).toBe("traite");
+    });
+
+    it("should successfully reply to a contact message and change status to traite", async () => {
+      const mockMsg = {
+        id: "msg-3",
+        name: "Jean Dupont",
+        email: "jean@example.com",
+        subject: "Question sur les vins",
+        message: "Avez-vous des vins bio ?",
+        status: "nouveau" as any,
+        handledByAdminId: null,
+        handledAt: null
+      };
+
+      vi.mocked(prisma.contactMessage.findUnique).mockResolvedValueOnce(mockMsg as any);
+      vi.mocked(prisma.contactMessage.update).mockResolvedValueOnce({
+        ...mockMsg,
+        status: "traite" as any,
+        handledByAdminId: "admin-123",
+        handledAt: new Date()
+      } as any);
+      vi.mocked(prisma.administrator.findUnique).mockResolvedValueOnce(testAdmin as any);
+
+      const res = await request(app)
+        .post("/api/v1/admin/contact-messages/msg-3/reply")
+        .set("Authorization", `Bearer ${mockToken}`)
+        .send({ message: "Bonjour Jean, oui nous avons des vins bio." });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.data.status).toBe("traite");
+    });
+
+    it("should return validation error if reply message is empty", async () => {
+      const res = await request(app)
+        .post("/api/v1/admin/contact-messages/msg-3/reply")
+        .set("Authorization", `Bearer ${mockToken}`)
+        .send({ message: "" });
+
+      expect(res.status).toBe(422);
+    });
+
+    it("should return validation error if reply message is too long", async () => {
+      const longMessage = "a".repeat(2001);
+      const res = await request(app)
+        .post("/api/v1/admin/contact-messages/msg-3/reply")
+        .set("Authorization", `Bearer ${mockToken}`)
+        .send({ message: longMessage });
+
+      expect(res.status).toBe(422);
     });
   });
 

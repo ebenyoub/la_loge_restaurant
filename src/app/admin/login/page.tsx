@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { API_BASE_URL } from "@/lib/api";
 
@@ -20,11 +20,30 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isExpired, setIsExpired] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("admin_token");
+    const userStr = localStorage.getItem("admin_user");
+    if (token && userStr) {
+      router.push("/admin/reservations");
+    }
+
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("expired") === "true") {
+        Promise.resolve().then(() => {
+          setIsExpired(true);
+        });
+      }
+    }
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    setIsExpired(false);
 
     try {
       const response = await fetch(`${API_BASE_URL}/admin/login`, {
@@ -66,9 +85,15 @@ export default function AdminLoginPage() {
       <section className="max-w-md w-full border border-[#c9a96e]/15 bg-[#141412] p-8 md:p-10" aria-labelledby="login-title">
         <div className="text-center mb-8">
           <p className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e]/70 font-body mb-2">Espace Administration</p>
-          <h1 id="login-title" className="font-display italic text-3xl text-[#f0e8d8] mb-4">La Loge Bar &amp; Food</h1>
+          <h1 id="login-title" className="font-body font-medium text-3xl text-[#f0e8d8] mb-4">La Loge Bar &amp; Food</h1>
           <GoldLine />
         </div>
+
+        {isExpired && !error && (
+          <div className="p-4 mb-6 bg-[#c9a96e]/10 border border-[#c9a96e]/20 text-[#c9a96e] text-xs font-body" role="status">
+            <p>Votre session a expiré, veuillez vous reconnecter.</p>
+          </div>
+        )}
 
         {error && (
           <div className="p-4 mb-6 bg-red-500/10 border-l-4 border-red-500 text-red-400 text-sm font-body" role="alert">
@@ -81,12 +106,13 @@ export default function AdminLoginPage() {
             <label htmlFor="email" className={labelClass}>Adresse e-mail</label>
             <input
               id="email"
+              name="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@example.com"
               required
-              autoComplete="email"
+              autoComplete="username"
               disabled={isLoading}
               className={inputClass}
             />
@@ -96,6 +122,7 @@ export default function AdminLoginPage() {
             <label htmlFor="password" className={labelClass}>Mot de passe</label>
             <input
               id="password"
+              name="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

@@ -170,3 +170,25 @@ export function sendContactConfirmationToClient(msg: {
     text: `Bonjour ${msg.name}, nous avons bien reçu votre message concernant "${msg.subject}". Notre équipe vous répondra rapidement. L'équipe de La Loge.`,
   });
 }
+
+export async function sendContactReplyToClient(msg: {
+  name: string;
+  email: string;
+  subject: string;
+  replyMessage: string;
+}): Promise<boolean> {
+  const html = `
+    <h2>Bonjour ${msg.name},</h2>
+    <p>Nous faisons suite à votre message concernant : <strong>"${msg.subject}"</strong>.</p>
+    <div style="background-color: #f6f8fa; padding: 1rem; border-left: 4px solid #d4af37; white-space: pre-wrap; margin: 1.5rem 0;">${msg.replyMessage}</div>
+    <p>Cordialement,<br/>L'équipe de La Loge Bar &amp; Food</p>
+  `;
+
+  return sendMailSafe({
+    to: msg.email,
+    subject: `Re: ${msg.subject}`,
+    html,
+    text: `Bonjour ${msg.name},\n\nNous faisons suite à votre message concernant "${msg.subject}" :\n\n${msg.replyMessage}\n\nCordialement,\nL'équipe de La Loge Bar & Food`,
+  });
+}
+

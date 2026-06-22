@@ -1,5 +1,7 @@
 # Sitemap fonctionnel MVP — La Loge Bar & Food
 
+> **État au 21 juin 2026 :** les routes publiques décrites ci-dessous sont implémentées. La carte est alimentée par MySQL et les formulaires Réservation/Contact sont connectés à l'API. Les données éditoriales et légales restent à valider avant mise en ligne.
+
 **Portée :** routes publiques, navigation, CTA, maillage interne et données à valider.  
 **Exclusion :** aucun composant, route Next.js, design, backend, image ou parcours P2 n'est créé par ce document.
 

@@ -61,7 +61,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <p className="font-display italic text-2xl text-[#f0e8d8] mb-1">
+            <p className="font-body font-medium text-2xl text-[#f0e8d8] mb-1">
               La Loge
             </p>
             <p className="text-[9px] tracking-[0.45em] uppercase text-[#c9a96e]/70 font-body mb-5">

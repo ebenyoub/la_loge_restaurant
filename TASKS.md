@@ -2,110 +2,27 @@
 
 ## Tâche en cours
 
-Aucune — la documentation est mise à jour selon l'état réel du dépôt.
+Revue technique complète et validation de l'authentification admin expirée — terminée dans cette passe.
 
----
+## Règles de travail
 
-## Règles Codex
+1. Lire `AGENTS.md`, `PROJECT_STATE.md`, `TODO.md` et ce fichier avant une tâche.
+2. Respecter le périmètre demandé ; ne pas modifier Prisma, migrations, backend ou e-mails lorsqu'ils sont hors demande.
+3. Pour une modification applicative, exécuter au minimum `npm run lint` et `npm run build`; exécuter `npm run test:e2e` si le parcours public ou admin est impacté.
+4. Ne jamais créer de commit automatique. Présenter l'état du diff et attendre une validation humaine.
+5. Mettre à jour `PROJECT_STATE.md`, `TODO.md`, `decisions.md` et `product-backlog.md` lorsqu'une décision ou le périmètre change.
 
-Avant chaque tâche :
+## Historique récent
 
-1. Lire :
-   * AGENTS.md
-   * TASKS.md
-   * PROJECT_STATE.md
-   * TODO.md
-
-2. Respecter strictement le périmètre.
-
-3. Exécuter :
-   * npm run lint
-   * npm run build
-
-4. Fournir :
-   * fichiers modifiés
-   * résumé du travail
-   * validations effectuées
-   * données restant à valider
-
-5. Exécuter :
-   * scripts/review-state.sh
-
-6. Ne jamais créer automatiquement un commit.
-
----
-
-## Gestion des commits
-
-Lorsque la tâche est terminée :
-
-1. Exécuter scripts/review-state.sh
-2. Présenter le résumé des changements
-3. Proposer un message de commit
-4. Attendre validation humaine
-5. Exécuter scripts/checkpoint.sh "<message>"
-
----
-
-## Gestion automatique de la roadmap
-
-Quand une tâche est terminée :
-
-1. Mettre à jour TASKS.md.
-2. Mettre à jour TODO.md.
-3. Mettre à jour PROJECT_STATE.md.
-4. Déplacer la tâche terminée dans l'historique.
-5. Proposer automatiquement la prochaine tâche logique du MVP.
-6. Remplir la section "Prochaine tâche".
-7. Attendre validation humaine avant exécution.
-
-Ne jamais laisser la roadmap sans prochaine tâche proposée.
-
----
-
-## Checklist avant validation
-
-* [x] Périmètre respecté
-* [x] Lint OK
-* [x] Build OK
-* [x] Responsive vérifié
-* [x] Accessibilité vérifiée
-* [x] review-state.sh exécuté
-* [x] Documentation mise à jour
-
----
-
-## Historique des tâches
-
-* [x] Créer le schéma de données MVP dans `docs/database-schema.md`, sans ORM, base de données, API ni modification des pages.
-* [x] Documenter l'architecture backend MVC Express et les flux Réservation / Contact dans `docs/backend-architecture.md`, sans installer Prisma, créer de base, API, serveur ni modifier les pages.
-* [x] Formaliser les contrats d'API Réservation et Contact dans `docs/api-contracts.md`, sans créer le serveur Express, installer Prisma ni modifier les pages.
-* [x] Préparer la checklist de validation backend dans `docs/backend-prerequisites.md`, sans installer Prisma, créer Express, base de données ou API.
-* [x] Initialiser le socle backend Express, TypeScript et Prisma/MySQL avec `/health`, sans base de données, migration, logique métier, authentification, e-mail ni formulaire.
-* [x] Traduire docs/database-schema.md en modèles Prisma, générer le client et valider le schéma sans créer de migration ni de base de données.
-* [x] Créer les contrôleurs, validateurs et routes Express pour les endpoints publics `POST /api/v1/reservations` et `POST /api/v1/contact-messages` avec validation stricte selon les contrats d'API, sans persistance réelle ni envoi d'e-mails.
-* [x] Initialiser la base de données locale MySQL, exécuter la première migration Prisma et connecter les endpoints `POST /api/v1/reservations` et `POST /api/v1/contact-messages` pour persister réellement les demandes en base (sans envoi d'e-mails réels).
-* [x] Implémenter l'authentification administrateur (endpoints `POST /api/v1/admin/login`, middleware de session/protection des routes) sans développer les interfaces d'administration ni connecter le frontend.
-* [x] Correction sécurité JWT_SECRET obligatoire (longueur minimale 32 caractères et échec au démarrage).
-* [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
-* [x] Implémenter les routes d'administration des messages de contact (`GET /api/v1/admin/contact-messages`, `GET /api/v1/admin/contact-messages/:id` et `PATCH /api/v1/admin/contact-messages/:id/status`) protégées par session admin/rôle, sans développer le frontend ni envoyer d'e-mails réels.
-* [x] Mettre en place une stratégie de tests backend en configurant Vitest et Supertest et en créant les premiers tests unitaires/d'intégration.
-* [x] Connecter les formulaires publics de réservation (`/reservation`) et de contact (`/contact`) au backend Express.
-* [x] Aligner la documentation de suivi avec l'état réel du dépôt backend (routes admin réservations, contacts, carte et réglages).
-
-* [x] Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).
-* [x] Mettre en place les tests frontend MVP avec Playwright (login, protection des routes admin, liste/détail des réservations et messages de contact).
-
-* [x] Créer l'interface d'administration Menu (gestion des catégories et des plats) côté frontend avec tests Playwright correspondants.
-* [x] Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend avec tests Playwright correspondants.
-* [x] Implémenter l'envoi d'e-mails transactionnels (Nodemailer/SMTP Brevo) côté backend pour les réservations et messages de contact (notifications gérant, confirmations client).
-* [x] Renforcer les tests backend MVP (tests d'intégration complets sur toutes les routes d'administration, cas d'erreurs, validations de payloads et IDs inexistants).
-* [x] Ajouter la validation des horaires d'ouverture (OpeningHour) sur POST /api/v1/reservations (rejet si jour fermé ou hors créneau avec code OUTSIDE_OPENING_HOURS) et tests correspondants.
-
----
+- [x] Redirection automatique vers la page de connexion si le token admin est invalide ou expiré (401), suppression du localStorage et affichage du message de session expirée.
+- [x] Connexion de la carte publique et des réglages à l'API publique MySQL ; correction du routage admin qui interceptait les routes publiques.
+- [x] Correction des données catégories/plats de l'admin : réponses API directes `data` lues correctement (9 catégories, 46 plats).
+- [x] Synchronisation immédiate des changements de statut et notes internes dans l'administration.
+- [x] Correction du login admin pour la soumission par `Enter` et l'autocomplétion navigateur.
+- [x] Correction de l'offset des ancres de catégories de la carte et de la superposition de la barre admin sous le header fixe.
+- [x] Passe typographique publique/admin : suppression des usages visibles serif et italiques, sans changer la logique métier.
+- [x] Mise à jour documentaire selon l'état réel du dépôt.
 
 ## Prochaine tâche proposée
 
-Préparer le déploiement en production et la validation finale du MVP (configuration des secrets de production, migration vers une base MySQL managée, et validation réelle du relais SMTP avec le nom de domaine).
-
-
+Valider les contenus réels et les droits des photos, puis effectuer une recette visuelle responsive contre la capture Figma actuelle. Le déploiement reste une tâche distincte.

@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prisma.js";
+import { sendContactReplyToClient } from "../services/mail.service.js";
 
 export async function listContactMessages(req: Request, res: Response, next: NextFunction) {
   try {
@@ -158,3 +159,83 @@ export async function updateContactMessageStatus(req: Request, res: Response, ne
     next(error);
   }
 }
+
+export async function replyToContactMessage(req: Request, res: Response, next: NextFunction) {
+  try {
+    const id = req.params.id as string;
+    const { message: replyMessage } = req.body;
+    const adminId = (req as any).admin.id;
+    const requestId = (req as any).requestId;
+
+    const contactMessage = await prisma.contactMessage.findUnique({
+      where: { id }
+    });
+
+    if (!contactMessage) {
+      return next({
+        status: 404,
+        code: "NOT_FOUND",
+        message: "Message de contact introuvable."
+      });
+    }
+
+    const emailSent = await sendContactReplyToClient({
+      name: contactMessage.name,
+      email: contactMessage.email,
+      subject: contactMessage.subject,
+      replyMessage
+    });
+
+    if (!emailSent) {
+      return next({
+        status: 500,
+        code: "EMAIL_SEND_FAILED",
+        message: "Échec de l'envoi de l'e-mail de réponse. Veuillez vérifier votre configuration SMTP."
+      });
+    }
+
+    // Automatically transition status to 'traite' if it was 'nouveau' or 'lu'
+    let updatedStatus = contactMessage.status;
+    let handledAt = contactMessage.handledAt;
+    let handledByAdminId = contactMessage.handledByAdminId;
+
+    if (contactMessage.status === "nouveau" || contactMessage.status === "lu") {
+      const updated = await prisma.contactMessage.update({
+        where: { id },
+        data: {
+          status: "traite",
+          handledByAdminId: adminId,
+          handledAt: new Date()
+        }
+      });
+      updatedStatus = updated.status;
+      handledAt = updated.handledAt;
+      handledByAdminId = updated.handledByAdminId;
+    }
+
+    // Fetch the admin name to return it
+    let adminName = null;
+    if (handledByAdminId) {
+      const adminUser = await prisma.administrator.findUnique({
+        where: { id: handledByAdminId },
+        select: { displayName: true }
+      });
+      adminName = adminUser ? adminUser.displayName : null;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Réponse envoyée avec succès.",
+      data: {
+        id,
+        status: updatedStatus,
+        handledAt,
+        handledBy: adminName
+      },
+      requestId
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+

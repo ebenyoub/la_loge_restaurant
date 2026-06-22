@@ -36,6 +36,48 @@ test.describe("Admin MVP Frontend Tests", () => {
     await expect(page.locator("text=Directeur Test (gérant)")).toBeVisible();
   });
 
+  test("should redirect to login and clear localStorage if admin API returns 401", async ({ page }) => {
+    page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+    
+    // Go to login page first to get domain context, set localStorage
+    await page.goto("/admin/login");
+    await page.evaluate(() => {
+      window.localStorage.setItem("admin_token", "invalid-or-expired-token");
+      window.localStorage.setItem(
+        "admin_user",
+        JSON.stringify({ displayName: "Directeur Test", role: "gérant" })
+      );
+    });
+
+    // Mock reservations API to return 401 UNAUTHORIZED
+    await page.route("**/api/v1/admin/reservations*", async (route) => {
+      await route.fulfill({
+        status: 401,
+        contentType: "application/json",
+        body: JSON.stringify({
+          error: {
+            code: "UNAUTHENTICATED",
+            message: "Jeton d'authentification invalide ou expiré."
+          }
+        }),
+      });
+    });
+
+    await page.goto("/admin/reservations");
+
+    // Should redirect to login with query param expired=true
+    await expect(page).toHaveURL(/\/admin\/login\?expired=true/);
+
+    // Verify localStorage has been cleared
+    const token = await page.evaluate(() => window.localStorage.getItem("admin_token"));
+    const user = await page.evaluate(() => window.localStorage.getItem("admin_user"));
+    expect(token).toBeNull();
+    expect(user).toBeNull();
+
+    // Verify session expired warning banner
+    await expect(page.locator("text=Votre session a expiré, veuillez vous reconnecter.")).toBeVisible();
+  });
+
   // Test Admin Login Flow
   test("should login successfully with valid credentials and redirect", async ({ page }) => {
     // Intercept login request
@@ -86,13 +128,13 @@ test.describe("Admin MVP Frontend Tests", () => {
     // Invalid credentials attempt
     await page.fill('input[type="email"]', "wrong@example.com");
     await page.fill('input[type="password"]', "wrongpass");
-    await page.click('button[type="submit"]');
+    await page.press('input[name="password"]', "Enter");
     await expect(page.locator("text=Identifiants incorrects.")).toBeVisible();
 
     // Valid credentials attempt
     await page.fill('input[type="email"]', "admin@example.com");
     await page.fill('input[type="password"]', "password123");
-    await page.click('button[type="submit"]');
+    await page.press('input[name="password"]', "Enter");
 
     // Should redirect to dashboard
     await expect(page).toHaveURL(/\/admin\/reservations/);
@@ -268,6 +310,44 @@ test.describe("Admin MVP Frontend Tests", () => {
     // Verify details
     await expect(page.locator("h3:has-text('Demande de privatisation')")).toBeVisible();
     await expect(page.locator("text=Bonjour, j'aimerais privatiser la salle pour 30 personnes le 14 juillet.")).toBeVisible();
+
+    // Mock POST reply
+    await page.route("**/api/v1/admin/contact-messages/msg-1/reply", async (route) => {
+      expect(route.request().method()).toBe("POST");
+      expect(route.request().postDataJSON()).toEqual({ message: "Voici notre réponse." });
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          message: "Réponse envoyée avec succès.",
+          data: {
+            id: "msg-1",
+            status: "traite",
+            handledAt: "2026-06-21T18:00:00Z",
+            handledBy: "Admin User"
+          }
+        }),
+      });
+    });
+
+    // Verify reply button is visible and click it
+    const replyBtn = page.locator("button:has-text('Répondre')");
+    await expect(replyBtn).toBeVisible();
+    await replyBtn.click();
+
+    // Fill the reply text area
+    const textarea = page.locator("textarea[placeholder='Écrivez votre réponse ici...']");
+    await expect(textarea).toBeVisible();
+    await textarea.fill("Voici notre réponse.");
+
+    // Click send reply
+    const sendBtn = page.locator("button:has-text('Envoyer la réponse')");
+    await expect(sendBtn).toBeVisible();
+    await sendBtn.click();
+
+    // Verify success message
+    await expect(page.locator("text=Réponse envoyée avec succès !")).toBeVisible();
   });
 
   // Test Categories Page
@@ -291,7 +371,7 @@ test.describe("Admin MVP Frontend Tests", () => {
         await route.fulfill({
           status: 200,
           contentType: "application/json",
-          body: JSON.stringify({ data: { items: mockCategories } }),
+          body: JSON.stringify({ data: mockCategories }),
         });
       } else if (route.request().method() === "POST") {
         const body = route.request().postDataJSON();
@@ -389,7 +469,7 @@ test.describe("Admin MVP Frontend Tests", () => {
       await route.fulfill({
         status: 200,
         contentType: "application/json",
-        body: JSON.stringify({ data: { items: mockCategories } }),
+        body: JSON.stringify({ data: mockCategories }),
       });
     });
 
@@ -399,7 +479,7 @@ test.describe("Admin MVP Frontend Tests", () => {
         await route.fulfill({
           status: 200,
           contentType: "application/json",
-          body: JSON.stringify({ data: { items: mockItems } }),
+          body: JSON.stringify({ data: mockItems }),
         });
       } else if (route.request().method() === "POST") {
         const body = route.request().postDataJSON();
@@ -538,4 +618,3 @@ test.describe("Admin MVP Frontend Tests", () => {
     await expect(page.locator('input[id="seo-title-0"]')).toHaveValue("La Loge - Le Meilleur Bar");
   });
 });
-

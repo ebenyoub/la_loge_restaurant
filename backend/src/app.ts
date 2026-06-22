@@ -32,10 +32,26 @@ app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
+      return callback(null, true);
     }
+    // Allow local network origins in non-production environments for mobile/tablet testing
+    if (process.env.NODE_ENV !== "production") {
+      try {
+        const parsedUrl = new URL(origin);
+        const hostname = parsedUrl.hostname;
+        if (
+          hostname.startsWith("192.168.") ||
+          hostname.startsWith("10.") ||
+          hostname.startsWith("172.") ||
+          hostname.endsWith(".local")
+        ) {
+          return callback(null, true);
+        }
+      } catch {
+        // Ignored
+      }
+    }
+    callback(new Error("Not allowed by CORS"));
   },
   credentials: true
 }));

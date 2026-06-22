@@ -1,4 +1,5 @@
-# Models
+# Modèles
 
-Les modèles Prisma seront créés à partir de `docs/database-schema.md` dans une tâche distincte,
-après validation des règles de données restantes.
+Le schéma Prisma est implémenté dans `backend/prisma/schema.prisma` et appliqué sur MySQL en développement local.
+
+Il couvre notamment les administrateurs, réservations, notes internes, messages de contact, réglages du restaurant, horaires d'ouverture, catégories de menu et plats. La documentation fonctionnelle correspondante est dans [../../../docs/database-schema.md](../../../docs/database-schema.md).

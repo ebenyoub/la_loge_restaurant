@@ -1,63 +1,35 @@
 # TODO — La Loge Bar & Food
 
-**Règle de travail :** Le socle technique est initialisé. Ne pas développer les pages finales, l'administration, les formulaires métier ou le design complet sans instruction explicite.
+**Mise à jour :** 22 juin 2026
+**Règle :** ne pas élargir le périmètre sans décision documentée. Aucun commit automatique.
 
-## Tâche initiale — audit des actifs existants
+## À finaliser avant mise en ligne
 
-- [ ] Obtenir la confirmation écrite du client sur les droits d'utilisation avant toute intégration d'image.
+- [ ] Obtenir la validation écrite des droits pour chaque photo qui sera publiée ; remplacer ou retirer tout média non validé.
+- [ ] Confirmer l'adresse, le téléphone, l'e-mail, les horaires réguliers et les fermetures exceptionnelles affichés.
+- [ ] Valider les mentions légales, la politique de confidentialité, le responsable de traitement et les durées de conservation.
+- [ ] Valider les 9 catégories et 46 plats en base : noms, prix, descriptions, disponibilités, allergènes et date de mise à jour.
+- [ ] Finaliser la recette visuelle desktop et mobile contre la capture Figma actuelle : header, hero, carte, formulaires, footer et états vides.
+- [ ] Vérifier les parcours réels avec les paramètres SMTP et l'adresse de notification de production.
+- [ ] Préparer le déploiement séparément : domaine, CORS, secrets, MySQL managé, sauvegardes, surveillance et revue `npm audit --omit=dev`.
 
-## À valider avec le client avant conception/développement
+## Livré
 
-- [ ] Confirmer l'adresse officielle unique, les horaires, le téléphone et l'e-mail publiés.
-- [ ] Désigner l'adresse e-mail destinataire des demandes et les personnes habilitées à les traiter.
-- [ ] Définir le délai de réponse à afficher au client.
-- [ ] Définir les créneaux proposés, le seuil groupe et les règles d'annulation/no-show.
-- [ ] Définir le maximum indicatif de couverts par service et, si nécessaire, de demandes par créneau.
-- [ ] Valider les statuts : nouvelle, en attente, confirmée, refusée, annulée.
-- [ ] Confirmer qui a besoin d'un compte admin et le niveau d'accès nécessaire.
-- [ ] Fournir logo, charte éventuelle, photos avec droits, carte/menu et formules du MVP.
-- [ ] Valider les textes d'accueil, le positionnement, les contenus locaux et les réseaux sociaux actifs.
-- [ ] Fournir les mentions légales et éléments RGPD exacts, dont la durée de conservation des demandes.
-- [ ] Choisir le domaine, le propriétaire des comptes techniques et le prestataire d'e-mail transactionnel.
+- [x] Redirection automatique de l'espace d'administration en cas de jeton invalide ou expiré (401), nettoyage du stockage local et cookie, et message d'avertissement.
+- [x] Pages publiques et formulaires Réservation/Contact connectés au backend.
+- [x] Persistance MySQL et e-mails client/gérant pour les nouvelles demandes.
+- [x] Validation des horaires d'ouverture pour les demandes de réservation.
+- [x] Authentification JWT admin, routes protégées et administration complète des réservations, contacts, catégories, plats et réglages.
+- [x] Carte publique connectée à MySQL et états d'erreur/absence de données distincts.
+- [x] API frontend centralisée par `NEXT_PUBLIC_API_URL`; aucun appel frontend relatif `/api/v1`.
+- [x] Actions admin de statut et de notes synchronisées immédiatement avec états de chargement.
+- [x] Navigation admin visible sous le header fixe sur desktop et mobile.
+- [x] Typographie publique sans-serif, sans italique visible, et correction des ancres de catégories de la carte.
+- [x] Tests frontend : lint, build et Playwright validés lors de la dernière passe.
 
-## À préparer à l'ouverture du développement
+## Explicitement hors périmètre actuel
 
-- [ ] Valider les maquettes de la vitrine et de l'administration mobile/desktop.
-- [ ] Écrire les textes d'e-mails et le message affiché après envoi.
-- [ ] Définir les règles d'alerte de charge, y compris les données prises en compte selon chaque statut.
-- [ ] Définir la politique d'authentification et de réinitialisation de mot de passe admin.
-- [ ] Préparer le plan de recette fonctionnelle, mobile, e-mail, sécurité, RGPD, SEO et accessibilité.
-- [ ] Examiner l'alerte `npm audit --omit=dev` liée à la CLI Prisma 7 avant un déploiement ; ne pas appliquer de downgrade majeur sans décision technique.
-
-- [x] Implémenter les routes d'administration des réservations (`GET /api/v1/admin/reservations`, `GET /api/v1/admin/reservations/:id`, `PATCH /api/v1/admin/reservations/:id/status` et création de notes internes) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
-- [x] Implémenter les routes d'administration des messages de contact (`GET /api/v1/admin/contact-messages`, `GET /api/v1/admin/contact-messages/:id` et `PATCH /api/v1/admin/contact-messages/:id/status`) protégées par session admin/rôle, sans envoi d'e-mails ni frontend.
-- [x] Mettre en place une stratégie de tests backend (Vitest + Supertest) avec couverture de base sur les endpoints publics, auth et routes protégées.
-- [x] Liaison des formulaires publics frontend et backend (connecter les formulaires de `/reservation` et `/contact` aux routes d'API correspondantes).
-
-- [x] Créer l'interface d'administration MVP côté frontend (redirection `/admin/login`, tableau de bord des réservations, notes internes et messages de contact).
-- [x] Mettre en place les tests frontend MVP avec Playwright (login, protection des routes, liste/détails réservations et messages de contact).
-
-- [x] Implémenter l'interface d'administration pour la gestion de la carte (catégories et plats) côté frontend with E2E tests.
-
-- [x] Implémenter l'interface d'administration pour les réglages généraux, les horaires d'ouverture, les réseaux sociaux et le référencement (SEO) côté frontend with E2E tests.
-
-- [x] Implémenter l'envoi d'e-mails transactionnels côté backend (notifications de nouvelle demande pour le gérant et accusé de réception pour le client) avec Nodemailer/SMTP.
-- [x] Renforcer les tests d'intégration backend (Vitest + Supertest) sur l'ensemble des routes admin (reservations, contacts, carte, settings, validations et cas d'erreurs).
-- [x] Ajouter la validation des horaires d'ouverture (OpeningHour) sur l'API publique de demande de réservation (POST /api/v1/reservations).
-
-## Prochaine tâche proposée — à valider
-
-- [ ] Préparer le déploiement en production et la validation du MVP (secrets de production, base MySQL managée, domaine mail).
-
-## Après le MVP
-
-- [ ] Refactor UI Tailwind après MVP : définir les tokens Tailwind, mutualiser les styles répétés et migrer les CSS Modules page par page après validation visuelle.
-
-## Explicitement hors MVP
-
-- [ ] Ne pas développer de confirmation ou blocage automatique des réservations.
-- [ ] Ne pas intégrer Google Calendar.
-- [ ] Ne pas intégrer de SMS, WhatsApp ou notifications push.
-- [ ] Ne pas créer de page builder ou d'éditeur de disposition libre.
-- [ ] Ne pas développer de statistiques avancées avant la P2.
-- [ ] Ne pas développer d'événements privés, de galerie, d'avis clients ni de statut dynamique ouvert/fermé avant la P2.
+- [ ] Confirmation/blocage automatiques de réservations, synchronisation calendrier ou Google Calendar.
+- [ ] E-mails lors d'un changement de statut de réservation.
+- [ ] Captcha et rate limiting, à planifier avant exposition publique si requis.
+- [ ] SMS, WhatsApp, push, statistiques avancées, galerie, événements privés, avis clients et page builder.

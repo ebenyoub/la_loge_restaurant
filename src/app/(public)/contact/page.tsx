@@ -166,7 +166,7 @@ export default function ContactPage() {
         />
         <div className="relative z-10 max-w-2xl mx-auto">
           <SectionLabel>Nous joindre</SectionLabel>
-          <h1 className="font-display italic text-[clamp(2.5rem,6vw,4.5rem)] text-[#f0e8d8]">
+          <h1 className="font-body font-light tracking-[-0.04em] text-[clamp(2.5rem,6vw,4.5rem)] text-[#f0e8d8]">
             Contact &amp; Accès
           </h1>
           <p className="mt-4 text-[#f0e8d8]/45 font-body font-light text-sm leading-relaxed max-w-md mx-auto">
@@ -180,7 +180,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 mb-16">
           {/* Practical Info */}
           <div>
-            <h2 className="font-display italic text-2xl text-[#f0e8d8] mb-8">Informations pratiques</h2>
+            <h2 className="font-body font-medium tracking-[-0.02em] text-2xl text-[#f0e8d8] mb-8">Informations pratiques</h2>
 
             <div className="space-y-7">
               {/* Address */}
@@ -273,7 +273,7 @@ export default function ContactPage() {
 
           {/* Interactive Map */}
           <div className="flex flex-col gap-4">
-            <h2 className="font-display italic text-2xl text-[#f0e8d8]">Localisation</h2>
+            <h2 className="font-body font-medium tracking-[-0.02em] text-2xl text-[#f0e8d8]">Localisation</h2>
             <div className="flex-1 min-h-[380px] bg-[#141412] border border-[#c9a96e]/12 overflow-hidden relative">
               <iframe
                 title="La Loge Bar & Food — Localisation"
@@ -287,7 +287,7 @@ export default function ContactPage() {
                 referrerPolicy="no-referrer-when-downgrade"
               />
               <div className="absolute bottom-4 left-4 bg-[#0b0b09]/90 backdrop-blur-sm border border-[#c9a96e]/20 px-4 py-2.5">
-                <p className="font-display italic text-[#f0e8d8] text-sm">La Loge</p>
+                <p className="font-body font-medium text-[#f0e8d8] text-sm">La Loge</p>
                 <p className="text-[#c9a96e]/70 text-[10px] tracking-wide font-body">Place des Célestins · Lyon 2e</p>
               </div>
             </div>
@@ -298,7 +298,7 @@ export default function ContactPage() {
         <div className="max-w-2xl mx-auto border-t border-[#c9a96e]/12 pt-16">
           <div className="text-center mb-10">
             <SectionLabel>Formulaire de contact</SectionLabel>
-            <h2 className="font-display italic text-2xl md:text-3xl text-[#f0e8d8]">
+            <h2 className="font-body font-medium tracking-[-0.02em] text-2xl md:text-3xl text-[#f0e8d8]">
               Envoyer un message
             </h2>
           </div>

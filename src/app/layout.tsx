@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
 import { SettingsProvider } from "@/components/settings-context";
 import "./globals.css";
 
@@ -18,9 +16,7 @@ export default function RootLayout({
     <html lang="fr">
       <body>
         <SettingsProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          {children}
         </SettingsProvider>
       </body>
     </html>

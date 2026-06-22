@@ -1,8 +1,8 @@
 # Architecture backend MVP — La Loge Bar & Food
 
-**Statut :** architecture documentée — aucune dépendance, serveur, API, migration Prisma ou base de données n'est créée par ce document.
-**Décisions validées :** MySQL, Prisma, Express et architecture MVC.
-**Portée :** demandes de réservation, messages de contact, administration, contenus et e-mails transactionnels P1.
+**Statut :** architecture implémentée et en service en développement local. Les sections historiques décrivant une architecture « cible » restent utiles comme référence, mais ne décrivent plus un socle vierge.
+**Décisions validées :** MySQL, Prisma, Express, JWT/bcrypt et SMTP Brevo.
+**Portée livrée :** demandes de réservation, messages de contact, administration, carte, réglages et e-mails transactionnels de création.
 
 ## 1. Objectif et frontières
 
@@ -22,7 +22,7 @@ Express API (MVC)
     ▼
 MySQL
 
-Express ──> prestataire e-mail transactionnel à choisir
+Express ──> SMTP Brevo
 ```
 
 Le frontend ne doit jamais accéder directement à MySQL, Prisma, aux secrets d'e-mail ni aux données d'autres clients. Aucune route API n'est créée dans le projet Next.js pour cette architecture.
@@ -251,7 +251,7 @@ L'envoi d'e-mail intervient après l'écriture réussie. Si un e-mail échoue, l
 6. API : retourne le nouvel état, sans exposer les notes à un client public.
 ```
 
-Les notifications d'un changement de statut ne sont pas encore une exigence produit distincte ; elles seront ajoutées seulement après validation des textes et du périmètre d'e-mail.
+Les notifications d'un changement de statut ne font pas partie du périmètre courant ; elles nécessitent une décision distincte sur les textes et le périmètre d'e-mail.
 
 ## 7. Flux métier — contact
 
@@ -274,7 +274,7 @@ Le terme `new` demandé dans le flux correspond à la valeur persistée `nouveau
 7. API : répond 201 avec un message de réception ; aucune promesse de délai non validé.
 ```
 
-Le flux d'accusé de réception au client est une décision à prendre : il est requis pour la réservation, mais pas encore explicitement pour le contact.
+Le flux d'accusé de réception au client est implémenté pour la réservation comme pour le contact.
 
 ### 7.3 Traitement admin
 
@@ -285,14 +285,14 @@ Le flux d'accusé de réception au client est une décision à prendre : il est 
 4. Les données suivent la durée de conservation définie dans la politique de confidentialité.
 ```
 
-## 8. Prisma et MySQL — règles d'implémentation future
+## 8. Prisma et MySQL — règles d'exploitation
 
-- Le schéma Prisma sera la traduction de `docs/database-schema.md`, après validation des décisions ouvertes.
+- Le schéma Prisma traduit les modèles effectivement livrés ; `docs/database-schema.md` complète la référence fonctionnelle.
 - Prisma utilise MySQL comme unique source de données ; aucun accès SQL depuis les controllers.
 - Les opérations combinant une demande, son historique de statut et ses journaux de notification sont transactionnelles.
 - Les migrations Prisma doivent être versionnées et appliquées par l'environnement de déploiement, jamais depuis le navigateur.
 - Les chaînes de connexion, clés d'e-mail, secrets de session et identifiants cloud sont fournis uniquement par variables d'environnement validées au démarrage.
-- La version de Prisma, la stratégie de migration, l'hébergement MySQL, les sauvegardes et la rotation des secrets sont à décider avant installation.
+- L'hébergement MySQL de production, les sauvegardes et la rotation des secrets restent à décider avant déploiement.
 
 ## 9. Données et décisions restant à valider
 
@@ -307,15 +307,14 @@ Le flux d'accusé de réception au client est une décision à prendre : il est 
 | Contact admin | Statuts définitifs et éventuel accusé de réception client. |
 | Déploiement Express | Hébergeur, URL de l'API, CORS, observabilité, journalisation et stratégie de mise à jour. |
 
-## 10. Hors périmètre de cette tâche
+## 10. Hors périmètre courant
 
-- Installation de Prisma ou de tout paquet backend.
-- Création d'un serveur Express, d'une API, de routes, de contrôleurs, de modèles ou de migrations.
-- Création d'une base MySQL ou de secrets d'environnement.
-- Branchement des formulaires publics.
-- Création de l'administration ou envoi réel d'e-mails.
-- Modification des pages publiques existantes.
+- Captcha, limitation de débit et e-mails de changement de statut.
+- Déploiement, secrets de production, MySQL managé, sauvegardes et supervision.
+- Galerie/médias administrables, événements privés, page builder et disponibilité automatique.
 
-## 11. Prochaine étape proposée
+## 11. État et prochaine étape
 
-Les contrats d'API Réservation et Contact sont documentés dans `docs/api-contracts.md` et les prérequis d'initialisation dans `docs/backend-prerequisites.md`. Le socle Express, TypeScript et Prisma/MySQL avec la route technique `/health` est créé dans `backend/`. La prochaine tâche traduit le schéma de données en modèles Prisma, sans migration, base de données ni branchement des formulaires publics.
+Le schéma Prisma, la migration locale, les contrôleurs, validateurs, middlewares, routes et tests sont déjà présents dans `backend/`. Les routes publiques de menu/réglages restent accessibles sans JWT ; les middlewares admin sont scellés sous `/api/v1/admin`.
+
+La prochaine étape backend n'est pas une nouvelle fondation : elle relève du déploiement, de la sécurité d'exposition (rate limiting/anti-spam), de la gestion des secrets, des sauvegardes et de la supervision, après validation du contenu et du design.

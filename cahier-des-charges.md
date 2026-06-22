@@ -3,7 +3,7 @@
 **Établissement :** La Loge Bar & Food  
 **Localisation communiquée par le site actuel :** 7 rue Charles Dullin, place des Célestins, 69002 Lyon  
 **Date :** 20 juin 2026  
-**Statut :** document de cadrage — à valider avant conception et développement
+**Statut :** document de cadrage historique. Le MVP est désormais implémenté ; l'état réel est maintenu dans `PROJECT_STATE.md`, les décisions en vigueur dans `decisions.md` et les écarts de mise en ligne dans `TODO.md`.
 
 ## 1. Cadre et ambition du projet
 
@@ -29,10 +29,10 @@ La réservation est gérée comme une **demande manuelle**, et non comme une dis
 
 Le même espace admin permet de gérer les contenus structurés du site. Il ne comprend pas d'éditeur de page libre ou de constructeur visuel type Webflow : la mise en page reste fixe, propre et responsive.
 
-### Hors périmètre de cette phase
+### Hors périmètre de cette phase de cadrage
 
-- Création du site, intégration, rédaction finale, prise de vue, création du logo ou mise en ligne.
-- Développement du site et de l'administration : ils ne sont pas démarrés à cette phase.
+- Création du site, intégration et administration étaient hors périmètre du cadrage initial mais sont désormais réalisées dans le MVP local.
+- Prise de vue, création de logo, validation éditoriale finale et mise en ligne restent à traiter.
 - Moteur de disponibilité, confirmation et blocage automatiques des créneaux.
 - Synchronisation Google Calendar, notifications SMS/WhatsApp/push et constructeur visuel de pages.
 
@@ -408,7 +408,7 @@ Les données structurées doivent correspondre exactement au contenu visible et 
 
 ## 9. Contraintes et proposition technique
 
-### Stack retenue pour le futur développement
+### Stack retenue lors du cadrage (remplacée par D-009)
 
 | Domaine | Choix proposé | Justification |
 | --- | --- | --- |
@@ -417,12 +417,12 @@ Les données structurées doivent correspondre exactement au contenu visible et 
 | Styles | Tailwind CSS | Système de design rapide à appliquer, responsive et maintenable |
 | Composants | Composants React sobres et réutilisables | Cohérence entre pages sans dépendances visuelles inutiles |
 | Images | `next/image`, WebP/AVIF, dimensions définies, CDN si nécessaire | Bon LCP, poids réduit et affichage stable |
-| Formulaires | Route serveur Next.js + prestataire e-mail transactionnel validé | Protection des secrets, validation, accusés de réception et traitement contrôlé |
-| Base de données | PostgreSQL managé (Vercel Postgres, Neon ou équivalent à arbitrer) | Persistance fiable des demandes, contenus et paramètres de capacité |
-| Accès aux données | ORM typé (Prisma ou Drizzle, à arbitrer) | Schéma maintenable, migrations contrôlées et validations côté serveur |
+| Formulaires | API Express séparée + SMTP Brevo | Validation, persistance et accusés de réception contrôlés |
+| Base de données | MySQL avec Prisma | Persistance fiable des demandes, carte et réglages |
+| Accès aux données | Prisma | Schéma maintenable et migrations contrôlées |
 | Réservation | Formulaire de demande interne, statuts manuels et alertes de capacité | Aucun blocage automatique ; décision finale conservée au gérant |
-| Administration | Interface Next.js protégée par authentification | Gestion responsive des demandes et contenus sans outil tiers opaque |
-| Hébergement | Vercel | Déploiement simple, HTTPS, CDN et prévisualisations |
+| Administration | Interface Next.js protégée par JWT | Gestion responsive des demandes, carte et réglages |
+| Hébergement | À décider avant mise en ligne | HTTPS, sauvegardes, secrets et exploitation à valider |
 | Domaine & e-mail | Domaine propre + e-mail professionnelle | Crédibilité, indépendance vis-à-vis de la plateforme actuelle |
 
 ### Principes non négociables

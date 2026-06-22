@@ -66,19 +66,27 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     <div className="min-h-screen bg-[#0b0b09] text-[#f0e8d8] font-body flex flex-col">
       {/* Admin Navigation Bar */}
       <header className="bg-[#141412] border-b border-[#c9a96e]/15 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="relative max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <span className="font-display italic text-lg text-[#f0e8d8] tracking-wide">
-              La Loge <span className="text-xs uppercase tracking-widest text-[#c9a96e] not-italic font-sans ml-2">Admin</span>
-            </span>
-            {adminUser && (
-              <span className="hidden sm:inline px-2.5 py-0.5 bg-[#c9a96e]/10 text-[#c9a96e] text-[10px] uppercase tracking-wider font-semibold border border-[#c9a96e]/20 rounded-full">
-                {adminUser.displayName} ({adminUser.role})
+            <Link
+              href="/"
+              className="group flex flex-col leading-none text-left focus:outline-none"
+              aria-label="La Loge Bar & Food — Accueil"
+            >
+              <span className="font-body font-medium text-[16px] md:text-[18px] tracking-[0.06em] text-[#f0e8d8] group-hover:text-[#c9a96e] transition-colors duration-300">
+                LA LOGE
               </span>
-            )}
+              <span className="text-[8px] tracking-[0.4em] uppercase text-[#c9a96e]/80 font-body -mt-0.5">
+                BAR & FOOD
+              </span>
+            </Link>
+            <div className="h-6 w-px bg-[#c9a96e]/20" />
+            <span className="font-body font-medium text-xs md:text-sm text-[#f0e8d8] tracking-wide whitespace-nowrap">
+              La Loge - <span className="text-[10px] uppercase tracking-widest text-[#c9a96e] font-body ml-0.5">Admin</span>
+            </span>
           </div>
           
-          <nav className="hidden md:flex items-center gap-6" aria-label="Navigation administration">
+          <nav className="hidden lg:flex items-center gap-6" aria-label="Navigation administration">
             {navItems.map((item) => {
               const active = pathname.startsWith(item.href);
               return (
@@ -86,6 +94,42 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   key={item.href}
                   href={item.href}
                   className={`text-xs uppercase tracking-wider transition-colors duration-200 ${
+                    active
+                      ? "text-[#c9a96e] font-semibold border-b border-[#c9a96e]/60 pb-1"
+                      : "text-[#f0e8d8]/60 hover:text-[#f0e8d8] pb-1"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="flex items-center gap-4">
+            {adminUser && (
+              <span className="inline-flex px-2.5 py-1 bg-[#c9a96e]/10 text-[#c9a96e] text-[10px] uppercase tracking-wider font-semibold border border-[#c9a96e]/20 rounded-full">
+                {adminUser.displayName} ({adminUser.role})
+              </span>
+            )}
+            <button
+              onClick={handleLogout}
+              className="text-[11px] tracking-wider uppercase text-red-400 hover:text-red-300 font-semibold px-4 py-2 border border-red-500/20 hover:border-red-500/40 bg-red-500/5 hover:bg-red-500/10 transition-all cursor-pointer rounded"
+            >
+              Déconnexion
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className="lg:hidden border-t border-[#c9a96e]/10 py-3 bg-[#141412]">
+          <nav className="flex items-center overflow-x-auto scrollbar-none px-6 gap-6" aria-label="Navigation administration mobile">
+            {navItems.map((item) => {
+              const active = pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`text-[10px] uppercase tracking-wider whitespace-nowrap transition-colors duration-200 ${
                     active
                       ? "text-[#c9a96e] font-semibold"
                       : "text-[#f0e8d8]/60 hover:text-[#f0e8d8]"
@@ -96,33 +140,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               );
             })}
           </nav>
-
-          <button
-            onClick={handleLogout}
-            className="text-[11px] tracking-wider uppercase text-red-400 hover:text-red-300 font-semibold px-4 py-2 border border-red-500/20 hover:border-red-500/40 bg-red-500/5 hover:bg-red-500/10 transition-all cursor-pointer animate-none"
-          >
-            Déconnexion
-          </button>
-        </div>
-
-        {/* Mobile Subnav */}
-        <div className="md:hidden border-t border-[#c9a96e]/10 flex items-center overflow-x-auto scrollbar-none py-3 px-6 gap-6 bg-[#141412]">
-          {navItems.map((item) => {
-            const active = pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`text-[10px] uppercase tracking-wider whitespace-nowrap transition-colors duration-200 ${
-                  active
-                    ? "text-[#c9a96e] font-semibold"
-                    : "text-[#f0e8d8]/60 hover:text-[#f0e8d8]"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
         </div>
       </header>
 

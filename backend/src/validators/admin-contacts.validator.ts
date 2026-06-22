@@ -73,3 +73,39 @@ export function validateUpdateContactMessageStatus(req: Request, _res: Response,
 
   next();
 }
+
+export function validateReplyToContactMessage(req: Request, _res: Response, next: NextFunction) {
+  const allowedKeys = ["message"];
+
+  const unknownFields = checkUnknownFields(req.body, allowedKeys);
+  if (unknownFields.length > 0) {
+    return next({
+      status: 400,
+      code: "INVALID_BODY",
+      message: `Le corps de la requête contient des champs inconnus : ${unknownFields.join(", ")}.`
+    });
+  }
+
+  const { message } = req.body;
+
+  if (typeof message !== "string" || message.trim() === "") {
+    return next({
+      status: 422,
+      code: "VALIDATION_ERROR",
+      message: "Certains champs doivent être corrigés.",
+      fields: { message: "Le message de réponse ne peut pas être vide." }
+    });
+  }
+
+  if (message.length > 2000) {
+    return next({
+      status: 422,
+      code: "VALIDATION_ERROR",
+      message: "Certains champs doivent être corrigés.",
+      fields: { message: "Le message de réponse ne peut pas dépasser 2000 caractères." }
+    });
+  }
+
+  next();
+}
+

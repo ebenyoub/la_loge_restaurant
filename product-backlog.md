@@ -1,12 +1,18 @@
 # Product backlog — La Loge Bar & Food
 
 **Référence :** MVP de demande de réservation manuelle  
-**Statut :** cadré — aucun développement démarré  
+**Statut :** implémentation MVP avancée ; les critères de validation éditoriale, légale, visuelle et de mise en ligne restent ouverts.
 **Convention :** P1 = obligatoire avant mise en ligne ; P2 = explicitement reporté après lancement.
 
 ## Règle produit centrale
 
 Une demande de réservation **n'est pas une réservation confirmée**. Le gérant décide manuellement de la confirmer, de la refuser, de l'annuler ou de recontacter le client. Les seuils de capacité produisent des alertes dans l'administration ; ils ne bloquent pas automatiquement une demande dans le MVP.
+
+## État d'implémentation au 21 juin 2026
+
+- Livré : P1-01, P1-04 à P1-09, P1-11 à P1-15, P1-19 (réglages structurés), P1-20 et P1-25. Les pages publiques, formulaires, API, persistance, e-mails de création, login JWT, réservation/contact admin, catégories, plats et réglages sont opérationnels.
+- Partiel ou à valider : P1-02 (alignement final avec la capture Figma et médias autorisés), P1-03 (recette responsive), P1-16 à P1-18 (lecture de charge à confirmer), P1-23 (SEO livré, édition des mentions légales non livrée), P1-26 à P1-30.
+- Différé explicitement : anti-spam et limitation de débit de P1-10, e-mails de changement de statut et déploiement. Ils ne doivent pas être ajoutés avant la finalisation contenus/images/fidélité visuelle, sauf décision contraire documentée.
 
 | ID | Fonctionnalité | Priorité | Description | Critères d'acceptation |
 | --- | --- | --- | --- | --- |
@@ -19,7 +25,7 @@ Une demande de réservation **n'est pas une réservation confirmée**. Le géran
 | P1-07 | Statuts de réservation | P1 | Encadrer le cycle de traitement humain. | Seuls `nouvelle`, `en attente`, `confirmée`, `refusée`, `annulée` sont proposés ; le changement est daté. |
 | P1-08 | E-mail au gérant | P1 | Informer le gérant d'une nouvelle demande. | Un e-mail récapitulatif est envoyé à l'adresse configurée après enregistrement réussi. |
 | P1-09 | E-mail au client | P1 | Accuser réception de la demande. | Un e-mail récapitulatif indique explicitement « en attente de confirmation » ; aucune formulation ne garantit une table. |
-| P1-10 | Protection formulaire | P1 | Sécuriser le dépôt de demandes. | Validation serveur, anti-spam, limitation de débit et messages d'erreur accessibles sont en place. |
+| P1-10 | Protection formulaire | P1 | Sécuriser le dépôt de demandes. | Validation serveur et erreurs accessibles sont en place ; anti-spam et limitation de débit restent à planifier avant ouverture publique. |
 | P1-11 | Authentification admin | P1 | Restreindre l'administration aux personnes habilitées. | Les routes admin sont protégées ; aucun client public ne peut consulter les demandes ou données personnelles. |
 | P1-12 | Liste admin réservations | P1 | Afficher toutes les demandes dans une interface responsive. | La liste montre au minimum date/heure, nom, couverts, occasion, statut et indicateur de charge ; tri antéchronologique par défaut. |
 | P1-13 | Filtres admin | P1 | Retrouver rapidement une demande. | Filtres opérationnels par date, statut et nom, sur mobile et desktop. |

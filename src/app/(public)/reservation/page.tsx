@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { API_BASE_URL } from "@/lib/api";
 import { useSettings, usePageSeo } from "@/components/settings-context";
@@ -65,6 +65,50 @@ export default function ReservationPage() {
     settings?.restaurantName ? `${settings.restaurantName} - Réservations` : "La Loge Bar & Food - Réservations",
     "Demandez une table en ligne pour votre déjeuner, dîner ou événement spécial."
   );
+
+  const getAvailableTimeSlots = useCallback(() => {
+    if (!formData.requestedDate || !settings?.openingHours) return [];
+    
+    const [year, month, day] = formData.requestedDate.split("-").map(Number);
+    const dateObj = new Date(year, month - 1, day);
+    const dayOfWeek = dateObj.getDay();
+
+    const dayHours = settings.openingHours.find((oh) => oh.dayOfWeek === dayOfWeek);
+    if (!dayHours || dayHours.isClosed || !dayHours.opensAt || !dayHours.closesAt) {
+      return [];
+    }
+
+    const slots: string[] = [];
+    const [openH, openM] = dayHours.opensAt.split(":").map(Number);
+    const [closeH, closeM] = dayHours.closesAt.split(":").map(Number);
+
+    const current = new Date(year, month - 1, day, openH, openM);
+    const end = new Date(year, month - 1, day, closeH, closeM);
+
+    while (current <= end) {
+      const h = String(current.getHours()).padStart(2, "0");
+      const m = String(current.getMinutes()).padStart(2, "0");
+      slots.push(`${h}:${m}`);
+      current.setMinutes(current.getMinutes() + 30);
+    }
+    return slots;
+  }, [formData.requestedDate, settings]);
+
+  const slots = getAvailableTimeSlots();
+
+  useEffect(() => {
+    if (formData.requestedDate && settings?.openingHours) {
+      const validSlots = getAvailableTimeSlots();
+      if (formData.requestedTime && !validSlots.includes(formData.requestedTime)) {
+        Promise.resolve().then(() => {
+          setFormData((prev) => ({
+            ...prev,
+            requestedTime: "",
+          }));
+        });
+      }
+    }
+  }, [formData.requestedDate, settings, getAvailableTimeSlots, formData.requestedTime]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -176,7 +220,7 @@ export default function ReservationPage() {
         />
         <div className="relative z-10 max-w-2xl mx-auto">
           <SectionLabel>Table disponible</SectionLabel>
-          <h1 className="font-display italic text-[clamp(2.5rem,6vw,4.5rem)] text-[#f0e8d8]">
+          <h1 className="font-body font-light tracking-[-0.04em] text-[clamp(2.5rem,6vw,4.5rem)] text-[#f0e8d8]">
             Réserver une table
           </h1>
           <p className="mt-4 text-[#f0e8d8]/45 font-body font-light text-sm leading-relaxed max-w-md mx-auto">
@@ -206,7 +250,7 @@ export default function ReservationPage() {
             <svg className="w-10 h-10 text-emerald-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h2 className="font-display italic text-2xl text-[#f0e8d8] mb-3">Demande envoyée</h2>
+            <h2 className="font-body font-medium tracking-[-0.02em] text-2xl text-[#f0e8d8] mb-3">Demande envoyée</h2>
             <p className="text-sm font-body font-light leading-relaxed max-w-sm mx-auto">
               {successMessage}
             </p>
@@ -221,7 +265,7 @@ export default function ReservationPage() {
 
         {!successMessage && (
           <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-            <fieldset disabled={isLoading} className="space-y-6">
+            <fieldset disabled={isLoading} className="space-y-6 min-w-0 w-full">
               {/* Coordonnées */}
               <div className="border border-[#c9a96e]/10 p-6 bg-[#141412]/30 space-y-5">
                 <p className="text-[10px] tracking-[0.3em] uppercase text-[#c9a96e]/80 font-body border-b border-[#c9a96e]/10 pb-2">
@@ -310,29 +354,46 @@ export default function ReservationPage() {
                   </div>
                   <div>
                     <label htmlFor="requestedTime" className={labelClass}>Heure *</label>
-                    <input
+                    <select
                       id="requestedTime"
                       name="requestedTime"
-                      type="time"
                       required
                       value={formData.requestedTime}
                       onChange={handleChange}
-                      className={`${inputClass} [color-scheme:dark]`}
-                    />
+                      disabled={!formData.requestedDate || slots.length === 0}
+                      className={`${inputClass} appearance-none cursor-pointer bg-[#1e1e1b]`}
+                    >
+                      <option value="">
+                        {!formData.requestedDate
+                          ? "Choisir une date d'abord"
+                          : slots.length === 0
+                          ? "Fermé ce jour-là"
+                          : "-- Choisir une heure --"}
+                      </option>
+                      {slots.map((slot) => (
+                        <option key={slot} value={slot}>
+                          {slot}
+                        </option>
+                      ))}
+                    </select>
                     {errors.requestedTime && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.requestedTime}</span>}
                   </div>
                   <div>
                     <label htmlFor="guestCount" className={labelClass}>Personnes *</label>
-                    <input
+                    <select
                       id="guestCount"
                       name="guestCount"
-                      type="number"
-                      min="1"
                       required
                       value={formData.guestCount}
                       onChange={handleChange}
-                      className={inputClass}
-                    />
+                      className={`${inputClass} appearance-none cursor-pointer bg-[#1e1e1b]`}
+                    >
+                      {Array.from({ length: 14 }, (_, i) => i + 2).map((num) => (
+                        <option key={num} value={num}>
+                          {num} personne{num > 1 ? "s" : ""}
+                        </option>
+                      ))}
+                    </select>
                     {errors.guestCount && <span className="text-red-400 text-[11px] font-body mt-1 block">{errors.guestCount}</span>}
                   </div>
                 </div>

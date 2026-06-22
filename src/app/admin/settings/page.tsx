@@ -207,7 +207,7 @@ export default function AdminSettingsPage() {
     <div className="space-y-8">
       {/* Page Header */}
       <header className="pb-6 border-b border-[#c9a96e]/15">
-        <h1 className="font-display italic text-3xl text-[#f0e8d8]">Réglages Généraux</h1>
+        <h1 className="font-body font-medium text-3xl text-[#f0e8d8]">Réglages Généraux</h1>
         <p className="text-xs text-[#f0e8d8]/55 font-body mt-1">Configurez les informations publiques, horaires de service, réseaux sociaux et SEO.</p>
       </header>
 
@@ -228,7 +228,7 @@ export default function AdminSettingsPage() {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Card 1: General Info */}
           <section className="border border-[#c9a96e]/15 bg-[#141412] p-6 space-y-6">
-            <h2 className="font-display italic text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Informations Générales</h2>
+            <h2 className="font-body font-medium text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Informations Générales</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="restaurantName" className={labelClass}>Nom du restaurant *</label>
@@ -348,7 +348,7 @@ export default function AdminSettingsPage() {
 
           {/* Card 2: Opening Hours */}
           <section className="border border-[#c9a96e]/15 bg-[#141412] p-6 space-y-6">
-            <h2 className="font-display italic text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Horaires d&apos;Ouverture</h2>
+            <h2 className="font-body font-medium text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Horaires d&apos;Ouverture</h2>
             <p className="text-xs text-[#f0e8d8]/55 font-body">Configurez les plages d&apos;ouverture hebdomadaires pour chaque jour.</p>
             <div className="space-y-4">
               {openingHours.map((oh, idx) => (
@@ -387,7 +387,7 @@ export default function AdminSettingsPage() {
 
           {/* Card 3: Social Links */}
           <section className="border border-[#c9a96e]/15 bg-[#141412] p-6 space-y-6">
-            <h2 className="font-display italic text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Réseaux Sociaux</h2>
+            <h2 className="font-body font-medium text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Réseaux Sociaux</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="fb-url" className={labelClass}>Facebook (URL)</label>
@@ -417,12 +417,12 @@ export default function AdminSettingsPage() {
 
           {/* Card 4: SEO Metadata */}
           <section className="border border-[#c9a96e]/15 bg-[#141412] p-6 space-y-6">
-            <h2 className="font-display italic text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Référencement &amp; SEO</h2>
+            <h2 className="font-body font-medium text-xl text-[#f0e8d8] border-b border-[#c9a96e]/10 pb-2">Référencement &amp; SEO</h2>
             <p className="text-xs text-[#f0e8d8]/55 font-body">Modifiez les balises Title, Meta Description et Keywords de chaque page.</p>
             <div className="space-y-6">
               {seoList.map((seo, idx) => (
                 <div key={seo.route} className="bg-[#1e1e1b]/30 border border-[#c9a96e]/10 p-5 space-y-4">
-                  <h3 className="font-display italic text-lg text-[#f0e8d8] border-b border-[#c9a96e]/5 pb-2">
+                  <h3 className="font-body font-medium text-lg text-[#f0e8d8] border-b border-[#c9a96e]/5 pb-2">
                     Page : {DEFAULT_SEO_PAGES.find((p) => p.route === seo.route)?.label || seo.route}{" "}
                     <code className="text-xs font-mono text-[#c9a96e] bg-[#141412] px-2 py-0.5 ml-2 border border-[#c9a96e]/10">({seo.route})</code>
                   </h3>

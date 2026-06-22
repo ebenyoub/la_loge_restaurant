@@ -1,8 +1,8 @@
 # Schéma de données MVP — La Loge Bar & Food
 
-**Statut :** spécification fonctionnelle et technique — aucune base, migration, API ou dépendance n'est créée par ce document.
-**Portée :** données P1 nécessaires à la vitrine administrable, aux demandes de réservation, aux messages de contact et à l'administration.
-**Cible validée :** MySQL avec Prisma ; aucun schéma Prisma ni aucune migration n'est créé à ce stade.
+**Statut :** schéma fonctionnel traduit dans `backend/prisma/schema.prisma` et migré sur MySQL local. Ce document reste la référence fonctionnelle ; le schéma Prisma est la référence exécutable.
+**Portée :** données nécessaires à la vitrine administrable, aux demandes de réservation, aux messages de contact et à l'administration.
+**Cible validée :** MySQL avec Prisma.
 
 ## 1. Principes de modélisation
 
@@ -45,7 +45,7 @@ RestaurantSettings ──< SocialLink
 | `menu_availability` | `disponible`, `indisponible` | Le MVP ne gère pas encore la disponibilité planifiée. |
 | `media_rights_status` | `a_verifier`, `valide`, `refuse`, `expire` | Empêche la publication accidentelle d'une image sans droits confirmés. |
 | `admin_role` | `gerant`, `editeur` | Proposition minimale : le gérant traite les demandes ; l'éditeur ne gère que les contenus. À valider avec les comptes réels. |
-| `notification_status` | `a_envoyer`, `envoye`, `echec` | Prévu pour les e-mails P1 ; pas d'envoi implémenté à ce stade. |
+| `notification_status` | `a_envoyer`, `envoye`, `echec` | Statut destiné au suivi des e-mails P1. Les e-mails de création sont implémentés ; vérifier le schéma Prisma pour connaître les journaux effectivement persistés. |
 
 ## 4. Données de réservation
 
@@ -362,6 +362,8 @@ Une contrainte applicative doit interdire toute association publique d'un média
 - Événements privés, galerie publique, avis clients et statut dynamique ouvert/fermé.
 - Éditeur visuel libre ou modèles de pages personnalisables.
 
-## 12. Étape suivante proposée
+## 12. État d'implémentation et prochaine étape
 
-Les contrats d'API Réservation et Contact sont documentés dans `docs/api-contracts.md`, les prérequis dans `docs/backend-prerequisites.md` et le socle backend est créé dans `backend/`. La prochaine tâche traduit ce document en modèles Prisma et génère le client, sans migration, base de données ni branchement des formulaires publics.
+Les contrats sont documentés dans `docs/api-contracts.md`, les prérequis de production dans `docs/backend-prerequisites.md` et le schéma exécutable est dans `backend/prisma/schema.prisma`. La migration locale, les API et les formulaires sont déjà implémentés.
+
+Les données et fonctionnalités décrites ici mais absentes du schéma Prisma ne doivent pas être considérées comme livrées : médias administrables, sections éditoriales, documents légaux éditables, capacité avancée et audit complet restent à arbitrer ou implémenter séparément.

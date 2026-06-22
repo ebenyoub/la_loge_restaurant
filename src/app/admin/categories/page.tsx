@@ -43,7 +43,7 @@ export default function AdminCategoriesPage() {
       if (!res.ok) {
         setError(json.error?.message || "Erreur de chargement des catégories.");
       } else {
-        const sorted = (json.data.items || []).sort(
+        const sorted = (json.data || []).sort(
           (a: Category, b: Category) => a.displayOrder - b.displayOrder
         );
         setCategories(sorted);
@@ -185,7 +185,7 @@ export default function AdminCategoriesPage() {
       {/* Page Header */}
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-[#c9a96e]/15">
         <div>
-          <h1 className="font-display italic text-3xl text-[#f0e8d8]">Sections de la carte</h1>
+          <h1 className="font-body font-medium text-3xl text-[#f0e8d8]">Sections de la carte</h1>
           <p className="text-xs text-[#f0e8d8]/55 font-body mt-1">Organisez les plats de votre carte en sections distinctes (ex: Entrées, Plats, Desserts).</p>
         </div>
         <button
@@ -227,7 +227,7 @@ export default function AdminCategoriesPage() {
                   <td className="py-4 px-6 font-semibold text-[#c9a96e]">{cat.displayOrder}</td>
                   <td className="py-4 px-6 font-semibold">{cat.name}</td>
                   <td className="py-4 px-6"><code className="bg-[#1e1e1b] px-2 py-1 text-xs border border-[#c9a96e]/10 font-mono text-[#c9a96e]">{cat.slug}</code></td>
-                  <td className="py-4 px-6 truncate max-w-xs">{cat.description || <span className="text-[#f0e8d8]/30 italic">Aucune</span>}</td>
+                  <td className="py-4 px-6 truncate max-w-xs">{cat.description || <span className="text-[#f0e8d8]/30">Aucune</span>}</td>
                   <td className="py-4 px-6">
                     <span className={`inline-block text-[9px] tracking-wider uppercase px-2.5 py-0.5 font-semibold ${
                       cat.isActive
@@ -269,7 +269,7 @@ export default function AdminCategoriesPage() {
             >
               &times;
             </button>
-            <h2 className="font-display italic text-2xl text-[#f0e8d8] mb-6">
+            <h2 className="font-body font-medium text-2xl text-[#f0e8d8] mb-6">
               {editingId ? "Modifier la Section" : "Créer une Section de la carte"}
             </h2>
 

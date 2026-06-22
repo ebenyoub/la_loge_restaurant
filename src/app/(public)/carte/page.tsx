@@ -84,7 +84,7 @@ export default function CartePage() {
         />
         <div className="relative z-10 max-w-2xl mx-auto">
           <SectionLabel>{settings?.city ? `${restaurantName} · ${settings.city}` : `${restaurantName} · Lyon`}</SectionLabel>
-          <h1 className="font-display italic text-[clamp(2.5rem,6vw,4.5rem)] text-[#f0e8d8]">
+          <h1 className="font-body font-light tracking-[-0.04em] text-[clamp(2.5rem,6vw,4.5rem)] text-[#f0e8d8]">
             La Carte
           </h1>
           <p className="mt-4 text-[#f0e8d8]/45 font-body font-light text-sm leading-relaxed max-w-md mx-auto">
@@ -102,7 +102,7 @@ export default function CartePage() {
         </div>
       ) : loadError ? (
         <div className="max-w-4xl mx-auto px-6 py-20 text-center border border-[#c9a96e]/15 bg-[#141412]/50 my-10">
-          <p className="text-[#f0e8d8]/60 font-display italic text-xl">
+          <p className="text-[#f0e8d8]/60 font-body font-medium text-xl">
             La carte est temporairement indisponible.
           </p>
           <p className="mt-3 text-[#f0e8d8]/40 text-sm">
@@ -111,7 +111,7 @@ export default function CartePage() {
         </div>
       ) : categories.length === 0 ? (
         <div className="max-w-4xl mx-auto px-6 py-20 text-center border border-dashed border-[#c9a96e]/20 bg-[#141412]/50 my-10">
-          <p className="text-[#f0e8d8]/40 font-display italic text-xl">
+          <p className="text-[#f0e8d8]/40 font-body font-medium text-xl">
             Carte en cours de préparation
           </p>
         </div>
@@ -131,23 +131,23 @@ export default function CartePage() {
           {/* Categories Sections */}
           <div className="max-w-4xl mx-auto px-6 lg:px-10 py-12">
             {categories.map((cat) => (
-              <section key={cat.id} id={cat.slug} className="py-14 border-b border-[#c9a96e]/10 last:border-b-0" aria-labelledby={`title-${cat.id}`}>
+              <section key={cat.id} id={cat.slug} className="scroll-mt-36 py-14 border-b border-[#c9a96e]/10 last:border-b-0" aria-labelledby={`title-${cat.id}`}>
                 <div className="mb-10 text-center lg:text-left">
                   <span className="text-[9px] tracking-[0.4em] uppercase text-[#c9a96e]/70 font-body">Section de la carte</span>
-                  <h2 id={`title-${cat.id}`} className="font-display italic text-3xl text-[#f0e8d8] mt-1">{cat.name}</h2>
+                  <h2 id={`title-${cat.id}`} className="font-body font-medium tracking-[-0.02em] text-3xl text-[#f0e8d8] mt-1">{cat.name}</h2>
                   {cat.description && (
                     <p className="text-[#f0e8d8]/55 text-sm font-body font-light mt-2 max-w-xl">{cat.description}</p>
                   )}
                 </div>
 
                 {cat.menuItems.length === 0 ? (
-                  <p className="text-[#f0e8d8]/30 text-xs italic">Section en cours de rédaction.</p>
+                  <p className="text-[#f0e8d8]/30 text-xs font-body">Section en cours de rédaction.</p>
                 ) : (
                   <div className="divide-y divide-[#c9a96e]/10">
                     {cat.menuItems.map((item) => (
                       <div key={item.id} className="group py-6 flex items-start justify-between gap-6 hover:bg-[#141412]/40 -mx-4 px-4 transition-colors duration-150">
                         <div className="flex-1">
-                          <h3 className="font-display italic text-[1.15rem] text-[#f0e8d8] group-hover:text-[#c9a96e] transition-colors duration-200">
+                          <h3 className="font-body font-medium text-[1.15rem] text-[#f0e8d8] group-hover:text-[#c9a96e] transition-colors duration-200">
                             {item.name}
                           </h3>
                           {item.description ? (
@@ -155,7 +155,7 @@ export default function CartePage() {
                               {item.description}
                             </p>
                           ) : (
-                            <p className="mt-1.5 text-[#f0e8d8]/30 text-xs font-body italic">
+                            <p className="mt-1.5 text-[#f0e8d8]/30 text-xs font-body">
                               Description à confirmer.
                             </p>
                           )}
@@ -175,7 +175,7 @@ export default function CartePage() {
                             </div>
                           )}
                         </div>
-                        <span className="font-display italic text-lg text-[#c9a96e] shrink-0">
+                        <span className="font-body font-medium text-lg text-[#c9a96e] shrink-0">
                           {(item.priceCents / 100).toFixed(2)} €
                         </span>
                       </div>
@@ -191,7 +191,7 @@ export default function CartePage() {
       {/* Allergens Info Section */}
       <section className="bg-[#141412]/50 border-t border-b border-[#c9a96e]/12 py-16 px-6 text-center" aria-labelledby="allergenes-title">
         <div className="max-w-2xl mx-auto">
-          <h2 id="allergenes-title" className="font-display italic text-2xl text-[#f0e8d8] mb-4">Informations Allergènes</h2>
+          <h2 id="allergenes-title" className="font-body font-medium tracking-[-0.02em] text-2xl text-[#f0e8d8] mb-4">Informations Allergènes</h2>
           <p className="text-[#f0e8d8]/50 text-sm font-body font-light leading-relaxed mb-6">
             Pour toute allergie, intolérance alimentaire ou régime spécifique, nous vous prions d&apos;en informer nos équipes au moment de votre commande ou lors de votre demande de réservation.
           </p>
@@ -210,7 +210,7 @@ export default function CartePage() {
       {/* Footer CTA */}
       <section className="bg-[#0e0e0c] py-20 px-6 text-center" aria-labelledby="reservation-title">
         <div className="max-w-xl mx-auto">
-          <h2 id="reservation-title" className="font-display italic text-2xl md:text-3xl text-[#f0e8d8] mb-4">
+          <h2 id="reservation-title" className="font-body font-medium tracking-[-0.02em] text-2xl md:text-3xl text-[#f0e8d8] mb-4">
             Une table vous intéresse ?
           </h2>
           <p className="text-[#f0e8d8]/50 text-sm font-body font-light mb-8 leading-relaxed">

@@ -29,6 +29,13 @@ export default function ContactMessagesPage() {
   const [error, setError] = useState<string | null>(null);
   const [detailsError, setDetailsError] = useState<string | null>(null);
 
+  // States for replying to contact messages
+  const [isReplying, setIsReplying] = useState(false);
+  const [replyText, setReplyText] = useState("");
+  const [isSendingReply, setIsSendingReply] = useState(false);
+  const [replyError, setReplyError] = useState<string | null>(null);
+  const [replySuccess, setReplySuccess] = useState<string | null>(null);
+
   const fetchMessages = useCallback(async () => {
     Promise.resolve().then(() => {
       setIsLoading(true);
@@ -70,39 +77,51 @@ export default function ContactMessagesPage() {
     });
   };
 
+  const fetchDetails = useCallback(async (id: string, isUpdateOnly: boolean = false) => {
+    setIsDetailsLoading(!isUpdateOnly);
+    setDetailsError(null);
+    if (!isUpdateOnly) {
+      setIsReplying(false);
+      setReplyText("");
+      setReplyError(null);
+      setReplySuccess(null);
+    }
+    const token = localStorage.getItem("admin_token");
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/contact-messages/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setDetailsError(json.error?.message || "Impossible de récupérer les détails.");
+      } else {
+        setDetails(json.data);
+      }
+    } catch {
+      setDetailsError("Erreur réseau lors de la récupération du message.");
+    } finally {
+      setIsDetailsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (!selectedId) {
       Promise.resolve().then(() => {
         setDetails(null);
+        setIsReplying(false);
+        setReplyText("");
+        setReplyError(null);
+        setReplySuccess(null);
       });
       return;
     }
 
-    const fetchDetails = async () => {
-      setIsDetailsLoading(true);
-      setDetailsError(null);
-      const token = localStorage.getItem("admin_token");
-      try {
-        const res = await fetch(`${API_BASE_URL}/admin/contact-messages/${selectedId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const json = await res.json();
-        if (!res.ok) {
-          setDetailsError(json.error?.message || "Impossible de récupérer les détails.");
-        } else {
-          setDetails(json.data);
-        }
-      } catch {
-        setDetailsError("Erreur réseau lors de la récupération du message.");
-      } finally {
-        setIsDetailsLoading(false);
-      }
-    };
-
-    fetchDetails();
-  }, [selectedId]);
+    Promise.resolve().then(() => {
+      fetchDetails(selectedId);
+    });
+  }, [selectedId, fetchDetails]);
 
   const updateStatus = async (newStatus: string) => {
     if (!details) return;
@@ -120,12 +139,58 @@ export default function ContactMessagesPage() {
       if (!res.ok) {
         alert(json.error?.message || "Erreur de changement de statut.");
       } else {
-        setSelectedId(null);
-        setSelectedId(details.id);
+        fetchDetails(details.id, true);
         fetchMessages();
       }
     } catch {
       alert("Erreur réseau.");
+    }
+  };
+
+  const handleSendReply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!details) return;
+    if (replyText.trim() === "") {
+      setReplyError("Le message de réponse ne peut pas être vide.");
+      return;
+    }
+    if (replyText.length > 2000) {
+      setReplyError("Le message de réponse ne peut pas dépasser 2000 caractères.");
+      return;
+    }
+
+    setIsSendingReply(true);
+    setReplyError(null);
+    setReplySuccess(null);
+
+    const token = localStorage.getItem("admin_token");
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/contact-messages/${details.id}/reply`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ message: replyText }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setReplyError(json.error?.message || "Erreur lors de l'envoi de la réponse.");
+      } else {
+        setReplySuccess("Réponse envoyée avec succès !");
+        setReplyText("");
+        setTimeout(() => {
+          setIsReplying(false);
+          setReplySuccess(null);
+        }, 3000);
+        // Refresh details and message list to reflect potential status change
+        fetchDetails(details.id, true);
+        fetchMessages();
+      }
+    } catch {
+      setReplyError("Erreur réseau.");
+    } finally {
+      setIsSendingReply(false);
     }
   };
 
@@ -151,7 +216,7 @@ export default function ContactMessagesPage() {
       {/* List Section */}
       <div className="border border-[#c9a96e]/15 bg-[#141412] p-6 flex flex-col h-[calc(100vh-140px)] overflow-hidden">
         <div className="mb-6 space-y-4 shrink-0">
-          <h2 className="font-display italic text-2xl text-[#f0e8d8]">Messages de Contact</h2>
+          <h2 className="font-body font-medium text-2xl text-[#f0e8d8]">Messages de Contact</h2>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -184,7 +249,7 @@ export default function ContactMessagesPage() {
                 }`}
               >
                 <div className="flex justify-between items-start gap-4 mb-2">
-                  <span className="font-display italic text-sm text-[#f0e8d8] truncate max-w-[180px]">{msg.name}</span>
+                  <span className="font-body font-medium text-sm text-[#f0e8d8] truncate max-w-[180px]">{msg.name}</span>
                   <span className={`text-[9px] tracking-wider uppercase px-2 py-0.5 font-body font-semibold ${getStatusBadgeClass(msg.status)}`}>
                     {msg.status}
                   </span>
@@ -225,7 +290,7 @@ export default function ContactMessagesPage() {
                 <span className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e]/80 font-body block mb-1">
                   Sujet du message
                 </span>
-                <h3 className="font-display italic text-2xl text-[#f0e8d8]">{details.subject}</h3>
+                <h3 className="font-body font-medium text-2xl text-[#f0e8d8]">{details.subject}</h3>
                 <p className="text-xs text-[#f0e8d8]/55 font-body mt-2">
                   De <strong className="text-[#f0e8d8]">{details.name}</strong> ({details.email})
                   {details.phone && <span> · Tél : {details.phone}</span>}
@@ -279,15 +344,108 @@ export default function ContactMessagesPage() {
               </p>
             </div>
 
+            {/* Action Répondre / Reply form */}
+            <div className="border border-[#c9a96e]/15 p-5 bg-[#141412] space-y-4">
+              {!isReplying ? (
+                <button
+                  onClick={() => setIsReplying(true)}
+                  className="px-6 py-2.5 bg-[#c9a96e] text-[#0b0b09] text-xs tracking-wider uppercase font-body font-semibold hover:bg-[#dbbe86] active:bg-[#b8924a] transition-all cursor-pointer rounded"
+                >
+                  Répondre
+                </button>
+              ) : (
+                <form onSubmit={handleSendReply} className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="block text-[10px] tracking-widest uppercase text-[#c9a96e]/85 font-body font-semibold">
+                      Rédiger une réponse à {details.name} :
+                    </span>
+                    <span className="text-[10px] text-[#f0e8d8]/40">
+                      {replyText.length}/2000
+                    </span>
+                  </div>
+                  <textarea
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    placeholder="Écrivez votre réponse ici..."
+                    rows={6}
+                    maxLength={2000}
+                    disabled={isSendingReply}
+                    className="w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-4 py-3 text-xs font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/40 transition-colors resize-y min-h-[120px]"
+                    required
+                  />
+                  {replyError && (
+                    <p className="text-xs text-red-400 font-body">{replyError}</p>
+                  )}
+                  {replySuccess && (
+                    <p className="text-xs text-emerald-400 font-body">{replySuccess}</p>
+                  )}
+                  <div className="flex gap-3">
+                    <button
+                      type="submit"
+                      disabled={isSendingReply || !replyText.trim()}
+                      className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800/40 disabled:text-[#f0e8d8]/30 text-[#f0e8d8] text-[10px] tracking-wider uppercase font-body font-semibold transition-all cursor-pointer rounded"
+                    >
+                      {isSendingReply ? "Envoi en cours..." : "Envoyer la réponse"}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={isSendingReply}
+                      onClick={() => {
+                        setIsReplying(false);
+                        setReplyText("");
+                        setReplyError(null);
+                        setReplySuccess(null);
+                      }}
+                      className="px-4 py-2.5 border border-zinc-700 bg-zinc-800/40 hover:bg-zinc-800 text-[#f0e8d8]/70 hover:text-[#f0e8d8] text-[10px] tracking-wider uppercase font-body font-semibold transition-all cursor-pointer rounded"
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+
             {/* Handling meta */}
-            {details.handledAt && (
-              <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-body">
-                <p>
-                  Traité le <strong>{new Date(details.handledAt).toLocaleString("fr-FR")}</strong> par{" "}
-                  <strong>{details.handledBy || "Admin"}</strong>.
-                </p>
-              </div>
-            )}
+            {(() => {
+              const dateStr = details.status === "nouveau" 
+                ? new Date(details.createdAt).toLocaleString("fr-FR")
+                : details.handledAt 
+                ? new Date(details.handledAt).toLocaleString("fr-FR")
+                : new Date(details.createdAt).toLocaleString("fr-FR");
+
+              const handler = details.handledBy || "Admin";
+
+              let badgeStyle = "";
+              let text = "";
+
+              switch (details.status) {
+                case "nouveau":
+                  badgeStyle = "bg-blue-950/20 border-[#c9a96e]/25 text-[#c9a96e]";
+                  text = `Nouveau message reçu le ${dateStr}`;
+                  break;
+                case "lu":
+                  badgeStyle = "bg-yellow-500/5 border-yellow-500/20 text-yellow-300/80";
+                  text = `Lu le ${dateStr} par ${handler}`;
+                  break;
+                case "traite":
+                  badgeStyle = "bg-emerald-500/10 border-emerald-500/20 text-emerald-400";
+                  text = `Traité le ${dateStr} par ${handler}`;
+                  break;
+                case "archive":
+                  badgeStyle = "bg-zinc-800/40 border-zinc-700/50 text-zinc-400";
+                  text = `Archivé le ${dateStr} par ${handler}`;
+                  break;
+                default:
+                  badgeStyle = "bg-zinc-800/40 border-zinc-700/50 text-zinc-400";
+                  text = `Statut inconnu le ${dateStr}`;
+              }
+
+              return (
+                <div className={`p-4 border text-xs font-body ${badgeStyle}`}>
+                  <p>{text}</p>
+                </div>
+              );
+            })()}
           </div>
         ) : null}
       </div>

@@ -66,7 +66,7 @@ export default function MentionsLegalesPage() {
       <div className="relative py-20 lg:py-28 px-6 text-center bg-[#0e0e0c]">
         <div className="relative z-10 max-w-2xl mx-auto">
           <SectionLabel>Informations légales</SectionLabel>
-          <h1 className="font-display italic text-[clamp(2.5rem,6vw,4rem)] text-[#f0e8d8]">
+          <h1 className="font-body font-light tracking-[-0.04em] text-[clamp(2.5rem,6vw,4rem)] text-[#f0e8d8]">
             Mentions légales
           </h1>
           <p className="mt-4 text-[#f0e8d8]/35 text-xs tracking-wide">
@@ -108,7 +108,7 @@ export default function MentionsLegalesPage() {
                   <span className="text-[10px] uppercase tracking-widest text-[#c9a96e]/60 font-body block mb-1">
                     À valider
                   </span>
-                  <h2 className="font-display italic text-xl md:text-2xl text-[#f0e8d8]">
+                  <h2 className="font-body font-medium tracking-[-0.02em] text-xl md:text-2xl text-[#f0e8d8]">
                     {title}
                   </h2>
                 </div>

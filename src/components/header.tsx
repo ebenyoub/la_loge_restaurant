@@ -47,7 +47,7 @@ export function Header() {
           className="group flex flex-col leading-none text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-[#c9a96e] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0b09]"
           aria-label="La Loge Bar & Food — Accueil"
         >
-          <span className="font-display text-[22px] tracking-[0.06em] text-[#f0e8d8] group-hover:text-[#c9a96e] transition-colors duration-300">
+          <span className="font-body font-medium text-[22px] tracking-[0.06em] text-[#f0e8d8] group-hover:text-[#c9a96e] transition-colors duration-300">
             {brandFirst}
           </span>
           <span className="text-[9px] tracking-[0.45em] uppercase text-[#c9a96e]/80 font-body -mt-0.5">
@@ -81,7 +81,7 @@ export function Header() {
         {/* Mobile toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden -mr-2 inline-flex min-h-11 min-w-11 items-center justify-center text-[#f0e8d8] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#c9a96e]"
+          className="md:hidden -mr-2 inline-flex w-12 h-12 relative z-50 items-center justify-center text-[#f0e8d8] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#c9a96e] cursor-pointer"
           aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={mobileOpen}
         >
