@@ -31,12 +31,12 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function ContactPage() {
   const { settings } = useSettings();
   const {
-    formData,
-    isLoading,
+    register,
     errors,
+    isLoading,
+    globalError,
     successMessage,
-    handleChange,
-    handleSubmit,
+    onSubmit,
   } = useContactForm();
 
   // Dynamic SEO from database
@@ -102,12 +102,12 @@ export default function ContactPage() {
               </h2>
             </div>
             <ContactForm
-              formData={formData}
-              isLoading={isLoading}
+              register={register}
               errors={errors}
+              isLoading={isLoading}
+              globalError={globalError}
               successMessage={successMessage}
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
+              onSubmit={onSubmit}
               restaurantName={restaurantName}
             />
           </div>

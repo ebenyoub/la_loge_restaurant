@@ -1,28 +1,29 @@
 import React from "react";
-import { ContactFormData, FormErrors } from "../types";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { ContactFormData } from "@/lib/validation/contact";
 import { Input, Textarea, Checkbox, Button, Alert } from "@/components/ui";
 
 interface ContactFormProps {
-  formData: ContactFormData;
+  register: UseFormRegister<ContactFormData>;
+  errors: FieldErrors<ContactFormData>;
   isLoading: boolean;
-  errors: FormErrors;
+  globalError: string | null;
   successMessage: string | null;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  handleSubmit: (e: React.FormEvent) => void;
+  onSubmit: (e: React.FormEvent) => void;
   restaurantName: string;
 }
 
 export function ContactForm({
-  formData,
-  isLoading,
+  register,
   errors,
+  isLoading,
+  globalError,
   successMessage,
-  handleChange,
-  handleSubmit,
+  onSubmit,
   restaurantName,
 }: ContactFormProps) {
   return (
-    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+    <form onSubmit={onSubmit} className="space-y-5" noValidate>
       <fieldset disabled={isLoading} className="space-y-5">
         {successMessage && (
           <Alert variant="success" layout="banner">
@@ -30,79 +31,67 @@ export function ContactForm({
           </Alert>
         )}
 
-        {errors.global && (
+        {globalError && (
           <Alert variant="error" layout="banner">
-            {errors.global}
+            {globalError}
           </Alert>
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Input
             id="name"
-            name="name"
             type="text"
             required
             label="Nom *"
-            value={formData.name}
-            onChange={handleChange}
             placeholder="Votre nom"
-            error={errors.name}
+            error={errors.name?.message}
+            {...register("name")}
           />
           <Input
             id="email"
-            name="email"
             type="email"
             required
             label="Email *"
-            value={formData.email}
-            onChange={handleChange}
             placeholder="vous@email.fr"
-            error={errors.email}
+            error={errors.email?.message}
+            {...register("email")}
           />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Input
             id="phone"
-            name="phone"
             type="tel"
             label="Téléphone"
-            value={formData.phone}
-            onChange={handleChange}
             placeholder="06 00 00 00 00 (facultatif)"
-            error={errors.phone}
+            error={errors.phone?.message}
+            {...register("phone")}
           />
           <Input
             id="subject"
-            name="subject"
             type="text"
             required
             label="Sujet *"
-            value={formData.subject}
-            onChange={handleChange}
             placeholder="Demande d'information…"
-            error={errors.subject}
+            error={errors.subject?.message}
+            {...register("subject")}
           />
         </div>
         <Textarea
           id="message"
-          name="message"
           rows={5}
           required
           label="Message *"
-          value={formData.message}
-          onChange={handleChange}
           placeholder="Votre message…"
-          error={errors.message}
+          error={errors.message?.message}
+          {...register("message")}
         />
 
         <Checkbox
           id="consent"
-          name="consent"
-          checked={formData.consent}
-          onChange={handleChange}
           required
           label={`J'accepte que mes informations soient collectées et utilisées par ${restaurantName} pour traiter ma demande de contact conformément à la politique de confidentialité. *`}
-          error={errors.consent}
+          error={errors.consent?.message}
+          {...register("consent")}
         />
 
         <Button
