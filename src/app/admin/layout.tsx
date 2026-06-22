@@ -19,6 +19,22 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const knownContactIdsRef = useRef<Set<string>>(new Set());
   const isInitialRef = useRef(true);
 
+  const [hasNewReservations, setHasNewReservations] = useState(false);
+  const [hasNewContacts, setHasNewContacts] = useState(false);
+
+  useEffect(() => {
+    if (pathname.startsWith("/admin/reservations")) {
+      Promise.resolve().then(() => {
+        setHasNewReservations(false);
+      });
+    }
+    if (pathname.startsWith("/admin/contact-messages")) {
+      Promise.resolve().then(() => {
+        setHasNewContacts(false);
+      });
+    }
+  }, [pathname]);
+
   // Sound generator using Web Audio API
   const playNotificationSound = () => {
     try {
@@ -110,6 +126,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             const hasNew = currentIds.some((id: string) => !knownReservationIdsRef.current.has(id));
             if (hasNew) {
               playedSound = true;
+              if (!pathname.startsWith("/admin/reservations")) {
+                setHasNewReservations(true);
+              }
+              window.dispatchEvent(new CustomEvent("new-reservation"));
             }
           }
           knownReservationIdsRef.current = new Set(currentIds);
@@ -122,6 +142,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             const hasNew = currentIds.some((id: string) => !knownContactIdsRef.current.has(id));
             if (hasNew) {
               playedSound = true;
+              if (!pathname.startsWith("/admin/contact-messages")) {
+                setHasNewContacts(true);
+              }
+              window.dispatchEvent(new CustomEvent("new-contact-message"));
             }
           }
           knownContactIdsRef.current = new Set(currentIds);
@@ -193,21 +217,26 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               Admin
             </span>
           </div>
-          
-          <nav className="hidden lg:flex items-center gap-8" aria-label="Navigation administration">
+               <nav className="hidden lg:flex items-center gap-8" aria-label="Navigation administration">
             {navItems.map((item) => {
               const active = pathname.startsWith(item.href);
+              const showDot = 
+                (item.href === "/admin/reservations" && hasNewReservations) ||
+                (item.href === "/admin/contact-messages" && hasNewContacts);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-[11px] uppercase tracking-[0.2em] transition-colors duration-200 ${
+                  className={`text-[11px] uppercase tracking-[0.2em] transition-colors duration-200 relative ${
                     active
                       ? "text-[#c9a96e] font-medium border-b border-[#c9a96e]/60 pb-1"
                       : "text-[#f0e8d8]/65 hover:text-[#f0e8d8] pb-1"
                   }`}
                 >
-                  {item.label}
+                  <span>{item.label}</span>
+                  {showDot && (
+                    <span className="w-1.5 h-1.5 bg-[#c9a96e] rounded-full animate-pulse absolute -right-3.5 top-1" />
+                  )}
                 </Link>
               );
             })}
@@ -247,23 +276,29 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </button>
           </div>
         </div>
-
+ 
         {/* Mobile Navigation */}
         <div className="lg:hidden border-t border-[#c9a96e]/10 py-3 bg-[#141412]">
           <nav className="flex items-center overflow-x-auto scrollbar-none px-6 gap-6" aria-label="Navigation administration mobile">
             {navItems.map((item) => {
               const active = pathname.startsWith(item.href);
+              const showDot = 
+                (item.href === "/admin/reservations" && hasNewReservations) ||
+                (item.href === "/admin/contact-messages" && hasNewContacts);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-[10px] uppercase tracking-wider whitespace-nowrap transition-colors duration-200 ${
+                  className={`text-[10px] uppercase tracking-wider whitespace-nowrap transition-colors duration-200 relative ${
                     active
                       ? "text-[#c9a96e] font-semibold"
                       : "text-[#f0e8d8]/60 hover:text-[#f0e8d8]"
                   }`}
                 >
-                  {item.label}
+                  <span>{item.label}</span>
+                  {showDot && (
+                    <span className="w-1.5 h-1.5 bg-[#c9a96e] rounded-full animate-pulse absolute -right-2 top-0.5" />
+                  )}
                 </Link>
               );
             })}

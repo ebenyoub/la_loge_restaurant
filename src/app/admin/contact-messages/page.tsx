@@ -71,6 +71,18 @@ export default function ContactMessagesPage() {
     });
   }, [fetchMessages]);
 
+  useEffect(() => {
+    const handleNewMessage = () => {
+      Promise.resolve().then(() => {
+        fetchMessages();
+      });
+    };
+    window.addEventListener("new-contact-message", handleNewMessage);
+    return () => {
+      window.removeEventListener("new-contact-message", handleNewMessage);
+    };
+  }, [fetchMessages]);
+
   const selectMessage = (id: string) => {
     startTransition(() => {
       setSelectedId(id);

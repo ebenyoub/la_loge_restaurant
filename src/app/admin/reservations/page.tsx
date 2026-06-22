@@ -86,6 +86,18 @@ export default function ReservationsPage() {
     });
   }, [fetchReservations]);
 
+  useEffect(() => {
+    const handleNewReservation = () => {
+      Promise.resolve().then(() => {
+        fetchReservations();
+      });
+    };
+    window.addEventListener("new-reservation", handleNewReservation);
+    return () => {
+      window.removeEventListener("new-reservation", handleNewReservation);
+    };
+  }, [fetchReservations]);
+
   const selectReservation = (id: string) => {
     startTransition(() => {
       setSelectedId(id);
