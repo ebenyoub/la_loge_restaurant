@@ -316,7 +316,14 @@ export default function Home() {
               </div>
               <h3 className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e] font-body mb-4">Adresse</h3>
               <p className="text-[#f0e8d8]/65 text-sm font-body font-light leading-relaxed">
-                {getAddressText()}
+                <a
+                  href={settings?.googleMapsUrl ? settings.googleMapsUrl : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(getAddressText())}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#c9a96e] transition-colors"
+                >
+                  {getAddressText()}
+                </a>
               </p>
               {settings?.googleMapsUrl && (
                 <a
@@ -342,10 +349,22 @@ export default function Home() {
               </div>
               <h3 className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e] font-body mb-4">Téléphone &amp; Email</h3>
               <p className="text-[#f0e8d8]/65 text-sm font-body font-light leading-relaxed">
-                Tél : {settings?.phone || "04 78 00 00 00"}
+                Tél :{" "}
+                <a
+                  href={`tel:${(settings?.phone || "04 78 00 00 00").replace(/\s+/g, "")}`}
+                  className="hover:text-[#c9a96e] transition-colors"
+                >
+                  {settings?.phone || "04 78 00 00 00"}
+                </a>
               </p>
               <p className="text-[#f0e8d8]/65 text-sm font-body font-light leading-relaxed mt-1">
-                Email : {settings?.email || "contact@laloge-lyon.fr"}
+                Email :{" "}
+                <a
+                  href={`mailto:${settings?.email || "contact@laloge-lyon.fr"}`}
+                  className="hover:text-[#c9a96e] transition-colors"
+                >
+                  {settings?.email || "contact@laloge-lyon.fr"}
+                </a>
               </p>
               <a
                 href={`tel:${(settings?.phone || "04 78 00 00 00").replace(/\s+/g, "")}`}

@@ -13,7 +13,7 @@ export function ReservationInfoPanel({ phoneText, emailText }: ReservationInfoPa
           Besoin d&apos;une réponse urgente ?
         </p>
         <p className="text-[#f0e8d8]/45 text-sm font-body font-light">
-          Tél : {phoneText} · Email : {emailText}
+          Tél : <a href={`tel:${phoneText.replace(/\s+/g, "")}`} className="hover:text-[#c9a96e] transition-colors">{phoneText}</a> · Email : <a href={`mailto:${emailText}`} className="hover:text-[#c9a96e] transition-colors">{emailText}</a>
         </p>
       </div>
       <Link

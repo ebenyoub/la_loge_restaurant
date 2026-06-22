@@ -28,6 +28,8 @@
 - [x] Tests frontend : lint, build, Playwright admin et tests E2E publics validés (14 tests passants couvrant carte, contact, réservation, et menu burger).
 - [x] Fondation technique RHF + Zod opérationnelle et formulaires Contact, Réservation, Login Admin et documents légaux migrés.
 - [x] Implémentation complète de P1-23 (Documents légaux / RGPD) dynamisés depuis MySQL et administrables via React Hook Form + Zod.
+- [x] Implémentation complète de P1-27 (Contact, accès, horaires cliquables et dynamiques sur les pages publiques et le footer).
+
 
 
 ## Explicitement hors périmètre actuel

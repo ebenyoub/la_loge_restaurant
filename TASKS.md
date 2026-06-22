@@ -2,7 +2,7 @@
 
 ## Tâche en cours
 
-Implémentation complète de P1-23 (Documents légaux / RGPD) — terminée. Les endpoints d'API publique et d'administration ont été créés, l'édition des documents légaux est intégrée sous RHF + Zod dans /admin/settings et la page publique /mentions-legales a été dynamisée.
+Implémentation complète de P1-27 (Contact, accès et horaires) — terminée. Le téléphone, l'adresse (itinéraire) et l'e-mail ont été rendus cliquables et dynamisés sur toutes les pages publiques et le footer depuis le context de settings unique.
 
 
 ## Règles de travail
@@ -31,6 +31,7 @@ Implémentation complète de P1-23 (Documents légaux / RGPD) — terminée. Les
 - [x] Migration des formulaires publics de Contact et de Réservation vers React Hook Form + Zod.
 - [x] Enregistrement de la décision d'architecture D-017 (Standard de Formulaires RHF + Zod).
 - [x] Implémentation complète de P1-23 (Documents légaux / RGPD) : création des API publiques/admin, édition via RHF + Zod dans /admin/settings et dynamisation de /mentions-legales.
+- [x] Implémentation complète de P1-27 (Contact, accès et horaires) : téléphone, itinéraire et e-mail cliquables et dynamisés depuis une source unique.
 
 ## Prochaine tâche proposée
 

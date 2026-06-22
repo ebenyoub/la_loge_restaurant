@@ -55,13 +55,18 @@ export function ContactInfo({
                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-            <div>
+             <div>
               <p className="text-[10px] tracking-[0.4em] uppercase text-[#c9a96e]/60 font-body mb-2">
                 Adresse
               </p>
-              <p className="text-[#f0e8d8]/65 text-sm font-body font-light">
+              <a
+                href={getMapsUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#f0e8d8]/65 text-sm font-body font-light hover:text-[#c9a96e] transition-colors"
+              >
                 {addressText || "Place des Célestins, 69002 Lyon — France"}
-              </p>
+              </a>
             </div>
           </div>
         </Card>
@@ -87,10 +92,22 @@ export function ContactInfo({
                 Contacts
               </p>
               <p className="text-[#f0e8d8]/65 text-sm font-body font-light">
-                Tél : {phoneText}
+                Tél :{" "}
+                <a
+                  href={`tel:${phoneText.replace(/\s+/g, "")}`}
+                  className="hover:text-[#c9a96e] transition-colors"
+                >
+                  {phoneText}
+                </a>
               </p>
               <p className="text-[#f0e8d8]/65 text-sm font-body font-light">
-                Email : {emailText}
+                Email :{" "}
+                <a
+                  href={`mailto:${emailText}`}
+                  className="hover:text-[#c9a96e] transition-colors"
+                >
+                  {emailText}
+                </a>
               </p>
             </div>
           </div>
