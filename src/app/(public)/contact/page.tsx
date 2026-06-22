@@ -154,7 +154,7 @@ export default function ContactPage() {
   // Day order for display (Lundi to Dimanche: [1, 2, 3, 4, 5, 6, 0])
   const displayDays = [1, 2, 3, 4, 5, 6, 0];
 
-  const inputClass = "w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-4 py-3.5 text-sm font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/50 transition-colors";
+  const inputClass = "w-full box-border max-w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-4 py-3.5 text-sm font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/50 transition-colors";
   const labelClass = "block text-[10px] tracking-[0.4em] uppercase font-body text-[#c9a96e]/70 mb-2";
 
   return (
@@ -175,7 +175,7 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-16 lg:py-24">
         {/* Info Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 mb-16">
           {/* Practical Info */}
@@ -399,7 +399,7 @@ export default function ContactPage() {
                   checked={formData.consent}
                   onChange={handleChange}
                   required
-                  className="mt-1 h-4 w-4 bg-[#1e1e1b] border border-[#c9a96e]/20 text-[#c9a96e] focus:ring-[#c9a96e]/50 focus:ring-opacity-25"
+                  className="mt-1 h-4 w-4 bg-[#1e1e1b] border border-[#c9a96e]/20 text-[#c9a96e] focus:ring-[#c9a96e]/50 focus:ring-opacity-25 shrink-0"
                 />
                 <label htmlFor="consent" className="text-xs text-[#f0e8d8]/60 leading-tight select-none">
                   J&apos;accepte que mes informations soient collectées et utilisées par {restaurantName} pour traiter ma demande de contact conformément à la politique de confidentialité. *

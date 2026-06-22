@@ -208,7 +208,7 @@ export default function ReservationPage() {
   const phoneText = settings?.phone || "04 78 00 00 00";
   const emailText = settings?.email || "contact@laloge-lyon.fr";
 
-  const inputClass = "w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-4 py-3.5 text-sm font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/50 transition-colors duration-200";
+  const inputClass = "w-full box-border max-w-full bg-[#1e1e1b] border border-[#c9a96e]/15 text-[#f0e8d8] px-4 py-3.5 text-sm font-body font-light placeholder:text-[#f0e8d8]/25 focus:outline-none focus:border-[#c9a96e]/50 transition-colors duration-200";
   const labelClass = "block text-[10px] tracking-[0.4em] uppercase font-body text-[#c9a96e]/70 mb-2";
 
   return (
@@ -229,7 +229,7 @@ export default function ReservationPage() {
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-6 py-16">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16">
         {/* Pending Notice Banner */}
         <div className="flex gap-3 bg-[#c9a96e]/8 border border-[#c9a96e]/25 p-5 mb-10">
           <svg className="w-5 h-5 text-[#c9a96e] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,11 +263,13 @@ export default function ReservationPage() {
           </div>
         )}
 
+
+
         {!successMessage && (
           <form onSubmit={handleSubmit} className="space-y-6" noValidate>
             <fieldset disabled={isLoading} className="space-y-6 min-w-0 w-full">
               {/* Coordonnées */}
-              <div className="border border-[#c9a96e]/10 p-6 bg-[#141412]/30 space-y-5">
+              <div className="border border-[#c9a96e]/10 p-4 sm:p-6 bg-[#141412]/30 space-y-5">
                 <p className="text-[10px] tracking-[0.3em] uppercase text-[#c9a96e]/80 font-body border-b border-[#c9a96e]/10 pb-2">
                   Vos coordonnées
                 </p>
@@ -334,7 +336,7 @@ export default function ReservationPage() {
               </div>
 
               {/* Détails Demande */}
-              <div className="border border-[#c9a96e]/10 p-6 bg-[#141412]/30 space-y-5">
+              <div className="border border-[#c9a96e]/10 p-4 sm:p-6 bg-[#141412]/30 space-y-5">
                 <p className="text-[10px] tracking-[0.3em] uppercase text-[#c9a96e]/80 font-body border-b border-[#c9a96e]/10 pb-2">
                   Détails de la réservation
                 </p>
@@ -439,7 +441,7 @@ export default function ReservationPage() {
                     checked={formData.consent}
                     onChange={handleChange}
                     required
-                    className="mt-1 h-4 w-4 bg-[#1e1e1b] border border-[#c9a96e]/20 text-[#c9a96e] focus:ring-[#c9a96e]/50 focus:ring-opacity-25"
+                    className="mt-1 h-4 w-4 bg-[#1e1e1b] border border-[#c9a96e]/20 text-[#c9a96e] focus:ring-[#c9a96e]/50 focus:ring-opacity-25 shrink-0"
                   />
                   <label htmlFor="consent" className="text-xs text-[#f0e8d8]/60 leading-tight select-none">
                     J&apos;accepte que mes coordonnées soient utilisées par {restaurantName} pour traiter ma demande de réservation. *

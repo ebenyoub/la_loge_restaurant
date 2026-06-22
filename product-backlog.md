@@ -11,7 +11,7 @@ Une demande de réservation **n'est pas une réservation confirmée**. Le géran
 ## État d'implémentation au 22 juin 2026
 
 - Livré : P1-01, P1-04 à P1-09, P1-11 à P1-15, P1-19 (réglages structurés), P1-20, P1-23 (partiel, édition SEO OK) et P1-25. Les pages publiques, formulaires, API, persistance, e-mails de création, login JWT, réservation/contact admin, sections/plats admin et réglages sont opérationnels. Les derniers ajustements incluent la séparation nette des layouts public et admin (plus de double barre de navigation), la redirection automatique 401 vers la page de login avec message de session expirée, le support de la validation par touche `Enter` et d'autocomplétion sur le login, et l'alignement précis des ancres sur la carte.
-- Partiel ou à valider : P1-02 (alignement final avec la capture Figma et médias autorisés), P1-03 (recette responsive), P1-16 à P1-18 (lecture de charge à confirmer), P1-23 (éditions des mentions légales non structurée/différée), P1-26 à P1-30.
+- Partiel ou à valider : P1-02 (alignement final avec la capture Figma et médias autorisés), P1-03 (recette responsive - tests iPhone local à revalider après déploiement ou sur réseau Wi-Fi stable), P1-16 à P1-18 (lecture de charge à confirmer), P1-23 (éditions des mentions légales non structurée/différée), P1-26 à P1-30.
 - Différé explicitement : anti-spam et limitation de débit de P1-10, e-mails de changement de statut et déploiement. Ils ne doivent pas être ajoutés avant la finalisation contenus/images/fidélité visuelle, sauf décision contraire documentée.
 
 | ID | Fonctionnalité | Priorité | Description | Critères d'acceptation |

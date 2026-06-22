@@ -2,7 +2,7 @@
 
 ## Tâche en cours
 
-Ajout des tests E2E publics Playwright (carte, formulaires contact/réservation, validation horaires/jours fermés, burger mobile) — terminée.
+Chantier P0 Mobile iPhone & résolution du chargement des réglages — terminée. Tests iPhone local à revalider après déploiement ou sur réseau Wi-Fi stable.
 
 ## Règles de travail
 
@@ -14,6 +14,7 @@ Ajout des tests E2E publics Playwright (carte, formulaires contact/réservation,
 
 ## Historique récent
 
+- [x] Résolution des bugs critiques iPhone (burger menu cliquable, débordements horizontaux formulaires contact/réservation, et flexibilité).
 - [x] Tests E2E publics ajoutés (carte publique, formulaire contact, formulaire réservation, validation horaire/jour fermé, menu burger mobile).
 - [x] Redirection automatique vers la page de connexion si le token admin est invalide ou expiré (401), suppression du localStorage et affichage du message de session expirée.
 - [x] Connexion de la carte publique et des réglages à l'API publique MySQL ; correction du routage admin qui interceptait les routes publiques.
@@ -26,9 +27,6 @@ Ajout des tests E2E publics Playwright (carte, formulaires contact/réservation,
 
 ## Prochaine tâche proposée
 
-P0 Mobile iPhone :
-- vérifier menu burger réel sur iPhone
-- corriger débordements formulaire réservation
-- heure en liste de créneaux
-- nombre de personnes en select 2 à 15
-- vérifier carte et admin depuis iPhone
+Recette finale & Alignement Figma :
+- valider l'alignement des espacements et contrastes avec la maquette Figma
+- obtenir la validation finale des droits médias pour mise en ligne
