@@ -2,7 +2,7 @@
 
 ## Tâche en cours
 
-Aucune. P1-29 (Conformité RGPD) est terminé. Les formulaires de Contact et de Réservation intègrent désormais des consentements explicites obligatoires avec liens hypertexte vers la politique de confidentialité, et les durées de conservation des données sont affichées dans l'espace d'administration.
+Aucune. P1-30 (Recette MVP finale) est terminé. La checklist de recette complète a été rédigée dans docs/checklist-recette-mvp.md couvrant tous les parcours publics, d'administration, ainsi que les contraintes SEO/RGPD et de performance.
 
 ## Règles de travail
 
@@ -34,9 +34,11 @@ Aucune. P1-29 (Conformité RGPD) est terminé. Les formulaires de Contact et de 
 - [x] Implémentation complète de P1-26 (SEO local) : injection dynamique des metatags (OG, Twitter, canonical), donnees structurees JSON-LD (Restaurant) et routages sitemap.xml / robots.txt.
 - [x] Implémentation complète de P1-28 (Optimisation des images et performances) : correction de sizes et des requetes media CSS pour les composants next/image, et validation du lazy loading de l'iframe Maps.
 - [x] Implémentation complète de P1-29 (RGPD) : intégration du consentement explicite, politique de confidentialité liée et affichage des durées de conservation des données dans l'administration.
+- [x] Implémentation complète de P1-30 (Recette MVP finale) : rédaction de la checklist de recette globale dans docs/checklist-recette-mvp.md.
 
 ## Prochaine tâche proposée
 
-Recette finale & Alignement Figma (P1-02, P1-03, P1-30) :
-- valider l'alignement des espacements et contrastes avec la maquette Figma
-- obtenir la validation finale des droits médias pour mise en ligne
+Lancement & Mise en production :
+- Récolter la validation écrite des droits d'images par le client (règle D-014)
+- Obtenir les coordonnées, horaires et textes légaux définitifs
+- Lancer le déploiement de l'API (MySQL managé, variables d'environnement, SMTP Brevo prod) et du client Next.js (Vercel ou serveur dédié)

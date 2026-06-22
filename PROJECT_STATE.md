@@ -75,3 +75,4 @@
 - [Actions restantes](./TODO.md)
 - [Contrats d'API](./docs/api-contracts.md)
 - [Inventaire des images](./docs/images-inventory.md)
+- [Checklist de Recette MVP](./docs/checklist-recette-mvp.md)
