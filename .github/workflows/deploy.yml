@@ -43,21 +43,21 @@ jobs:
             ./ \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/srv/apps/la-loge/
 
-            - name: Build and restart containers on VPS
-          run: |
-            ssh -i ~/.ssh/id_ed25519 ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-              set -e
-              cd /srv/apps/la-loge
+      - name: Build and restart containers on VPS
+      run: |
+        ssh -i ~/.ssh/id_ed25519 ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          set -e
+          cd /srv/apps/la-loge
 
-              docker compose -f docker-compose.prod.yml build --no-cache
-              docker compose -f docker-compose.prod.yml up -d
-              docker image prune -f
+          docker compose -f docker-compose.prod.yml build --no-cache
+          docker compose -f docker-compose.prod.yml up -d
+          docker image prune -f
 
-              until docker inspect -f '{{.State.Running}}' nginx | grep -q true; do
-                echo "Waiting for nginx..."
-                sleep 2
-              done
+          until docker inspect -f '{{.State.Running}}' nginx | grep -q true; do
+            echo "Waiting for nginx..."
+            sleep 2
+          done
 
-              docker exec nginx nginx -t
-              docker exec nginx nginx -s reload
-            EOF
+          docker exec nginx nginx -t
+          docker exec nginx nginx -s reload
+        EOF
