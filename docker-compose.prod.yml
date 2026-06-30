@@ -1,0 +1,65 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: la_loge_db
+    ports:
+      - "127.0.0.1:3309:3306"
+    volumes:
+      - la-loge_la_loge_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - web
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      API_BASE_URL: http://backend:4000
+      CORS_ORIGIN: http://167.233.194.26:8081
+      DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD}@db:3306/la_loge_db
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: 8h
+      SMTP_HOST: ${SMTP_HOST:-smtp-relay.brevo.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      EMAIL_FROM: ${EMAIL_FROM:-La Loge <no-reply@laloge.fr>}
+      RESTAURANT_NOTIFICATION_EMAIL: ${RESTAURANT_NOTIFICATION_EMAIL:-manager@laloge.fr}
+    ports:
+      - "4000:4000"
+    networks:
+      - web
+
+  frontend:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: http://167.233.194.26:8081/api/v1
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - web
+
+volumes:
+  la-loge_la_loge_db_data:
+    external: true
+
+networks:
+  web:
+    external: true
