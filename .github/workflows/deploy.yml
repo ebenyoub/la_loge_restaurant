@@ -64,4 +64,5 @@ jobs:
             "cd /srv/apps/la-loge && \
              docker compose pull && \
              docker compose up -d && \
-             docker image prune -f"
+             docker image prune -f && \
+             docker exec nginx nginx -s reload"
